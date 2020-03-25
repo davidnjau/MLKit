@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "912719456450",
+    "firebase_url": "https://mlkit-test-ea5ab.firebaseio.com",
+    "project_id": "mlkit-test-ea5ab",
+    "storage_bucket": "mlkit-test-ea5ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912719456450:android:f282627d42dec96f0eb35b",
+        "android_client_info": {
+          "package_name": "com.nimo.ten.mlkittest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912719456450-ob6g428iodickt066cg8s3ar9ss7okgu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nimo.ten.mlkittest",
+            "certificate_hash": "e08e66cb777bb69821b6853c539fb81168847832"
+          }
+        },
+        {
+          "client_id": "912719456450-809asgn1cdq5gnovouocq3mr83ntm6u8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS-O274Ar4V7GoIC2_UZ3roVG7gVuJq8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912719456450-809asgn1cdq5gnovouocq3mr83ntm6u8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
