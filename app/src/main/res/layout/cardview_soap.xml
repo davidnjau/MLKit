@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="5dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:orientation="horizontal"
+            android:layout_width="150dp"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:id="@+id/tvRemainingDays"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="3dp"
+                android:layout_gravity="end"
+                android:text=""
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+                android:layout_marginStart="5dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:paddingTop="3dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:text="Soap Name: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="Soap Name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/tvName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:text="Date In: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="Date in"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:id="@+id/tvDateIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:paddingTop="3dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:text="Date Out: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="Date out"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:id="@+id/tvDateOut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

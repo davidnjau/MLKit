@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:minWidth="300dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+            app:cardElevation="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:backgroundTint="@color/colorBaige"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:layout_marginStart="10dp"
+                            android:background="@mipmap/ic_pic_logo"
+                            android:layout_gravity="center"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"/>
+
+                        <TextView
+                            android:padding="15dp"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delete Confirmation.."
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@android:color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@drawable/border_sharp_corner"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_margin="5dp"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:text="Are you sure you want to delete this soap?"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            
+                            <View
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/colorBaige"/>
+
+                            <LinearLayout
+                                android:padding="10dp"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:background="@drawable/ic_action_alert_black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:textColor="@android:color/black"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text="Soap name"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                        android:id="@+id/tvSoapName"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text="SoapName"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/colorBaige"/>
+
+                            <LinearLayout
+                                android:padding="10dp"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:background="@drawable/ic_action_date_start"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:textColor="@android:color/black"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text="@string/date_in"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                        android:id="@+id/tvDateIn"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text="@string/date_in"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                </LinearLayout>
+
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/colorBaige"/>
+
+                            <LinearLayout
+                                android:padding="10dp"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:background="@drawable/ic_action_date_end"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:textColor="@android:color/black"
+                                        android:layout_marginStart="10dp"
+                                        android:text="@string/date_out"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                        android:id="@+id/tvDateOut"
+                                        android:layout_marginStart="10dp"
+                                        android:text="@string/date_out"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/colorBaige"/>
+
+                            <LinearLayout
+                                android:padding="10dp"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:background="@drawable/ic_action_duration"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:textColor="@android:color/black"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text="@string/duration"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                        android:id="@+id/tvDurationTaken"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text=""
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                </LinearLayout>
+
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/colorBaige"/>
+
+                            <LinearLayout
+                                android:padding="10dp"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageButton
+                                    android:background="@drawable/ic_action_condition"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:textColor="@android:color/black"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text="@string/condition"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                    <TextView
+                                        android:id="@+id/tvSoapCondition"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_gravity="center"
+                                        android:text="@string/condition"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+
+                                </LinearLayout>
+
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_marginTop="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/colorBaige"/>
+
+                        </LinearLayout>
+
+
+                        
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_marginTop="3dp"
+                        android:gravity="end"
+                        android:weightSum="2"
+                        android:padding="3dp"
+                        android:layout_marginBottom="7dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/btn_Cancel"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/newbutton"
+                            android:textAllCaps="false"
+                            android:text="Cancel"
+                            android:textColor="@android:color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Button
+                            android:paddingEnd="3dp"
+                            android:paddingStart="3dp"
+                            android:id="@+id/btn_Action"
+                            android:layout_marginEnd="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/newbutton"
+                            android:text="Delete"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+
+
+

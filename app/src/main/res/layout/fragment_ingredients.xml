@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:layout_margin="10dp"
+            android:padding="7dp"
+            android:background="@drawable/border_sharp_corner"
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:singleLine="true"
+                        android:background="@drawable/edit_text_transparent"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/etTotalWeight"
+                        android:hint="Total Weight of butters and oils. (grams)"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <Button
+                    android:layout_marginStart="5dp"
+                    android:id="@+id/btnAddWeight"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/rounded_button"
+                    android:textAllCaps="false"
+                    android:text="Add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:id="@+id/myview"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableRow
+                        android:weightSum="4">
+
+                        <TextView
+                            android:background="@drawable/table_header_cell_bg"
+                            android:textColor="@android:color/white"
+                            android:layout_weight="1"
+                            android:textSize="18sp"
+                            android:text="#"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:id="@+id/tvNumber2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:background="@drawable/table_header_cell_bg"
+                            android:textColor="@android:color/white"
+                            android:layout_weight="1"
+                            android:maxLength="15"
+                            android:textSize="18sp"
+                            android:text="Ingredients"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:id="@+id/tvIngredients2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:background="@drawable/table_header_cell_bg"
+                            android:textColor="@android:color/white"
+                            android:layout_weight="1"
+                            android:textSize="18sp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textStyle="bold"
+                            android:id="@+id/tvPercentage2"
+                            android:text="% "
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:background="@drawable/table_header_cell_bg"
+                            android:textColor="@android:color/white"
+                            android:layout_weight="1"
+                            android:textSize="18sp"
+                            android:layout_marginEnd="3dp"
+                            android:id="@+id/tvGrams2"
+                            android:text="grams"
+                            android:maxLength="6"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </TableRow>
+
+
+
+                </TableLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/ic_action_alert_black" />
+
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:gravity="center"
+                        android:text="There are no available ingredients. \n Click the plus sign to add ingredients."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:nestedScrollingEnabled="false"
+                    android:id="@+id/recyclerView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_margin="20dp"
+            android:gravity="end"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:padding="5dp"
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_action_add" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

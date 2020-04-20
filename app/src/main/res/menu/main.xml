@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Calender"
+        android:id="@+id/icon_calender"
+        android:icon="@drawable/ic_action_calendar_white"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:title="Profile"
+        android:id="@+id/icon_profile"
+        android:icon="@drawable/ic_action_profile"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:title="Settings"
+        android:id="@+id/icon_Settings"
+        android:icon="@drawable/ic_action_settings"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:title="Exit App"
+        android:id="@+id/icon_exit_app"
+        android:icon="@drawable/icon_exit_app"
+        app:showAsAction="never"
+        />
+
+</menu>
