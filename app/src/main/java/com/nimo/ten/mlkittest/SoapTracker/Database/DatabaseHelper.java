@@ -108,7 +108,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_SOAP_NOTES);
         db.execSQL(CREATE_TABLE_SOAP_LYE);
 
-
         Log.d("++++", CREATE_TABLE_SOAP_DETALS);
     }
 
@@ -475,7 +474,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<IngredientsPojo> getSoapLye(String SoapId) {
 
         ArrayList<IngredientsPojo> IngredientsPojoArrayList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_SOAP_LYE+" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_LYE + " WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 

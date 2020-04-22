@@ -437,6 +437,12 @@ public class SingleSoapDetails extends AppCompatActivity {
         final CheckBox checkboxIngredients = promptsView.findViewById(R.id.checkboxIngredients);
         final CheckBox checkboxNotes = promptsView.findViewById(R.id.checkboxNotes);
 
+        myShareIngredients.clear();
+        myShareNotes.clear();
+
+        txtSoapIngredient = "";
+        txtSoapNotes = "";
+
         checkboxIngredients.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
