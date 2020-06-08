@@ -1,14 +1,17 @@
 package com.nimo.ten.mlkittest.SoapTracker.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -77,10 +80,51 @@ public class Soap_ingredients_notes extends AppCompatActivity {
 
         if (id == R.id.icon_calender) {
 
+            startActivity(new Intent(getApplicationContext(), Calender.class));
+
+        }else if (id == R.id.icon_profile){
+
+            Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
+
+        }else if (id == R.id.icon_Settings){
+
+            Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
+
+        }else if (id == R.id.icon_exit_app){
+
+            ExitDialog();
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void ExitDialog() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure You want to exit the app");
+        alertDialogBuilder.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#449309</color>
-    <color name="colorPrimaryDark">#338D47</color>
-    <color name="colorAccent">#318A47</color>
+    <color name="colorPrimary">#307F3D</color>
+    <color name="colorPrimaryDark">#165921</color>
+    <color name="colorAccent">#F37B2D</color>
+
+    <color name="colorAccent2">#B61D22</color>
 
     <color name="notification_color">#F5FFFFFF</color>
     <color name="colorPastDue">#F5AC0303</color>

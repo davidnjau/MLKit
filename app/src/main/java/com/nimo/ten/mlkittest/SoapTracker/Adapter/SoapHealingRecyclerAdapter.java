@@ -1,5 +1,6 @@
 package com.nimo.ten.mlkittest.SoapTracker.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,11 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.material.shadow.ShadowDrawableWrapper;
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Activities.SingleSoapDetails;
 import com.nimo.ten.mlkittest.SoapTracker.Activities.Soap_ingredients_notes;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.OfflineNotification;
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 
 import java.text.ParseException;
@@ -77,12 +80,18 @@ public class SoapHealingRecyclerAdapter extends RecyclerView.Adapter<SoapHealing
             long dateOut = offlineNotification.getTimeInMillis(soapTrackerPojoArrayList.get(position).getDateOut());
             long date_In = offlineNotification.getTimeInMillis(soapTrackerPojoArrayList.get(position).getDateIn());
 
+            Date c = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            String CurrentDate = df.format(date_In);
 
-            long dateIn = offlineNotification.getTimeInMillis(CurrentDate);
+            String DateOut = df.format(dateOut);
+            String CurrentDate = df.format(c);
 
-            long remainingDays = TimeUnit.DAYS.convert(dateOut - dateIn, TimeUnit.MILLISECONDS);
+            System.out.println("-*-*-*CurrentDate "+ CurrentDate);
+
+            long date_out = offlineNotification.getTimeInMillis(DateOut);
+            long CurrentTime = offlineNotification.getTimeInMillis(CurrentDate);
+
+            long remainingDays = TimeUnit.DAYS.convert(date_out - CurrentTime, TimeUnit.MILLISECONDS);
 
             if (remainingDays > 0) {
 
@@ -104,7 +113,7 @@ public class SoapHealingRecyclerAdapter extends RecyclerView.Adapter<SoapHealing
                 String txtDaysRem = holder.tvRemainingDays.getText().toString();
                 String txtSoapName = holder.tvName.getText().toString();
 
-                Toast.makeText(context, getElapsedDays(txtDaysRem) + " remaining for " + txtSoapName + " to heal. ", Toast.LENGTH_SHORT).show();
+                new ShowCustomToast((Activity)context, getElapsedDays(txtDaysRem) + " remaining for " + txtSoapName + " to heal. ");
 
             }
         });

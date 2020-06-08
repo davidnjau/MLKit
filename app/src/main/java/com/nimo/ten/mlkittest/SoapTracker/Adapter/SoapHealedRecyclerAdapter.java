@@ -79,14 +79,27 @@ public class SoapHealedRecyclerAdapter extends RecyclerView.Adapter<SoapHealedRe
             long dateOut = offlineNotification.getTimeInMillis(soapTrackerPojoArrayList.get(position).getDateOut());
             long date_In = offlineNotification.getTimeInMillis(soapTrackerPojoArrayList.get(position).getDateIn());
 
+            Date c = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            String CurrentDate = df.format(date_In);
+
+            String DateIn = df.format(date_In);
+            String CurrentDate = df.format(c);
 
             holder.tvRemainingDays.setBackgroundResource(R.drawable.badge_circular_past_due);
 
-            long dateIn = offlineNotification.getTimeInMillis(CurrentDate);
+            long dateIn = offlineNotification.getTimeInMillis(DateIn);
+            long current_date = offlineNotification.getTimeInMillis(CurrentDate);
 
-            long remainingDays = TimeUnit.DAYS.convert(( dateOut - dateIn ) * -1 , TimeUnit.MILLISECONDS) ;
+            long remainingDays = TimeUnit.DAYS.convert(( current_date - dateOut ) , TimeUnit.MILLISECONDS);
+
+//            long remainingDays;
+
+//            if (rem_days < 0) {
+//                remainingDays = rem_days * -1;
+//            }else {
+//
+//                remainingDays = rem_days;
+//            }
 
             if (remainingDays < 7){
 

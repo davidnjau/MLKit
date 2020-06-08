@@ -1,14 +1,8 @@
 package com.nimo.ten.mlkittest.SoapTracker.Fragments;
 
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -17,18 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,16 +26,12 @@ import com.nimo.ten.mlkittest.R;
 
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapIngredientsRecyclerAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
-import com.nimo.ten.mlkittest.SoapTracker.HelperClass.BlurBuilder;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
-import com.nimo.ten.mlkittest.SoapTracker.Pojo.LyeCalculatorPojo;
-import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 

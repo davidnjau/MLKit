@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.ProfilesPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 
 import java.util.ArrayList;
@@ -23,6 +25,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_SOAP_INGREDIENTS = "soap_ingredients";
     private static final String TABLE_SOAP_NOTES = "soap_notes";
     private static final String TABLE_SOAP_LYE = "soap_lye";
+    private static final String TABLE_SOAP_OILS = "soap_oils";
+
+    private static final String TABLE_SOAP_MY_OILS = "soap_my_oils";
+
+    private static final String TABLE_PROFILES_DETAILS = "profiles_details";
 
     private static final String KEY_ID = "id";
 
@@ -31,6 +38,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_DATE_OUT = "date_out";
     private static final String KEY_CONDITION = "condition";
     private static final String KEY_PHOTO1_Id = "photo1_id";
+
+    private static final String KEY_OIL_NAME = "oil_name";
+    private static final String KEY_NAOH = "naoh_weight";
 
     private static final String KEY_PHOTO_PATH = "pic_path";
 
@@ -49,7 +59,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_NAOH_WEIGHT = "total_lye_weight";
     private static final String KEY_LIQUID_WEIGHT = "total_liquid_weight";
 
+    private static final String KEY_NAME = "user_name";
+    private static final String KEY_EMAIL = "user_email";
+    private static final String KEY_PHONE = "user_phone";
+    private static final String KEY_IG = "user_ig";
+
     ContentResolver mContentResolver;
+
+    private static final String CREATE_TABLE_SOAP_OILS = "CREATE TABLE "
+            + TABLE_SOAP_OILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
+            KEY_OIL_NAME + " TEXT, " +
+            KEY_NAOH + " TEXT " + " );";
+
+    private static final String CREATE_TABLE_SOAP_MY_OILS = "CREATE TABLE "
+            + TABLE_SOAP_MY_OILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
+            KEY_OIL_NAME + " TEXT, " +
+            KEY_NAOH + " TEXT " + " );";
 
     private static final String CREATE_TABLE_SOAP_INGREDIENTS = "CREATE TABLE "
             + TABLE_SOAP_INGREDIENTS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -57,6 +82,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_INGREDIENTS + " TEXT, "+
             KEY_PERCENTAGE + " TEXT, "+
             KEY_WEIGHT + " TEXT " + " );";
+
+    private static final String CREATE_TABLE_PROFILES_DETAILS = "CREATE TABLE "
+            + TABLE_PROFILES_DETAILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
+            KEY_NAME + " TEXT, " +
+            KEY_EMAIL + " TEXT, "+
+            KEY_PHONE + " TEXT, "+
+            KEY_IG + " TEXT " + " );";
 
 
     private static final String CREATE_TABLE_SOAP_LYE = "CREATE TABLE "
@@ -107,6 +139,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_SOAP_INGREDIENTS);
         db.execSQL(CREATE_TABLE_SOAP_NOTES);
         db.execSQL(CREATE_TABLE_SOAP_LYE);
+        db.execSQL(CREATE_TABLE_PROFILES_DETAILS);
+        db.execSQL(CREATE_TABLE_SOAP_OILS);
+        db.execSQL(CREATE_TABLE_SOAP_MY_OILS);
 
         Log.d("++++", CREATE_TABLE_SOAP_DETALS);
     }
@@ -118,10 +153,117 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_SOAP_INGREDIENTS +"'");
         db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_SOAP_NOTES +"'");
         db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_SOAP_LYE +"'");
+        db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_PROFILES_DETAILS +"'");
+        db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_SOAP_OILS +"'");
+        db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_SOAP_MY_OILS +"'");
 
         onCreate(db);
 
     }
+
+    public void AddMySoapOils(String OilName){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selectQuery1 = "SELECT * FROM " + TABLE_SOAP_MY_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
+        Cursor cursor1 = db.rawQuery(selectQuery1, null);
+        if (cursor1.getCount()> 0){
+
+
+
+        }else {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_OIL_NAME, OilName);
+
+            String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    String Naoh = c.getString(c.getColumnIndex(KEY_NAOH));
+
+                    contentValues.put(KEY_NAOH, Naoh);
+
+                } while (c.moveToNext());
+
+                c.close();
+
+            }
+
+            db.insert(TABLE_SOAP_MY_OILS, null, contentValues);
+        }
+
+
+
+
+    }
+
+    public void AddSoapOils(String OilName, Double Naoh){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_OIL_NAME, OilName);
+        contentValues.put(KEY_NAOH, Naoh);
+        db.insert(TABLE_SOAP_OILS, null, contentValues);
+
+    }
+
+    public ArrayList<SoapLyeLiquidsPojo> getSoapOils() {
+
+        ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                SoapLyeLiquidsPojo soapTrackerPojo = new SoapLyeLiquidsPojo();
+                soapTrackerPojo.setLiquids(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
+                soapTrackerPojo.setNaOh(c.getString(c.getColumnIndex(KEY_NAOH)));
+                soapTrackerPojoArrayList.add(soapTrackerPojo);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        return soapTrackerPojoArrayList;
+    }
+
+     public ArrayList<SoapLyeLiquidsPojo> getMySoapOils() {
+
+            ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList = new ArrayList<>();
+            String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS ;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    SoapLyeLiquidsPojo soapTrackerPojo = new SoapLyeLiquidsPojo();
+                    soapTrackerPojo.setLiquids(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
+                    soapTrackerPojo.setNaOh(c.getString(c.getColumnIndex(KEY_NAOH)));
+                    soapTrackerPojoArrayList.add(soapTrackerPojo);
+
+
+                } while (c.moveToNext());
+
+                c.close();
+
+            }
+
+            return soapTrackerPojoArrayList;
+        }
+
 
     public long AddSoapTracker(String soap_name, String date_in, String date_out, byte[] image, String txtFilePath){
 
@@ -272,6 +414,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void deleteMySoap(String soap_name) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_SOAP_MY_OILS, KEY_OIL_NAME + " = ?",new String[]{String.valueOf(soap_name)});
+
+    }
+
     public void deleteNotes(int id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -280,12 +430,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updateSoapCondition(String id){
+    public void updateSoapCondition(String id, String status){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(KEY_CONDITION, "Healed");
+        cv.put(KEY_CONDITION, status);
 
         db.update(TABLE_SOAP_DETALS, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
 
@@ -565,6 +715,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return soapTrackerPojo;
     }
+
+    public void AddProfilesDetails(String txtName, String txtEmail, String txtPhone, String txtIg){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_NAME, txtName);
+        contentValues.put(KEY_EMAIL, txtEmail);
+        contentValues.put(KEY_PHONE, txtPhone);
+        contentValues.put(KEY_IG, txtIg);
+
+        db.insert( TABLE_PROFILES_DETAILS, null, contentValues );
+
+    }
+
+    public ArrayList<ProfilesPojo> getProfilesInformation() {
+
+        ArrayList<ProfilesPojo> soapTrackerPojoArrayList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_PROFILES_DETAILS ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                String txtUsername = c.getString(c.getColumnIndex(KEY_NAME));
+                String txtUseremail = c.getString(c.getColumnIndex(KEY_EMAIL));
+                String txtUserphone = c.getString(c.getColumnIndex(KEY_PHONE));
+
+                ProfilesPojo profilesPojo = new ProfilesPojo(txtUsername,txtUseremail, txtUserphone);
+
+                soapTrackerPojoArrayList.add(profilesPojo);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        return soapTrackerPojoArrayList;
+    }
+
 
 
 }

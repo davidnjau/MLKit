@@ -1,18 +1,13 @@
 package com.nimo.ten.mlkittest.SoapTracker.Fragments;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -27,7 +22,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapNotesRecyclerAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
-import com.nimo.ten.mlkittest.SoapTracker.HelperClass.BlurBuilder;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
 
 import java.util.ArrayList;

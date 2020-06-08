@@ -85,6 +85,14 @@
                         android:layout_height="wrap_content"/>
 
                     <CheckBox
+                        android:id="@+id/checkboxLye"
+                        android:padding="10dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:text="Share my Lye notes."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <CheckBox
                         android:id="@+id/checkboxNotes"
                         android:padding="10dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"

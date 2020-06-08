@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapCheckerAdpater;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapHealedRecyclerAdapter;
@@ -36,6 +37,9 @@ public class SoapHeal_Healing extends AppCompatActivity {
     SoapHealingRecyclerAdapter soapHealingRecyclerAdapter;
 
     List<SoapTrackerPojo> soapTrackerPojoArrayList, soapTrackerPojoArrayList1;
+
+    private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,8 @@ public class SoapHeal_Healing extends AppCompatActivity {
 
         soapHealedRecyclerAdapter = new SoapHealedRecyclerAdapter(getApplicationContext(), (ArrayList<SoapTrackerPojo>) soapTrackerPojoArrayList);
         soapHealingRecyclerAdapter = new SoapHealingRecyclerAdapter(getApplicationContext(), (ArrayList<SoapTrackerPojo>) soapTrackerPojoArrayList1);
+
+        auth = FirebaseAuth.getInstance();
 
         tabLayout.addTab(tabLayout.newTab().setText("Prepared " + soapHealingRecyclerAdapter.getItemCount()));
         tabLayout.addTab(tabLayout.newTab().setText("Cured " + soapHealedRecyclerAdapter.getItemCount()));
@@ -120,7 +126,7 @@ public class SoapHeal_Healing extends AppCompatActivity {
 
         }else if (id == R.id.icon_profile ){
 
-            Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), Profile.class));
 
         }else if (id == R.id.icon_Settings){
 
@@ -129,6 +135,14 @@ public class SoapHeal_Healing extends AppCompatActivity {
         }else if (id == R.id.icon_exit_app){
 
             ExitDialog();
+
+        }else if (id == R.id.icon_Sign_Out){
+
+            auth.signOut();
+
+            Intent intent = new Intent(this, AccountManagement.class);
+            startActivity(intent);
+            finish();
 
         }
 

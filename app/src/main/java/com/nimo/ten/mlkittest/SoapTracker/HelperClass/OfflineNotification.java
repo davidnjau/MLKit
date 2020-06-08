@@ -150,7 +150,8 @@ public class OfflineNotification extends JobService {
 
     private void CreateNotification(String id, String soap_name, long time) {
 
-        databaseHelper.updateSoapCondition(id);
+        //
+        databaseHelper.updateSoapCondition(id, "Healed");
 
         int NOTIFICATION_ID = Integer.parseInt(id);
         String CHANNEL_ID = "my_channel_01";

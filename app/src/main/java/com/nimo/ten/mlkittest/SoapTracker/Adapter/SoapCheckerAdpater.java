@@ -22,6 +22,7 @@ public class SoapCheckerAdpater {
     private static final String KEY_DATE_IN = "date_in";
     private static final String KEY_DATE_OUT = "date_out";
     private static final String KEY_CONDITION = "condition";
+    private static final String KEY_SOAP_NAME = "soap_name";
 
     public void getSoapCondition(Context context){
 
@@ -30,7 +31,10 @@ public class SoapCheckerAdpater {
             OfflineNotification offlineNotification = new OfflineNotification();
             databaseHelper = new DatabaseHelper(context);
 
+            Date date = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            String CurrentDate = df.format(date);
+            long Current_Time = offlineNotification.getTimeInMillis(CurrentDate);
 
             String selectQuery = "SELECT * FROM " + TABLE_SOAP_DETALS ;
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -41,6 +45,8 @@ public class SoapCheckerAdpater {
                 do {
 
                     String txtCondition = c.getString(c.getColumnIndex(KEY_CONDITION));
+                    String txtSoapName = c.getString(c.getColumnIndex(KEY_SOAP_NAME));
+
                     String soap_id = c.getString(c.getColumnIndex(KEY_ID));
 
                     String date_in = c.getString(c.getColumnIndex(KEY_DATE_IN));
@@ -49,15 +55,17 @@ public class SoapCheckerAdpater {
                     long dateIn = offlineNotification.getTimeInMillis(date_in);
                     long dateOut = offlineNotification.getTimeInMillis(date_out);
 
-                    long remainingDays = TimeUnit.DAYS.convert(dateOut - dateIn, TimeUnit.MILLISECONDS);
+                    long remainingDays = TimeUnit.DAYS.convert(dateOut - Current_Time, TimeUnit.MILLISECONDS);
 
                     if (remainingDays <= 0){
 
-                        databaseHelper.updateSoapCondition(soap_id);
+                        databaseHelper.updateSoapCondition(soap_id, "Healed");
+
+                    }else {
+
+                        databaseHelper.updateSoapCondition(soap_id,"Healing");
 
                     }
-
-
 
                 } while (c.moveToNext());
 

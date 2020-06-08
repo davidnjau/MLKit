@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TaskStackBuilder;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.CheckOnlineDb;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.CreateAlarm;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.FetchDataBase;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.GetText;
@@ -44,9 +47,12 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -72,10 +78,13 @@ public class SingleSoapDetails extends AppCompatActivity {
 
     private String txtSoapIngredient = "";
     private String txtSoapNotes = "";
+    private String txtLye = "";
+
     private String txtSoapIngredient_Weight = "";
+    private String txtSoapLye_Weight = "";
 
     List<String> myIngredients = new ArrayList<>();
-    List<String> myWeights = new ArrayList<>();
+    List<String> myLye = new ArrayList<>();
     List<String> myNotes = new ArrayList<>();
 
 
@@ -83,13 +92,21 @@ public class SingleSoapDetails extends AppCompatActivity {
     private FetchDataBase fetchDataBase;
     private static final String KEY_INGREDIENTS = "ingredients";
     private static final String KEY_WEIGHT = "weight";
+    private static final String KEY_SUBSTANCE = "substance";
 
     private static final String TABLE_SOAP_INGREDIENTS = "soap_ingredients";
     private static final String KEY_SOAP_ID = "soap_id";
     private static final String KEY_NOTES = "notes";
     private static final String TABLE_SOAP_NOTES = "soap_notes";
+    private static final String TABLE_SOAP_LYE = "soap_lye";
+
+
     private List<String> myShareIngredients = new ArrayList<>();
     private List<String> myShareNotes = new ArrayList<>();
+    private List<String> myShareLye = new ArrayList<>();
+
+    private Bitmap bitmap;
+    private String txtNaoh, txtLiquids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +135,11 @@ public class SingleSoapDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), Soap_ingredients_notes.class);
+                Intent intent = new Intent(getApplicationContext(), SoapRecipe.class);
                 startActivity(intent);
+
+//                Intent intent = new Intent(getApplicationContext(), Soap_ingredients_notes.class);
+//                startActivity(intent);
 
             }
         });
@@ -134,6 +154,9 @@ public class SingleSoapDetails extends AppCompatActivity {
 
         LoadData(Soap_id);
 
+//        CheckOnlineDb checkOnlineDb = new CheckOnlineDb();
+//        checkOnlineDb.getDataFromDb(SingleSoapDetails.this);
+
 
     }
 
@@ -146,7 +169,7 @@ public class SingleSoapDetails extends AppCompatActivity {
         if (soap_id != null){
 
             image = soapTrackerPojo.getPhoto();
-            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
             imageView.setImageBitmap(bitmap);
 
             try {
@@ -201,7 +224,10 @@ public class SingleSoapDetails extends AppCompatActivity {
 
     }
 
-    private ShareContentPojo LoadIngredientsAndNotes(String soap_id) {
+    private ShareContentPojo LoadIngredients(String soap_id) {
+
+        txtSoapIngredient_Weight = "With the following ingredients: ";
+        myIngredients.add(txtSoapIngredient_Weight);
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
@@ -229,14 +255,66 @@ public class SingleSoapDetails extends AppCompatActivity {
             }
         }
 
+        return new ShareContentPojo(myIngredients, null, null);
+
+    }
+
+    private ShareContentPojo LoadLye(String soap_id) {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_LYE +" WHERE " + KEY_SOAP_ID + " = '"+soap_id+"'";
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null){
+
+            String txtLye1 = "With the following Lye mixture:";
+            myLye.add(txtLye1);
+
+            FetchDataBase fetchDataBase = new FetchDataBase();
+            txtNaoh = fetchDataBase.getLye_LiquidWeights(Soap_id, SingleSoapDetails.this).get(0).getNaOh() + " grams of " + "NaOH";
+            txtLiquids = fetchDataBase.getLye_LiquidWeights(Soap_id, SingleSoapDetails.this).get(0).getLiquids()+ " grams of " + "Other Liquids" ;
+
+            myLye.add(txtNaoh);
+            myLye.add(txtLiquids);
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    String txtLye = c.getString(c.getColumnIndex(KEY_SUBSTANCE));
+                    String txtWeight = c.getString(c.getColumnIndex(KEY_WEIGHT));
+
+                    txtSoapLye_Weight = " > " + txtWeight + " grams of " + txtLye;
+
+                    myLye.add(txtSoapLye_Weight);
+
+
+                } while (c.moveToNext());
+
+                c.close();
+
+            }
+        }
+
+        return new ShareContentPojo(null, null, myLye);
+
+    }
+
+    private ShareContentPojo LoadNotes(String soap_id) {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
         String selectQueryNotes = "SELECT * FROM " + TABLE_SOAP_NOTES +" WHERE " + KEY_SOAP_ID + " = '"+soap_id+"'";
         Cursor cNotes = db.rawQuery(selectQueryNotes, null);
 
         if (cNotes != null){
 
-            myNotes.clear();
+            String txtNewNotes = "And the following notes: ";
+            myNotes.add(txtNewNotes);
 
             if (cNotes.moveToFirst()) {
+
 
                 do {
 
@@ -254,7 +332,7 @@ public class SingleSoapDetails extends AppCompatActivity {
 
 
 
-        return new ShareContentPojo(myIngredients, myNotes);
+        return new ShareContentPojo(null, myNotes, null);
 
     }
 
@@ -320,6 +398,7 @@ public class SingleSoapDetails extends AppCompatActivity {
         }else if (id == R.id.icon_calender){
 
             startActivity(new Intent(getApplicationContext(), Calender.class));
+
         }else if (id == R.id.icon_profile ){
 
             Toast.makeText(this, "Under Development", Toast.LENGTH_SHORT).show();
@@ -436,12 +515,37 @@ public class SingleSoapDetails extends AppCompatActivity {
 
         final CheckBox checkboxIngredients = promptsView.findViewById(R.id.checkboxIngredients);
         final CheckBox checkboxNotes = promptsView.findViewById(R.id.checkboxNotes);
+        final CheckBox checkboxLye = promptsView.findViewById(R.id.checkboxLye);
 
         myShareIngredients.clear();
         myShareNotes.clear();
+        myLye.clear();
 
         txtSoapIngredient = "";
         txtSoapNotes = "";
+        txtLye = "";
+
+        txtNaoh = "";
+        txtLiquids = "";
+
+        checkboxLye.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked){
+
+                    myShareLye = LoadLye(Soap_id).getMyLye();
+
+                }else {
+
+                    txtLye = "";
+                    myShareLye.clear();
+
+                }
+
+            }
+        });
+
 
         checkboxIngredients.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -449,7 +553,7 @@ public class SingleSoapDetails extends AppCompatActivity {
 
                 if (isChecked){
 
-                    myShareIngredients = LoadIngredientsAndNotes(Soap_id).getMyIngredients();
+                    myShareIngredients = LoadIngredients(Soap_id).getMyIngredients();
 
                 }else {
 
@@ -468,7 +572,7 @@ public class SingleSoapDetails extends AppCompatActivity {
 
                 if (isChecked){
 
-                    myShareNotes = LoadIngredientsAndNotes(Soap_id).getMyNotes();
+                    myShareNotes = LoadNotes(Soap_id).getMyNotes();
 
                 }else {
 
@@ -512,6 +616,17 @@ public class SingleSoapDetails extends AppCompatActivity {
 
                 }else txtSoapNotes = "";
 
+                if (checkboxLye.isChecked()){
+
+                    for (int i = 0; i< myShareLye.size(); i++){
+
+                        String txtLye1 = myShareLye.get(i) + "\n";
+                        txtLye = txtLye + txtLye1;
+
+                    }
+
+                }else txtSoapLye_Weight = "";
+
                 String txtInfo = etInformation.getText().toString();
 
                 if (!TextUtils.isEmpty(txtInfo)){
@@ -548,30 +663,29 @@ public class SingleSoapDetails extends AppCompatActivity {
 
         String txtIgAccount = "https://instagram.com/nimonaturals?igshid=lktxo918p0wp";
 
-        String txtIngredients = txtSoapIngredient;
-        String txtNotes = txtSoapNotes;
-
         String txtNewInfo = txtShareInfoName + "\n" + NewInfo + "\n"
 
-                + "\n" + "With the following ingredients: " + "\n" + txtIngredients
-                + "\n" + "And the following notes: " + txtNotes + "\n"
+                + "\n" + txtSoapIngredient + "\n"
+                + "\n" + txtLye + "\n"
+                + "\n" + txtSoapNotes + "\n"
 
                 + "\n" + "Follow us on IG: " + "\n" + txtIgAccount +
                   "\n" + "Shared via Soap Tracker.";
 
-        Uri pictureUri = Uri.parse(txtPicPath);
+        String savedImageURL =  MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "yourTitle" , "yourDescription");
+        Uri savedImageURI = Uri.parse(savedImageURL);
 
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-
         shareIntent.putExtra(Intent.EXTRA_TEXT, txtNewInfo);
-
-        shareIntent.putExtra(Intent.EXTRA_STREAM, pictureUri);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, savedImageURI);
         shareIntent.setType("image/*");
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
         startActivity(Intent.createChooser(shareIntent, "Share to "));
 
     }
+
 
     public void CalenderView(View view) {
 
@@ -613,6 +727,8 @@ public class SingleSoapDetails extends AppCompatActivity {
             calendarView.state().edit()
                     .setMaximumDate(CalendarDay.today())
                     .commit();
+
+            tvInfo.setText("Choose the Date when the soap was prepared.");
         }
         if (txtDate.equals("DateOut")){
 
@@ -620,10 +736,12 @@ public class SingleSoapDetails extends AppCompatActivity {
                     .setMinimumDate(CalendarDay.today())
                     .commit();
 
-            tvInfo.setText("Choose the Date when the soap should have healed.");
+            tvInfo.setText("Choose the Date when the soap cured.");
 
 
         }
+        Date c = Calendar.getInstance().getTime();
+        calendarView.setCurrentDate(c);
 
         alertDialogBuilder
                 .setCancelable(false)
@@ -659,7 +777,6 @@ public class SingleSoapDetails extends AppCompatActivity {
                 alertDialog.dismiss();
 
                 LoadData(Soap_id);
-
 
             }
         });

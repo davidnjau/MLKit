@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,10 +16,40 @@
         android:roundIcon="@mipmap/ic_pic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SoapTracker.Activities.SplashPage"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SoapTracker.Activities.SoapRecipe" />
+        <activity android:name=".SoapTracker.Activities.Settings" />
+        <activity
+            android:name=".SoapTracker.Activities.Profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SoapTracker.Activities.AccountManagement"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".SoapTracker.Activities.Register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SoapTracker.Activities.Login"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SoapTracker.Activities.Calender"
             android:label="Curing Dates"
-            android:parentActivityName=".SoapTracker.Activities.SoapHeal_Healing"/>
+            android:parentActivityName=".SoapTracker.Activities.SoapHeal_Healing" />
         <activity
             android:name=".SoapTracker.Activities.SingleSoapDetails"
             android:parentActivityName=".SoapTracker.Activities.SoapHeal_Healing" />
@@ -26,11 +57,7 @@
             android:name=".SoapTracker.Activities.Soap_ingredients_notes"
             android:parentActivityName=".SoapTracker.Activities.SingleSoapDetails" />
         <activity android:name=".SoapTracker.Activities.SoapHeal_Healing">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SoapTracker.Activities.UploadSoapDetails"

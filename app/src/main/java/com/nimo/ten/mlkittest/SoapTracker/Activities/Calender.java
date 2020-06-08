@@ -81,6 +81,8 @@ public class Calender extends AppCompatActivity {
 
         fetchDataBase = new FetchDataBase();
 
+        daysPojoArrayList = fetchDataBase.getDateOuts(Calender.this);
+
         calendar = Calendar.getInstance();
 
         compactCalendarView = findViewById(R.id.compactcalendar_view);
@@ -167,7 +169,15 @@ public class Calender extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        daysPojoArrayList = fetchDataBase.getDateOuts(Calender.this);
+        InitCalender();
+
+
+
+        startRecylerView();
+
+    }
+
+    private void InitCalender() {
 
         Calendar cal=Calendar.getInstance();
         SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
@@ -184,7 +194,8 @@ public class Calender extends AppCompatActivity {
 
         }
 
-        startRecylerView();
+        daysPojoArrayList.clear();
+        mySoapNames.clear();
 
     }
 

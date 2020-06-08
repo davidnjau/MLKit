@@ -87,7 +87,8 @@ public class CompareDates {
 
     private void CreateNotification(String id, String soap_name, long time, Context context, String isNotified) {
 
-        databaseHelper.updateSoapCondition(id);
+        //
+        databaseHelper.updateSoapCondition(id,"Healed");
 
         System.out.println("-*-*-* " + isNotified);
 

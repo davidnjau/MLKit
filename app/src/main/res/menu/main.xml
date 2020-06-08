@@ -6,28 +6,30 @@
         android:title="Calender"
         android:id="@+id/icon_calender"
         android:icon="@drawable/ic_action_calendar_white"
-        app:showAsAction="always"
-        />
+        app:showAsAction="always" />
 
     <item
         android:title="Profile"
         android:id="@+id/icon_profile"
         android:icon="@drawable/ic_action_profile"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never" />
 
     <item
         android:title="Settings"
         android:id="@+id/icon_Settings"
         android:icon="@drawable/ic_action_settings"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never" />
+
+    <item
+        android:title="Sign Out"
+        android:id="@+id/icon_Sign_Out"
+        android:icon="@drawable/ic_action_settings"
+        app:showAsAction="never" />
 
     <item
         android:title="Exit App"
         android:id="@+id/icon_exit_app"
         android:icon="@drawable/icon_exit_app"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never" />
 
 </menu>

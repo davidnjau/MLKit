@@ -8,6 +8,7 @@ import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.DaysPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsNotesPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 
 import java.util.ArrayList;
@@ -35,6 +36,10 @@ public class FetchDataBase {
     private static final String TABLE_SOAP_NOTES = "soap_notes";
     private static final String KEY_NOTES = "notes";
     private static final String KEY_SOAP_NAME = "soap_name";
+
+    private static final String KEY_TOTAL_WEIGHT = "total_weight";
+    private static final String KEY_NAOH_WEIGHT = "total_lye_weight";
+    private static final String KEY_LIQUID_WEIGHT = "total_liquid_weight";
 
     private DatabaseHelper databaseHelper;
 
@@ -186,4 +191,37 @@ public class FetchDataBase {
         return ingredientsNotesPojoArrayList;
 
     }
+
+    public ArrayList<SoapLyeLiquidsPojo> getLye_LiquidWeights(String SoapId, Context context) {
+
+        ArrayList<SoapLyeLiquidsPojo> soapLyeLiquidsPojoArrayList = new ArrayList<>();
+
+
+        databaseHelper = new DatabaseHelper(context);
+
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_DETALS + " WHERE " + KEY_ID + " = '" + SoapId + "'";
+
+        SoapLyeLiquidsPojo soapLyeLiquidsPojo = new SoapLyeLiquidsPojo();
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c.moveToFirst()) {
+
+            do {
+
+                soapLyeLiquidsPojo.setNaOh(c.getString(c.getColumnIndex(KEY_NAOH_WEIGHT)));
+                soapLyeLiquidsPojo.setLiquids(c.getString(c.getColumnIndex(KEY_LIQUID_WEIGHT)));
+
+                soapLyeLiquidsPojoArrayList.add(soapLyeLiquidsPojo);
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+        return soapLyeLiquidsPojoArrayList;
+    }
+
+
 }
