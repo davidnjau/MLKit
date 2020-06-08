@@ -62,11 +62,6 @@ class MyOilsAdapter(private val context: Context, private var oilList: ArrayList
                 databaseHelper.deleteMySoap(oilName)
                 Toast.makeText(context, "Oil has been deleted.. $oilName",Toast.LENGTH_LONG).show()
 
-                var oilList = databaseHelper.mySoapOils
-                var adapter = MyOilsAdapter(context, oilList)
-
-                adapter.notifyDataSetChanged()
-
             }
 
             //performing negative action

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.ProfilesPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
@@ -73,6 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_SOAP_MY_OILS = "CREATE TABLE "
             + TABLE_SOAP_MY_OILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
+            KEY_SOAP_ID + " TEXT, " +
             KEY_OIL_NAME + " TEXT, " +
             KEY_NAOH + " TEXT " + " );";
 
@@ -161,20 +163,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void AddMySoapOils(String OilName){
+    private Cursor getData(String sql){
+
+        SQLiteDatabase database = getReadableDatabase();
+
+        return database.rawQuery(sql, null);
+
+    }
+
+    public void AddMySoapOils(String SoapId, String OilName){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery1 = "SELECT * FROM " + TABLE_SOAP_MY_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
-        Cursor cursor1 = db.rawQuery(selectQuery1, null);
-        if (cursor1.getCount()> 0){
-
-
+        Cursor cursorCheck = db.rawQuery("SELECT * FROM "+TABLE_SOAP_MY_OILS+" WHERE "+KEY_OIL_NAME+"=?" + " AND " + KEY_SOAP_ID + "=?", new String[] {OilName,SoapId});
+        if (cursorCheck.getCount() > 0){
 
         }else {
 
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_OIL_NAME, OilName);
+            contentValues.put(KEY_SOAP_ID, SoapId);
 
             String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
             Cursor c = db.rawQuery(selectQuery, null);
@@ -197,9 +205,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
 
-
-
     }
+
 
     public void AddSoapOils(String OilName, Double Naoh){
 
@@ -238,10 +245,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return soapTrackerPojoArrayList;
     }
 
-     public ArrayList<SoapLyeLiquidsPojo> getMySoapOils() {
+     public ArrayList<SoapOilsPojo> getMySoapOils(String SoapId) {
 
-            ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList = new ArrayList<>();
-            String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS ;
+            ArrayList<SoapOilsPojo> soapTrackerPojoArrayList = new ArrayList<>();
+            String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS +" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
 
@@ -249,10 +256,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 do {
 
-                    SoapLyeLiquidsPojo soapTrackerPojo = new SoapLyeLiquidsPojo();
-                    soapTrackerPojo.setLiquids(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
-                    soapTrackerPojo.setNaOh(c.getString(c.getColumnIndex(KEY_NAOH)));
-                    soapTrackerPojoArrayList.add(soapTrackerPojo);
+                    SoapOilsPojo soapOilsPojo = new SoapOilsPojo();
+                    soapOilsPojo.setId(c.getString(c.getColumnIndex(KEY_ID)));
+                    soapOilsPojo.setOil_name(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
+                    soapOilsPojo.setNaoh_weight(c.getString(c.getColumnIndex(KEY_NAOH)));
+                    soapTrackerPojoArrayList.add(soapOilsPojo);
 
 
                 } while (c.moveToNext());
@@ -414,11 +422,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void deleteMySoap(String soap_name) {
+    public void deleteMySoap(String soap_id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(TABLE_SOAP_MY_OILS, KEY_OIL_NAME + " = ?",new String[]{String.valueOf(soap_name)});
+        db.delete(TABLE_SOAP_MY_OILS, KEY_ID + " = ?",new String[]{String.valueOf(soap_id)});
 
     }
 

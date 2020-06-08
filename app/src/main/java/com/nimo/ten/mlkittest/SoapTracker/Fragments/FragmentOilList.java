@@ -1,6 +1,7 @@
 package com.nimo.ten.mlkittest.SoapTracker.Fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,10 +29,14 @@ import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class FragmentOilList extends Fragment {
 
     private List <String> mySelectedList;
+    private SharedPreferences preferences;
+    private String Soap_id;
 
     public FragmentOilList(){
 
@@ -57,6 +62,9 @@ public class FragmentOilList extends Fragment {
 
         layoutManager = new LinearLayoutManager(getActivity());
 
+        preferences = getActivity().getSharedPreferences("Soap", MODE_PRIVATE);
+
+
         recyclerView6 = view.findViewById(R.id.recyclerView6);
         myview = view.findViewById(R.id.myview);
 
@@ -71,7 +79,7 @@ public class FragmentOilList extends Fragment {
                 for (int i = 0; i<mySelectedList.size(); i++){
 
                     String txtOilName = mySelectedList.get(i);
-                    databaseHelper.AddMySoapOils(txtOilName);
+                    databaseHelper.AddMySoapOils(Soap_id, txtOilName);
 
 
                 }
@@ -91,6 +99,9 @@ public class FragmentOilList extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        Soap_id = preferences.getString("soap_id", null);
+
 
         StartRecyclerView();
     }

@@ -1,5 +1,6 @@
 package com.nimo.ten.mlkittest.SoapTracker.Fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,12 @@ import com.nimo.ten.mlkittest.SoapTracker.Adapter.MyOilsAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapMyOilsAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapOilsAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
 
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class FragmentOilMain extends Fragment {
@@ -30,9 +34,10 @@ public class FragmentOilMain extends Fragment {
 
     private RecyclerView recyclerView;
     private SoapMyOilsAdapter oilsAdapter;
-    private ArrayList<SoapLyeLiquidsPojo> soapLyeLiquidsPojoArrayList = new ArrayList<>();
+    private ArrayList<SoapOilsPojo> soapLyeLiquidsPojoArrayList = new ArrayList<>();
     private DatabaseHelper databaseHelper;
-
+    private SharedPreferences preferences;
+    private String Soap_id;
 
     @Nullable
     @Override
@@ -42,6 +47,7 @@ public class FragmentOilMain extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        preferences = getActivity().getSharedPreferences("Soap", MODE_PRIVATE);
 
 
         return view;
@@ -56,12 +62,13 @@ public class FragmentOilMain extends Fragment {
     }
 
     private void StartRecyclerView() {
+        Soap_id = preferences.getString("soap_id", null);
 
         recyclerView.setHasFixedSize(true);
 
         databaseHelper = new DatabaseHelper(getActivity());
 
-        soapLyeLiquidsPojoArrayList = databaseHelper.getMySoapOils();
+        soapLyeLiquidsPojoArrayList = databaseHelper.getMySoapOils(Soap_id);
         oilsAdapter = new SoapMyOilsAdapter(getActivity(), soapLyeLiquidsPojoArrayList);
 
         recyclerView.setAdapter(oilsAdapter);

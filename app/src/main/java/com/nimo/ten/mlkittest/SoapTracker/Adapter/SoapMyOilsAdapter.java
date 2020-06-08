@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
-import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
 
 import java.util.ArrayList;
 
@@ -26,11 +26,11 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
     private SharedPreferences preferences;
 
     private Context context;
-    private ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList;
+    private ArrayList<SoapOilsPojo> soapTrackerPojoArrayList;
 
     private DatabaseHelper databaseHelper;
 
-    public SoapMyOilsAdapter(Context context, ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList) {
+    public SoapMyOilsAdapter(Context context, ArrayList<SoapOilsPojo> soapTrackerPojoArrayList) {
         this.context = context;
         this.soapTrackerPojoArrayList = soapTrackerPojoArrayList;
 
@@ -53,11 +53,11 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final SoapMyOilsAdapter.ViewHolder holder, final int position) {
 
-        final String txtOilName = soapTrackerPojoArrayList.get(position).getLiquids();
-        
+        final String txtOilName = soapTrackerPojoArrayList.get(position).getOil_name();
+        final String txtOilId = soapTrackerPojoArrayList.get(position).getId();
+
         holder.tvOilName.setText(txtOilName);
 
-        
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +69,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        databaseHelper.deleteMySoap(txtOilName);
+                        databaseHelper.deleteMySoap(txtOilId);
                         Toast.makeText(context, "Oil has been deleted.. " + txtOilName,Toast.LENGTH_LONG).show();
 
                         soapTrackerPojoArrayList.remove(position);
