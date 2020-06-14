@@ -76,7 +76,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SOAP_MY_OILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
             KEY_SOAP_ID + " TEXT, " +
             KEY_OIL_NAME + " TEXT, " +
-            KEY_NAOH + " TEXT " + " );";
+            KEY_NAOH + " TEXT, " +
+            KEY_WEIGHT + " TEXT, " +
+            KEY_NAOH_WEIGHT + " TEXT " + " );";
 
     private static final String CREATE_TABLE_SOAP_INGREDIENTS = "CREATE TABLE "
             + TABLE_SOAP_INGREDIENTS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -163,13 +165,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private Cursor getData(String sql){
-
-        SQLiteDatabase database = getReadableDatabase();
-
-        return database.rawQuery(sql, null);
-
-    }
 
     public void AddMySoapOils(String SoapId, String OilName){
 
@@ -183,6 +178,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_OIL_NAME, OilName);
             contentValues.put(KEY_SOAP_ID, SoapId);
+            contentValues.put(KEY_WEIGHT, "0.0");
+            contentValues.put(KEY_NAOH_WEIGHT, "0.0");
 
             String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
             Cursor c = db.rawQuery(selectQuery, null);
@@ -260,6 +257,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     soapOilsPojo.setId(c.getString(c.getColumnIndex(KEY_ID)));
                     soapOilsPojo.setOil_name(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
                     soapOilsPojo.setNaoh_weight(c.getString(c.getColumnIndex(KEY_NAOH)));
+                    soapOilsPojo.setOilWeight(c.getString(c.getColumnIndex(KEY_WEIGHT)));
                     soapTrackerPojoArrayList.add(soapOilsPojo);
 
 
@@ -767,6 +765,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return soapTrackerPojoArrayList;
     }
 
+    public void updateMyOilWeight(String id, String weight){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_WEIGHT, weight);
+
+
+        db.update(TABLE_SOAP_MY_OILS, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+
+    }
 
 
 }

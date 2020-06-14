@@ -55,7 +55,7 @@
             android:parentActivityName=".SoapTracker.Activities.SoapHeal_Healing" />
         <activity
             android:name=".SoapTracker.Activities.Soap_ingredients_notes"
-            android:parentActivityName=".SoapTracker.Activities.SingleSoapDetails" />
+            android:parentActivityName=".SoapTracker.Activities.SoapRecipe" />
         <activity android:name=".SoapTracker.Activities.SoapHeal_Healing">
 
         </activity>

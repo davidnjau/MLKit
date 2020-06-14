@@ -35,6 +35,8 @@
         android:layout_height="match_parent" />
 
     <Button
+        android:textColor="@android:color/white"
+        android:background="@drawable/rounded_button"
         android:id="@+id/btnConfirm"
         android:textAllCaps="false"
         android:text="Confirm Selection"

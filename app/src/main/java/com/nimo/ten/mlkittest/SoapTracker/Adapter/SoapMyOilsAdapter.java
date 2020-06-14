@@ -3,9 +3,12 @@ package com.nimo.ten.mlkittest.SoapTracker.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
     private ArrayList<SoapOilsPojo> soapTrackerPojoArrayList;
 
     private DatabaseHelper databaseHelper;
+    private Calculator calculator;
 
     public SoapMyOilsAdapter(Context context, ArrayList<SoapOilsPojo> soapTrackerPojoArrayList) {
         this.context = context;
@@ -46,6 +51,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
         preferences = context.getSharedPreferences("Soap", Context.MODE_PRIVATE);
         databaseHelper = new DatabaseHelper(context);
+        calculator = new Calculator();
 
         return holder;
     }
@@ -55,8 +61,11 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
         final String txtOilName = soapTrackerPojoArrayList.get(position).getOil_name();
         final String txtOilId = soapTrackerPojoArrayList.get(position).getId();
+        final String txtOilWeight = soapTrackerPojoArrayList.get(position).getOilWeight();
 
+        holder.tvNumber.setText(String.valueOf(position +1));
         holder.tvOilName.setText(txtOilName);
+        holder.etOilWeight.setText(txtOilWeight);
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +79,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
                     public void onClick(DialogInterface dialog, int which) {
 
                         databaseHelper.deleteMySoap(txtOilId);
-                        Toast.makeText(context, "Oil has been deleted.. " + txtOilName,Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, txtOilName+" Oil has been deleted.. " ,Toast.LENGTH_LONG).show();
 
                         soapTrackerPojoArrayList.remove(position);
                         notifyItemRemoved(position);
@@ -91,32 +100,26 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
             }
         });
 
-    }
-
-    private void ShowDialog(final String txtOilName, final Context context) {
-
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("Are you sure?");
-        alertDialog.setMessage("This action will delete this Oil");
-        alertDialog.setPositiveButton("Yes Delete", new DialogInterface.OnClickListener() {
+        holder.etOilWeight.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                databaseHelper.deleteMySoap(txtOilName);
-                Toast.makeText(context, "Oil has been deleted.. " + txtOilName,Toast.LENGTH_LONG).show();
-
-                notifyDataSetChanged();
             }
-        });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                databaseHelper.updateMyOilWeight(txtOilId, String.valueOf(editable));
+
             }
         });
 
 
-        alertDialog.show();
 
     }
 
@@ -129,15 +132,17 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvOilName;
+        private TextView tvOilName, tvNumber;
         private ImageButton delete;
+        private EditText etOilWeight;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvOilName = itemView.findViewById(R.id.tvOilName);
+            tvNumber = itemView.findViewById(R.id.tvNumber);
             delete = itemView.findViewById(R.id.delete);
-
+            etOilWeight = itemView.findViewById(R.id.etOilWeight);
 
         }
     }

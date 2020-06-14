@@ -3,6 +3,7 @@ package com.nimo.ten.mlkittest.SoapTracker.HelperClass;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
@@ -19,12 +20,16 @@ public class Calculator {
     private static final String KEY_PERCENTAGE = "percentage";
 
     private static final String TABLE_SOAP_DETALS = "soap_details";
+    private static final String TABLE_SOAP_MY_OILS = "soap_my_oils";
+
     private static final String KEY_TOTAL_WEIGHT = "total_weight";
     private static final String KEY_ID = "id";
 
     private static final String TABLE_SOAP_LYE = "soap_lye";
     private static final String KEY_NAOH_WEIGHT = "total_lye_weight";
     private static final String KEY_LIQUID_WEIGHT = "total_liquid_weight";
+    private static final String KEY_NAOH = "naoh_weight";
+    private static final String KEY_WEIGHT = "weight";
 
     DatabaseHelper databaseHelper;
 
@@ -41,10 +46,14 @@ public class Calculator {
     private boolean isUpdated = false;
 
     private List<Integer> myPercentage = new ArrayList<>();
+    private List<Double> myNaohWeight = new ArrayList<>();
+
     private String txtDbNaohWeight;
 
     private String txtNaoh;
     private String txtSubstance;
+    private double txtNaohWeight = 0.0;
+    private double TotalSap = 0.0;
 
     public Double getRemainingPercentage(String SoapId, Context context){
 
@@ -338,6 +347,117 @@ public class Calculator {
 
     }
 
+    public double getTotalNaohFromOils(String SoapId, Context context){
+
+        Clear2();
+
+        databaseHelper = new DatabaseHelper(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                double DbNaohWeight = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+
+                myNaohWeight.add(DbNaohWeight);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+
+        }
+
+        for (int i = 0; i<myNaohWeight.size(); i++){
+
+            txtNaohWeight = myNaohWeight.get(i) + txtNaohWeight;
+
+        }
+
+        return txtNaohWeight;
+
+    }
+
+    public double getTotalOilsUsed(String SoapId, Context context){
+
+        Clear2();
+
+        databaseHelper = new DatabaseHelper(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                double DbNaohWeight = c.getDouble(c.getColumnIndex(KEY_WEIGHT));
+
+                myNaohWeight.add(DbNaohWeight);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+
+        }
+
+        for (int i = 0; i<myNaohWeight.size(); i++){
+
+            txtNaohWeight = myNaohWeight.get(i) + txtNaohWeight;
+
+        }
+
+        return txtNaohWeight;
+
+    }
+
+
+    public double getSapofinication(String OilId, String oilWeight, Context context){
+
+        int OilWeight = Integer.parseInt(oilWeight);
+
+        databaseHelper = new DatabaseHelper(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_ID + " = '"+OilId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                double DbNaohWeight = c.getDouble(c.getColumnIndex(KEY_NAOH));
+                TotalSap = DbNaohWeight * OilWeight;
+
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+
+        }
+
+
+
+        return TotalSap;
+
+    }
+
+    private void Clear2() {
+
+        myNaohWeight.clear();
+        txtNaohWeight = 0.0;
+
+    }
 
 
 }

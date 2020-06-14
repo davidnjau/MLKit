@@ -138,8 +138,7 @@ public class SingleSoapDetails extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SoapRecipe.class);
                 startActivity(intent);
 
-//                Intent intent = new Intent(getApplicationContext(), Soap_ingredients_notes.class);
-//                startActivity(intent);
+
 
             }
         });

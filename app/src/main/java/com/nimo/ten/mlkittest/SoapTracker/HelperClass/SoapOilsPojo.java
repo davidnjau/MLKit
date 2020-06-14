@@ -5,11 +5,13 @@ public class SoapOilsPojo {
     private String oil_name;
     private String naoh_weight;
     private String id;
+    private String oilWeight;
 
-    public SoapOilsPojo(String oil_name, String naoh_weight, String id) {
+    public SoapOilsPojo(String oil_name, String naoh_weight, String id, String oilWeight) {
         this.oil_name = oil_name;
         this.naoh_weight = naoh_weight;
         this.id = id;
+        this.oilWeight = oilWeight;
     }
 
     public SoapOilsPojo() {
@@ -37,5 +39,13 @@ public class SoapOilsPojo {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOilWeight() {
+        return oilWeight;
+    }
+
+    public void setOilWeight(String oilWeight) {
+        this.oilWeight = oilWeight;
     }
 }

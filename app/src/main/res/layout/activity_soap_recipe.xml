@@ -12,10 +12,13 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:textColor="@color/colorAccent"
+            android:layout_margin="10dp"
+            android:background="@drawable/table_content_cell_bg"
             android:id="@+id/btnChooseSoap"
             android:textAllCaps="false"
             android:layout_width="match_parent"
-            android:text="Choose Oils "
+            android:text="Click to Choose Oils "
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
