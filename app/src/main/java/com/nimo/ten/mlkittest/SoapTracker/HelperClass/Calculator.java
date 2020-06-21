@@ -21,9 +21,11 @@ public class Calculator {
 
     private static final String TABLE_SOAP_DETALS = "soap_details";
     private static final String TABLE_SOAP_MY_OILS = "soap_my_oils";
+    private static final String TABLE_SOAP_OILS = "soap_oils";
 
     private static final String KEY_TOTAL_WEIGHT = "total_weight";
     private static final String KEY_ID = "id";
+    private static final String KEY_OIL_NAME = "oil_name";
 
     private static final String TABLE_SOAP_LYE = "soap_lye";
     private static final String KEY_NAOH_WEIGHT = "total_lye_weight";
@@ -422,7 +424,8 @@ public class Calculator {
 
     public double getSapofinication(String OilId, String oilWeight, Context context){
 
-        int OilWeight = Integer.parseInt(oilWeight);
+
+        Double OilWeight = Double.parseDouble(oilWeight);
 
         databaseHelper = new DatabaseHelper(context);
 
@@ -434,10 +437,10 @@ public class Calculator {
 
             do {
 
-                double DbNaohWeight = c.getDouble(c.getColumnIndex(KEY_NAOH));
-                TotalSap = DbNaohWeight * OilWeight;
+                String DbNaohName = c.getString(c.getColumnIndex(KEY_OIL_NAME));
+                Double SapNaoh = getOilSaponification(DbNaohName);
 
-
+                TotalSap = SapNaoh * OilWeight;
 
             } while (c.moveToNext());
 
@@ -446,10 +449,31 @@ public class Calculator {
 
         }
 
+        databaseHelper.updateMySap(OilId, TotalSap);
 
 
         return TotalSap;
 
+    }
+
+    private Double getOilSaponification(String OilName){
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS+" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c.moveToFirst()) {
+
+            do {
+
+                txtNaohWeight = c.getDouble(c.getColumnIndex(KEY_NAOH));
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        return txtNaohWeight;
     }
 
     private void Clear2() {

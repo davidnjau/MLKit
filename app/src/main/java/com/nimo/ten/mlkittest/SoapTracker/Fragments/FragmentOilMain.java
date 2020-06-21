@@ -73,8 +73,8 @@ public class FragmentOilMain extends Fragment {
             @Override
             public void onClick(View v) {
 
-                tvNaoHRequired.setText(String.valueOf(calculator.getTotalNaohFromOils(Soap_id, getActivity())));
-                tvTotalOilWeight.setText(String.valueOf(calculator.getTotalOilsUsed(Soap_id, getActivity())));
+                AssignData();
+
 
                 Intent intent = new Intent(getActivity(), Soap_ingredients_notes.class);
                 startActivity(intent);
@@ -96,8 +96,8 @@ public class FragmentOilMain extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                tvNaoHRequired.setText(String.valueOf(calculator.getTotalNaohFromOils(Soap_id, getActivity())));
-                tvTotalOilWeight.setText(String.valueOf(calculator.getTotalOilsUsed(Soap_id, getActivity())));
+                AssignData();
+
 
 
             }
@@ -128,10 +128,17 @@ public class FragmentOilMain extends Fragment {
 
         recyclerView.setAdapter(oilsAdapter);
 
-        tvNaoHRequired.setText(String.valueOf(calculator.getTotalNaohFromOils(Soap_id, getActivity())));
-        tvTotalOilWeight.setText(String.valueOf(calculator.getTotalOilsUsed(Soap_id, getActivity())));
+        AssignData();
 
         tvOils.setText("Oils selected");
+
+
+    }
+
+    public void AssignData(){
+
+        tvNaoHRequired.setText(String.valueOf(calculator.getTotalNaohFromOils(Soap_id, getActivity())));
+        tvTotalOilWeight.setText(String.valueOf(calculator.getTotalOilsUsed(Soap_id, getActivity())));
 
 
     }

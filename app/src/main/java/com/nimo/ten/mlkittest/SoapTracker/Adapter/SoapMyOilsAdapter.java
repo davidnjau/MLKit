@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.Fragments.FragmentOilMain;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
 
 import java.util.ArrayList;
-
 
 public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.ViewHolder>{
 
@@ -34,6 +35,8 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
     private DatabaseHelper databaseHelper;
     private Calculator calculator;
+
+    private FragmentOilMain fragmentOilMain;
 
     public SoapMyOilsAdapter(Context context, ArrayList<SoapOilsPojo> soapTrackerPojoArrayList) {
         this.context = context;
@@ -52,6 +55,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
         preferences = context.getSharedPreferences("Soap", Context.MODE_PRIVATE);
         databaseHelper = new DatabaseHelper(context);
         calculator = new Calculator();
+        fragmentOilMain = new FragmentOilMain();
 
         return holder;
     }
@@ -115,6 +119,15 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
             public void afterTextChanged(Editable editable) {
 
                 databaseHelper.updateMyOilWeight(txtOilId, String.valueOf(editable));
+
+                if (!TextUtils.isEmpty(String.valueOf(editable))){
+
+                    calculator.getSapofinication(txtOilId, String.valueOf(editable), context);
+
+
+                }
+
+
 
             }
         });

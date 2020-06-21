@@ -777,6 +777,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+    public void updateMySap(String id, double weight){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_NAOH_WEIGHT, weight);
+
+
+        db.update(TABLE_SOAP_MY_OILS, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+
+    }
 
 
 }

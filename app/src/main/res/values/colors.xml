@@ -7,6 +7,8 @@
     <color name="colorAccent2">#B61D22</color>
 
     <color name="notification_color">#F5FFFFFF</color>
+    <color name="white">#F5FFFFFF</color>
+
     <color name="colorPastDue">#F5AC0303</color>
 
     <color name="colorBaige">#BAA28E</color>
