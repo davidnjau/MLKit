@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:textColor="@color/colorAccent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/table_content_cell_bg"
+                        android:id="@+id/btnChooseSoap"
+                        android:textAllCaps="false"
+                        android:layout_width="match_parent"
+                        android:text="Click to Choose Oils "
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/table_content_cell_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Switch
+                        android:id="@+id/SuperFatSwitch"
+                        android:layout_width="wrap_content"
+                        android:text="Add Super Fat percentage"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:maxLength="5"
+                        android:inputType="numberDecimal"
+                        android:visibility="gone"
+                        android:id="@+id/etSuperFat"
+                        android:padding="10dp"
+                        android:background="@drawable/edit_text_shape"
+                        android:hint="5 % super Fat percentage (default)."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_margin="10dp"
+                    android:background="@drawable/table_content_cell_bg"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/tvOils"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/table_header_cell_bg"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:text="Oils"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:id="@+id/recyclerView"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/table_content_cell_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="Water Amount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text=" : "
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:textStyle="bold"
+                                    android:id="@+id/tvWaterWeight"
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="0"
+                                    android:maxLength="5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text=" g"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="Lye Amount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text=" : "
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:textStyle="bold"
+                                    android:id="@+id/tvLyeWeight"
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="0"
+                                    android:maxLength="5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text=" g"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:gravity="center"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:id="@+id/imageBtn"
+                                android:tooltipText="The default lye concentration is 33%"
+                                android:background="@drawable/icon_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                    <View
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_margin="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:id="@+id/radioRatio"
+                            android:text="Water : Lye Ratio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <RadioButton
+                            android:id="@+id/radioLye"
+                            android:text="Lye Concentration"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:orientation="horizontal"
+                            android:id="@+id/linear1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="Water"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <EditText
+                                    android:maxLength="5"
+                                    android:inputType="numberDecimal"
+                                    android:id="@+id/etWater"
+                                    android:padding="10dp"
+                                    android:background="@drawable/edit_text_shape"
+                                    android:hint="3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_marginStart="10dp"
+                                android:orientation="vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="Lye"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <EditText
+                                    android:maxLength="5"
+                                    android:inputType="numberDecimal"
+                                    android:id="@+id/etLiquid"
+                                    android:padding="10dp"
+                                    android:background="@drawable/edit_text_shape"
+                                    android:hint="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text=""
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <Button
+                                    android:textAllCaps="false"
+                                    android:id="@+id/btnSaveRatio"
+                                    android:layout_gravity="center"
+                                    android:text="Save"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:id="@+id/linear2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="Lye Concentration"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <EditText
+                                    android:layout_marginTop="5dp"
+                                    android:maxLength="5"
+                                    android:inputType="numberDecimal"
+                                    android:id="@+id/etLyeConcentration"
+                                    android:padding="10dp"
+                                    android:background="@drawable/edit_text_shape"
+                                    android:hint="Lye Concentration (33 %)"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text=""
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <Button
+                                    android:textAllCaps="false"
+                                    android:id="@+id/btnSaveConcentration"
+                                    android:layout_gravity="center"
+                                    android:text="Save"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/table_content_cell_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:textColor="@android:color/black"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:text="Fragnance | Essential Oils"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_height="wrap_content"/>
+
+                        <EditText
+                            android:maxLength="5"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/etEssentialOil"
+                            android:padding="10dp"
+                            android:background="@drawable/edit_text_shape"
+                            android:hint="Default 2%"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Button
+                            android:textAllCaps="false"
+                            android:id="@+id/btnSaveEssentialOils"
+                            android:text="Save"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                    </LinearLayout>
+
+
+
+                    <View
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_margin="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <FrameLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_marginTop="10dp"
+                                android:orientation="vertical"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:scrollbars="vertical"
+                                    android:layout_width="match_parent"
+                                    android:id="@+id/recyclerViewFragnance"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_height="wrap_content"/>
+
+
+
+
+                            </LinearLayout>
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/fab"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:layout_gravity="bottom|end"
+                                app:srcCompat="@drawable/ic_action_add" />
+
+
+                        </FrameLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

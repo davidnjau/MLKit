@@ -11,6 +11,8 @@ import android.util.Log;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.OilsData;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.OilsLiquidData;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.ProfilesPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
@@ -20,59 +22,74 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static String DATABASE_NAME = "soap_tracking";
-    private static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_SOAP_DETALS = "soap_details";
-    private static final String TABLE_SOAP_INGREDIENTS = "soap_ingredients";
-    private static final String TABLE_SOAP_NOTES = "soap_notes";
-    private static final String TABLE_SOAP_LYE = "soap_lye";
-    private static final String TABLE_SOAP_OILS = "soap_oils";
+    public static final String TABLE_SOAP_DETALS = "soap_details";
+    public static final String TABLE_SOAP_INGREDIENTS = "soap_ingredients";
+    public static final String TABLE_SOAP_NOTES = "soap_notes";
+    public static final String TABLE_SOAP_LYE = "soap_lye";
+    public static final String TABLE_SOAP_OILS = "soap_oils";
+    public static final String TABLE_RECIPE_TABLE = "recipe_table";
 
-    private static final String TABLE_SOAP_MY_OILS = "soap_my_oils";
+    public static final String TABLE_SOAP_MY_OILS = "soap_my_oils";
 
-    private static final String TABLE_PROFILES_DETAILS = "profiles_details";
+    public static final String TABLE_PROFILES_DETAILS = "profiles_details";
 
-    private static final String KEY_ID = "id";
+    public static final String KEY_ID = "id";
 
-    private static final String KEY_SOAP_NAME = "soap_name";
-    private static final String KEY_DATE_IN = "date_in";
-    private static final String KEY_DATE_OUT = "date_out";
-    private static final String KEY_CONDITION = "condition";
-    private static final String KEY_PHOTO1_Id = "photo1_id";
+    public static final String KEY_SOAP_NAME = "soap_name";
+    public static final String KEY_DATE_IN = "date_in";
+    public static final String KEY_DATE_OUT = "date_out";
+    public static final String KEY_CONDITION = "condition";
+    public static final String KEY_PHOTO1_Id = "photo1_id";
 
-    private static final String KEY_OIL_NAME = "oil_name";
-    private static final String KEY_NAOH = "naoh_weight";
+    public static final String KEY_OIL_NAME = "oil_name";
+    public static final String KEY_NAOH = "naoh_weight";
 
-    private static final String KEY_PHOTO_PATH = "pic_path";
+    public static final String KEY_RECIPE_NAME = "recipe_name";
 
-    private static final String KEY_SOAP_ID = "soap_id";
-    private static final String KEY_INGREDIENTS = "ingredients";
-    private static final String KEY_SUBSTANCE = "substance";
-    private static final String KEY_PERCENTAGE = "percentage";
-    private static final String KEY_WEIGHT = "weight";
+    public static final String KEY_PHOTO_PATH = "pic_path";
 
-    private static final String KEY_NOTES = "notes";
-    private static final String KEY_PRIORITY = "priority";
+    public static final String KEY_SOAP_ID = "soap_id";
+    public static final String KEY_INGREDIENTS = "ingredients";
+    public static final String KEY_SUBSTANCE = "substance";
+    public static final String KEY_PERCENTAGE = "percentage";
+    public static final String KEY_WEIGHT = "weight";
 
-    private static final String KEY_NOTIFICATION_STATUS = "notification_status";
+    public static final String KEY_NOTES = "notes";
+    public static final String KEY_PRIORITY = "priority";
 
-    private static final String KEY_TOTAL_WEIGHT = "total_weight";
-    private static final String KEY_NAOH_WEIGHT = "total_lye_weight";
-    private static final String KEY_LIQUID_WEIGHT = "total_liquid_weight";
+    public static final String KEY_NOTIFICATION_STATUS = "notification_status";
 
-    private static final String KEY_NAME = "user_name";
-    private static final String KEY_EMAIL = "user_email";
-    private static final String KEY_PHONE = "user_phone";
-    private static final String KEY_IG = "user_ig";
+    public static final String KEY_TOTAL_WEIGHT = "total_weight";
+    public static final String KEY_NAOH_WEIGHT = "total_lye_weight";
+    public static final String KEY_LIQUID_WEIGHT = "total_liquid_weight";
+
+    public static final String KEY_NAOH_RATIO = "lye_ratio";
+    public static final String KEY_LIQUID_RATIO = "liquid_ratio";
+
+    public static final String KEY_NAME = "user_name";
+    public static final String KEY_EMAIL = "user_email";
+    public static final String KEY_PHONE = "user_phone";
+    public static final String KEY_IG = "user_ig";
+
+    private double SoapWeight = 0.0;
+    private double OilWeight = 0.0;
+
+    private double NaohRatio = 0.0;
+    private double LiquidRatio = 0.0;
+    private String SoapId;
 
     ContentResolver mContentResolver;
 
-    private static final String CREATE_TABLE_SOAP_OILS = "CREATE TABLE "
+    private Calculator calculator = new Calculator();
+
+    public static final String CREATE_TABLE_SOAP_OILS = "CREATE TABLE "
             + TABLE_SOAP_OILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
             KEY_OIL_NAME + " TEXT, " +
             KEY_NAOH + " TEXT " + " );";
 
-    private static final String CREATE_TABLE_SOAP_MY_OILS = "CREATE TABLE "
+    public static final String CREATE_TABLE_SOAP_MY_OILS = "CREATE TABLE "
             + TABLE_SOAP_MY_OILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
             KEY_SOAP_ID + " TEXT, " +
             KEY_OIL_NAME + " TEXT, " +
@@ -80,14 +97,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_WEIGHT + " TEXT, " +
             KEY_NAOH_WEIGHT + " TEXT " + " );";
 
-    private static final String CREATE_TABLE_SOAP_INGREDIENTS = "CREATE TABLE "
+    public static final String CREATE_TABLE_SOAP_INGREDIENTS = "CREATE TABLE "
             + TABLE_SOAP_INGREDIENTS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
             KEY_SOAP_ID + " TEXT, " +
             KEY_INGREDIENTS + " TEXT, "+
             KEY_PERCENTAGE + " TEXT, "+
             KEY_WEIGHT + " TEXT " + " );";
 
-    private static final String CREATE_TABLE_PROFILES_DETAILS = "CREATE TABLE "
+    public static final String CREATE_TABLE_RECIPE_TABLE = "CREATE TABLE "
+            + TABLE_RECIPE_TABLE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
+            KEY_RECIPE_NAME + " TEXT, " +
+            KEY_DATE_IN + " TEXT, " +
+
+            KEY_LIQUID_WEIGHT + " TEXT, " +
+            KEY_NAOH_WEIGHT + " TEXT, " +
+
+            KEY_NAOH_RATIO + " TEXT, " +
+            KEY_LIQUID_RATIO + " TEXT, " +
+
+            KEY_TOTAL_WEIGHT + " TEXT " + " );";
+
+    public static final String CREATE_TABLE_PROFILES_DETAILS = "CREATE TABLE "
             + TABLE_PROFILES_DETAILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
             KEY_NAME + " TEXT, " +
             KEY_EMAIL + " TEXT, "+
@@ -95,7 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_IG + " TEXT " + " );";
 
 
-    private static final String CREATE_TABLE_SOAP_LYE = "CREATE TABLE "
+    public static final String CREATE_TABLE_SOAP_LYE = "CREATE TABLE "
             + TABLE_SOAP_LYE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
             KEY_SOAP_ID + " TEXT, " +
             KEY_SUBSTANCE + " TEXT, "+
@@ -103,14 +133,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_WEIGHT + " TEXT " + " );";
 
 
-    private static final String CREATE_TABLE_SOAP_NOTES = "CREATE TABLE "
+    public static final String CREATE_TABLE_SOAP_NOTES = "CREATE TABLE "
             + TABLE_SOAP_NOTES + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
             KEY_SOAP_ID + " TEXT, " +
             KEY_NOTES + " TEXT, "+
             KEY_PRIORITY + " TEXT " + " );";
 
-    private static final String CREATE_TABLE_SOAP_DETALS = "CREATE TABLE "
-            + TABLE_SOAP_DETALS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
+    public static final String CREATE_TABLE_SOAP_DETALS = "CREATE TABLE "
+            + TABLE_SOAP_DETALS + "(" + KEY_ID + " TEXT,"+
             KEY_SOAP_NAME + " TEXT, " +
             KEY_PHOTO1_Id + " BLOB, " +
             KEY_DATE_IN + " TEXT, "+
@@ -122,13 +152,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_LIQUID_WEIGHT + " TEXT, "+
             KEY_PHOTO_PATH + " TEXT " + " );";
 
-    private boolean isUpdated = false;
+    public boolean isUpdated = false;
 
-    private int updater;
+    public int updater;
 
-    private String WeightStatus;
+    public String WeightStatus;
 
-    private Double txtRemWeight;
+    public Double txtRemWeight;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -146,6 +176,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_PROFILES_DETAILS);
         db.execSQL(CREATE_TABLE_SOAP_OILS);
         db.execSQL(CREATE_TABLE_SOAP_MY_OILS);
+        db.execSQL(CREATE_TABLE_RECIPE_TABLE);
 
         Log.d("++++", CREATE_TABLE_SOAP_DETALS);
     }
@@ -160,6 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_PROFILES_DETAILS +"'");
         db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_SOAP_OILS +"'");
         db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_SOAP_MY_OILS +"'");
+        db.execSQL(" DROP TABLE IF EXISTS '" + TABLE_RECIPE_TABLE +"'");
 
         onCreate(db);
 
@@ -204,6 +236,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public long AddRecipe(String DateIn, String recipeName){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_RECIPE_NAME, recipeName);
+        contentValues.put(KEY_DATE_IN, DateIn);
+
+        contentValues.put(KEY_NAOH_WEIGHT, 0.0);
+        contentValues.put(KEY_LIQUID_WEIGHT, 0.0);
+        contentValues.put(KEY_TOTAL_WEIGHT, "0.0");
+
+        contentValues.put(KEY_LIQUID_RATIO, "0.0");
+        contentValues.put(KEY_NAOH_RATIO, "0.0");
+
+        long id = db.insert(TABLE_RECIPE_TABLE, null, contentValues);
+        return id;
+    }
+
+    public void updateRecipe(String id, String TotalWeight, String WaterWeight, String Naoh){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_TOTAL_WEIGHT, TotalWeight);
+        contentValues.put(KEY_LIQUID_WEIGHT, WaterWeight);
+        contentValues.put(KEY_NAOH_WEIGHT, Naoh);
+
+        db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+    }
 
     public void AddSoapOils(String OilName, Double Naoh){
 
@@ -271,11 +333,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
 
-    public long AddSoapTracker(String soap_name, String date_in, String date_out, byte[] image, String txtFilePath){
+    public long AddSoapTracker(String id, String soap_name, String date_in, String date_out, byte[] image, String txtFilePath){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues soap_tracker = new ContentValues();
+        soap_tracker.put(KEY_ID, id);
         soap_tracker.put(KEY_SOAP_NAME, soap_name);
         soap_tracker.put(KEY_DATE_IN, date_in);
         soap_tracker.put(KEY_DATE_OUT, date_out);
@@ -420,11 +483,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void deleteMySoap(String soap_id) {
+    public void deleteMySoap(String oil_id, Context context) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(TABLE_SOAP_MY_OILS, KEY_ID + " = ?",new String[]{String.valueOf(soap_id)});
+        //Get the Soap id from the deleted Oil id
+        String SoapId = getSoapId(oil_id).getSoapId();
+        double OilWeight = getSoapId(oil_id).getOilWeight();
+
+        Calculator calculator = new Calculator();
+        double WeightUpdate = calculator.getRemainingOilWeight(SoapId, OilWeight, context);
+
+        updateMySoapWeight(SoapId, WeightUpdate);
+
+        db.delete(TABLE_SOAP_MY_OILS, KEY_ID + " = ?",new String[]{String.valueOf(oil_id)});
 
     }
 
@@ -772,21 +844,227 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(KEY_WEIGHT, weight);
 
-
         db.update(TABLE_SOAP_MY_OILS, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
 
 
     }
-    public void updateMySap(String id, double weight){
+
+    public void updateMySoapWeight(String id, double weight){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_TOTAL_WEIGHT, weight);
+
+
+        updateMySoapLiquidLyeWeight(id, weight);
+
+        db.update(TABLE_RECIPE_TABLE, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+
+    }
+    public void updateMySoapLiquidLyeWeight(String id, double TotalWeight){
+
+        //Get the ratios and update the data
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        double Liquidratio = getLiquidLyeWeights(id).getLiquid_weight();
+        double Lyeratio = getLiquidLyeWeights(id).getLye_weight();
+
+        double NaoHWeight = calculator.getLiquidOilWeight(TotalWeight, Liquidratio, Lyeratio).getLye_weight();
+        double LiquidWeight = calculator.getLiquidOilWeight(TotalWeight, Liquidratio, Lyeratio).getLiquid_weight();
+
+        updateWeights(id, NaoHWeight, LiquidWeight);
+
+
+        cv.put(KEY_TOTAL_WEIGHT, TotalWeight);
+
+        db.update(TABLE_RECIPE_TABLE, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+
+    }
+    public void updateMySap(String txtSoapId, String id, double weight){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(KEY_NAOH_WEIGHT, weight);
 
-
         db.update(TABLE_SOAP_MY_OILS, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
 
+        double TotalWeight = getTotalOilWeight(txtSoapId);
+
+        updateMySoapWeight(txtSoapId, TotalWeight);
+
+    }
+
+    public void updateRatiosPercentages(String txtSoapId, String lyeRatio, String liquidRatio){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        double TotalRatio = Double.parseDouble(lyeRatio) + Double.parseDouble(liquidRatio);
+
+        double Lyeratio = Double.parseDouble(lyeRatio) / TotalRatio;
+        double Liquidratio = Double.parseDouble(liquidRatio) / TotalRatio;
+
+        cv.put(KEY_NAOH_RATIO, Lyeratio);
+        cv.put(KEY_LIQUID_RATIO, Liquidratio);
+
+        double TotalWeight = getTotalOilWeight(txtSoapId);
+
+        double NaoHWeight = calculator.getLiquidOilWeight(TotalWeight, Liquidratio, Lyeratio).getLye_weight();
+        double LiquidWeight = calculator.getLiquidOilWeight(TotalWeight, Liquidratio, Lyeratio).getLiquid_weight();
+
+        updateWeights(txtSoapId, NaoHWeight, LiquidWeight);
+
+        //Ratios are saved as decimals
+
+        db.update(TABLE_RECIPE_TABLE, cv, KEY_ID + " = ?", new String[]{String.valueOf(txtSoapId)});
+
+    }
+
+    public void updateWeights(String txtSoapId, double NaoHWeight, double LiquidWeight){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_NAOH_WEIGHT, NaoHWeight);
+        cv.put(KEY_LIQUID_WEIGHT, LiquidWeight);
+
+        db.update(TABLE_RECIPE_TABLE, cv, KEY_ID + " = ?", new String[]{String.valueOf(txtSoapId)});
+
+    }
+
+    public OilsLiquidData getWaterLyeAmount(String SoapId){
+
+        OilsLiquidData oilsLiquidData = new OilsLiquidData();
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double txtLiquid = c.getDouble(c.getColumnIndex(KEY_LIQUID_WEIGHT));
+                    double txtLye = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+
+                    oilsLiquidData.setLye_weight(txtLye);
+                    oilsLiquidData.setLiquid_weight(txtLiquid);
+
+
+                } while (c.moveToNext());
+
+
+            }
+
+            c.close();
+
+        }
+
+        return oilsLiquidData;
+
+    }
+
+
+    public double getTotalOilWeight(String OilId){
+
+        SoapWeight = 0.0;
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+OilId+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double DbNaohName = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+
+                    SoapWeight = DbNaohName + SoapWeight;
+
+                } while (c.moveToNext());
+
+
+            }
+
+            c.close();
+
+        }
+
+        return SoapWeight;
+
+    }
+
+    public OilsData getSoapId(String OilId){
+
+         OilsData oilsData = new OilsData();
+
+         String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_ID + " = '"+OilId+"'";
+         SQLiteDatabase db = this.getReadableDatabase();
+         Cursor c = db.rawQuery(selectQuery, null);
+
+         if (c != null) {
+
+             if (c.moveToFirst()) {
+
+                 do {
+
+                     SoapId = c.getString(c.getColumnIndex(KEY_SOAP_ID));
+                     OilWeight = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+
+                     oilsData.setOilWeight(OilWeight);
+                     oilsData.setSoapId(SoapId);
+
+                 } while (c.moveToNext());
+
+             }
+
+             c.close();
+
+         }
+
+            return oilsData;
+
+    }
+
+    public OilsLiquidData getLiquidLyeWeights(String SoapId){
+
+        OilsLiquidData oilsData = new OilsLiquidData();
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    NaohRatio = c.getDouble(c.getColumnIndex(KEY_NAOH_RATIO));
+                    LiquidRatio = c.getDouble(c.getColumnIndex(KEY_LIQUID_RATIO));
+
+                    oilsData.setLiquid_weight(LiquidRatio);
+                    oilsData.setLye_weight(NaohRatio);
+
+                } while (c.moveToNext());
+
+            }
+
+            c.close();
+
+        }
+
+        return oilsData;
 
     }
 

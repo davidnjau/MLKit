@@ -59,7 +59,7 @@ class MyOilsAdapter(private val context: Context, private var oilList: ArrayList
             //performing positive action
             builder.setPositiveButton("Yes"){dialogInterface, which ->
 
-                databaseHelper.deleteMySoap(oilName)
+                databaseHelper.deleteMySoap(oilName, context)
                 Toast.makeText(context, "Oil has been deleted.. $oilName",Toast.LENGTH_LONG).show()
 
             }

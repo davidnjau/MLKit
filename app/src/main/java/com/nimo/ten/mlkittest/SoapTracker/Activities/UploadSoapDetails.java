@@ -163,7 +163,7 @@ public class UploadSoapDetails extends AppCompatActivity {
                 String finalDate = addDay(startSelectedDate, 28);
 
                 DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-                long id = databaseHelper.AddSoapTracker(txtName, startSelectedDate, finalDate, imageInByte, txtFilePath);
+                long id = databaseHelper.AddSoapTracker("1",txtName, startSelectedDate, finalDate, imageInByte, txtFilePath);
 
                 editor.putString("soap_id", String.valueOf(id));
                 editor.apply();

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.LyeCalculatorPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.OilsLiquidData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Calculator {
     private static final String TABLE_SOAP_DETALS = "soap_details";
     private static final String TABLE_SOAP_MY_OILS = "soap_my_oils";
     private static final String TABLE_SOAP_OILS = "soap_oils";
+    public static final String TABLE_RECIPE_TABLE = "recipe_table";
 
     private static final String KEY_TOTAL_WEIGHT = "total_weight";
     private static final String KEY_ID = "id";
@@ -42,6 +44,7 @@ public class Calculator {
     private double TotalLiquidWeight = 0.0;
 
     private double SoapWeight = 0.0;
+    private double newSoapWeight = 0.0;
     private double RemainingLyeWeight = 0.0;
     private double SoapPerc = 0.0;
 
@@ -422,8 +425,7 @@ public class Calculator {
     }
 
 
-    public double getSapofinication(String OilId, String oilWeight, Context context){
-
+    public double getSapofinication(String txtSoapId, String OilId, String oilWeight, Context context){
 
         Double OilWeight = Double.parseDouble(oilWeight);
 
@@ -449,7 +451,7 @@ public class Calculator {
 
         }
 
-        databaseHelper.updateMySap(OilId, TotalSap);
+        databaseHelper.updateMySap(txtSoapId,OilId, TotalSap);
 
 
         return TotalSap;
@@ -461,16 +463,20 @@ public class Calculator {
         String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS+" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
-        if (c.moveToFirst()) {
+        if (c != null){
 
-            do {
+            if (c.moveToFirst()) {
 
-                txtNaohWeight = c.getDouble(c.getColumnIndex(KEY_NAOH));
+                do {
 
-            } while (c.moveToNext());
+                    txtNaohWeight = c.getDouble(c.getColumnIndex(KEY_NAOH));
+
+                } while (c.moveToNext());
+
+
+            }
 
             c.close();
-
         }
 
         return txtNaohWeight;
@@ -483,5 +489,89 @@ public class Calculator {
 
     }
 
+    public void getFragranceWeight(String percentage){
+
+
+
+
+    }
+
+    public void getTotalOilWeight(String OilId, Context context){
+
+        databaseHelper = new DatabaseHelper(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+OilId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double DbNaohName = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+                    String DbName = c.getString(c.getColumnIndex(KEY_OIL_NAME));
+
+                    SoapWeight = DbNaohName + SoapWeight;
+
+                } while (c.moveToNext());
+
+
+            }
+
+            c.close();
+
+        }
+
+    }
+    public double getRemainingOilWeight(String SoapId, double OilWeight, Context context){
+
+        databaseHelper = new DatabaseHelper(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double DbNaohName = c.getDouble(c.getColumnIndex(KEY_TOTAL_WEIGHT));
+                    newSoapWeight = DbNaohName - OilWeight;
+
+                } while (c.moveToNext());
+
+
+            }
+
+            c.close();
+
+        }
+
+        return newSoapWeight;
+
+
+    }
+
+    public OilsLiquidData getLiquidOilWeight(double OilWeight, double LiquidRatio, double LyeRatio){
+
+        OilsLiquidData oilsLiquidData = new OilsLiquidData();
+
+        double LiquidWeight = OilWeight * LiquidRatio;
+        double LyeWeight = OilWeight * LyeRatio;
+
+        Log.e("--*-*OilWeight ", String.valueOf(OilWeight));
+        Log.e("--*-*liquid ", String.valueOf(LiquidRatio));
+        Log.e("--*-*lye ", String.valueOf(LyeRatio));
+
+        oilsLiquidData.setLiquid_weight(LiquidWeight);
+        oilsLiquidData.setLye_weight(LyeWeight);
+
+        return oilsLiquidData;
+
+    }
 
 }

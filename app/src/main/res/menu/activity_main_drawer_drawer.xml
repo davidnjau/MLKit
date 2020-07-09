@@ -7,7 +7,7 @@
         android:id="@+id/group1">
 
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_new_recipe"
             android:icon="@drawable/icon_icon_add"
             android:title="@string/new_recipe" />
     </group>
@@ -15,7 +15,7 @@
         android:id="@+id/group2">
 
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_my_recipe"
             android:icon="@drawable/icon_icon_recipe"
             android:title="@string/my_recipe" />
     </group>
@@ -24,7 +24,7 @@
         android:id="@+id/group3">
 
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_raw_ingredients"
             android:icon="@drawable/icon_icon_cart"
             android:title="@string/buy_raw" />
     </group>

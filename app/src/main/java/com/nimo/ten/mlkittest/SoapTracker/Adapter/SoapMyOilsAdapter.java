@@ -38,6 +38,8 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
     private FragmentOilMain fragmentOilMain;
 
+    private String txtSoapId;
+
     public SoapMyOilsAdapter(Context context, ArrayList<SoapOilsPojo> soapTrackerPojoArrayList) {
         this.context = context;
         this.soapTrackerPojoArrayList = soapTrackerPojoArrayList;
@@ -53,6 +55,9 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
         SoapMyOilsAdapter.ViewHolder holder = new SoapMyOilsAdapter.ViewHolder(view);
 
         preferences = context.getSharedPreferences("Soap", Context.MODE_PRIVATE);
+        txtSoapId = preferences.getString("recipe_id", null);
+
+
         databaseHelper = new DatabaseHelper(context);
         calculator = new Calculator();
         fragmentOilMain = new FragmentOilMain();
@@ -82,7 +87,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        databaseHelper.deleteMySoap(txtOilId);
+                        databaseHelper.deleteMySoap(txtOilId, context);
                         Toast.makeText(context, txtOilName+" Oil has been deleted.. " ,Toast.LENGTH_LONG).show();
 
                         soapTrackerPojoArrayList.remove(position);
@@ -122,7 +127,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
                 if (!TextUtils.isEmpty(String.valueOf(editable))){
 
-                    calculator.getSapofinication(txtOilId, String.valueOf(editable), context);
+                    calculator.getSapofinication(txtSoapId, txtOilId, String.valueOf(editable), context);
 
 
                 }
