@@ -257,7 +257,9 @@ class FragmentCreateNewRecipe : Fragment() {
 
                     tvWaterWeight.text = txtLiquidWeight
                     tvLyeWeight.text = txtLyeWeight
-                }
+
+                }else
+                    Toast.makeText(activity, "You first need to select some oils", Toast.LENGTH_SHORT).show()
 
 
             }else{
@@ -276,6 +278,39 @@ class FragmentCreateNewRecipe : Fragment() {
 
             if (!TextUtils.isEmpty(txtLyeConc)) {
 
+                //Check if the value is more than 100%
+                val LyeConc = txtLyeConc.toDouble()
+
+                if (LyeConc < 100){
+
+                    val soap_id = preferences.getString("recipe_id", null).toString()
+                    val oils_exists = checkOils(soap_id)
+
+                    val WaterConc = 100 - LyeConc
+                    val  txtWater = WaterConc.toString()
+
+                    if (oils_exists){
+
+                        databaseHelper.updateRatiosPercentages(soap_id, txtLyeConc, txtWater)
+
+                        calculator.getTotalOilWeight(soap_id, activity)
+
+                        val txtLiquidWeight = databaseHelper.getWaterLyeAmount(soap_id).liquid_weight.toString()
+                        val txtLyeWeight = databaseHelper.getWaterLyeAmount(soap_id).lye_weight.toString()
+
+                        tvWaterWeight.text = txtLiquidWeight
+                        tvLyeWeight.text = txtLyeWeight
+
+                    }else
+                        Toast.makeText(activity, "You first need to select some oils", Toast.LENGTH_SHORT).show()
+
+
+
+
+                }else{
+
+                    Toast.makeText(activity, "Lye Concentration cannot be more than 100 %", Toast.LENGTH_SHORT).show()
+                }
 
 
             }else{

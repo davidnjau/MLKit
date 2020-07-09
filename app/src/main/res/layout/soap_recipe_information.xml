@@ -338,7 +338,7 @@
                                 <TextView
                                     android:textColor="@android:color/black"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                    android:text="Lye Concentration"
+                                    android:text="Lye Concentration in %"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"/>
 
