@@ -72,6 +72,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_ESSENTIAL_OIL_WEIGHT = "essential_oil";
     public static final String KEY_ESSENTIAL_OIL_RATIO = "essential_ratio";
 
+    public static final String KEY_SUPER_FAT = "supper_fat";
+
     public static final String KEY_NAME = "user_name";
     public static final String KEY_EMAIL = "user_email";
     public static final String KEY_PHONE = "user_phone";
@@ -121,6 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             KEY_ESSENTIAL_OIL_WEIGHT + " TEXT, " +
             KEY_ESSENTIAL_OIL_RATIO + " TEXT, " +
+            KEY_SUPER_FAT + " TEXT, " +
 
             KEY_TOTAL_WEIGHT + " TEXT " + " );";
 
@@ -258,6 +261,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_NAOH_RATIO, "0.0");
         contentValues.put(KEY_ESSENTIAL_OIL_WEIGHT, 0.0);
         contentValues.put(KEY_ESSENTIAL_OIL_RATIO, 0.02);
+
+        contentValues.put(KEY_SUPER_FAT, 5.0);
 
         long id = db.insert(TABLE_RECIPE_TABLE, null, contentValues);
         return id;
@@ -982,11 +987,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public double getTotalOilWeight(String OilId){
+    public double getTotalOilWeight(String SoapId){
 
         SoapWeight = 0.0;
 
-        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+OilId+"'";
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
@@ -996,9 +1001,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 do {
 
-                    double DbNaohName = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
 
-                    SoapWeight = DbNaohName + SoapWeight;
+                    SoapWeight = c.getDouble(c.getColumnIndex(KEY_TOTAL_WEIGHT));
+
 
                 } while (c.moveToNext());
 
@@ -1131,6 +1136,96 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_ESSENTIAL_OIL_RATIO, Weight);
 
         db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(SoapId)});
+    }
+
+    public double getTotalOilsWeight(String OilId){
+
+        SoapWeight=0.0;
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+OilId+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double DbNaohName = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+                    String DbName = c.getString(c.getColumnIndex(KEY_OIL_NAME));
+
+                    SoapWeight = DbNaohName + SoapWeight;
+
+                } while (c.moveToNext());
+
+
+            }
+
+            c.close();
+
+        }
+        return SoapWeight;
+
+    }
+
+    public double getTotalOils_SuperFat(String SoapId){
+
+        OilWeight = 0.0;
+
+        double totalWeight = getTotalOilsWeight(SoapId);
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double SuperFat = c.getDouble(c.getColumnIndex(KEY_SUPER_FAT));
+
+                    OilWeight = ((100 - SuperFat) / 100) * totalWeight;
+
+                } while (c.moveToNext());
+
+            }
+
+            c.close();
+
+        }
+
+        Log.e("-*-*-* ", String.valueOf(OilWeight));
+
+        updateTotalWeight_SuperFat(SoapId, OilWeight);
+
+        return OilWeight;
+
+    }
+
+    public void updateTotalWeight_SuperFat(String SoapId, double Weight){
+
+        ContentValues contentValues = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        contentValues.put(KEY_TOTAL_WEIGHT, Weight);
+
+        db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(SoapId)});
+    }
+
+    public void updateSuperFatRatio(String SoapId, double Weight){
+
+        ContentValues contentValues = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        contentValues.put(KEY_SUPER_FAT, Weight);
+
+        db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(SoapId)});
+
+        getTotalOils_SuperFat(SoapId);
+
     }
 
 }

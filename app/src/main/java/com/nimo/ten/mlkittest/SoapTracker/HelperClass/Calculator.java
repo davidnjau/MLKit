@@ -498,6 +498,8 @@ public class Calculator {
 
     public void getTotalOilWeight(String OilId, Context context){
 
+        SoapWeight=0.0;
+
         databaseHelper = new DatabaseHelper(context);
 
         String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+OilId+"'";
@@ -562,10 +564,6 @@ public class Calculator {
 
         double LiquidWeight = OilWeight * LiquidRatio;
         double LyeWeight = OilWeight * LyeRatio;
-
-        Log.e("--*-*OilWeight ", String.valueOf(OilWeight));
-        Log.e("--*-*liquid ", String.valueOf(LiquidRatio));
-        Log.e("--*-*lye ", String.valueOf(LyeRatio));
 
         oilsLiquidData.setLiquid_weight(LiquidWeight);
         oilsLiquidData.setLye_weight(LyeWeight);

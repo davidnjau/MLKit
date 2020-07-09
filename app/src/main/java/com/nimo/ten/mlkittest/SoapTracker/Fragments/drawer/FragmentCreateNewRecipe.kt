@@ -57,6 +57,10 @@ class FragmentCreateNewRecipe : Fragment() {
     private lateinit var SuperFatSwitch: Switch
     private lateinit var FragranceOils: Switch
 
+    private lateinit var linearSuperFat: LinearLayout
+
+    private lateinit var btnSaveSuperFat: Button
+
     private lateinit var linear1:LinearLayout
     private lateinit var linear2:LinearLayout
     private lateinit var radioGroup:RadioGroup
@@ -105,6 +109,7 @@ class FragmentCreateNewRecipe : Fragment() {
         etWater = view.findViewById(R.id.etWater)
         etLiquid = view.findViewById(R.id.etLiquid)
         etLyeConcentration = view.findViewById(R.id.etLyeConcentration)
+        linearSuperFat = view.findViewById(R.id.linearSuperFat)
 
         btnSaveRatio = view.findViewById(R.id.btnSaveRatio)
         btnSaveConcentration = view.findViewById(R.id.btnSaveConcentration)
@@ -226,6 +231,8 @@ class FragmentCreateNewRecipe : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         linearEssentialOil = view.findViewById(R.id.linearEssentialOil)
 
+        btnSaveSuperFat = view.findViewById(R.id.btnSaveSuperFat)
+
         etSuperFat = view.findViewById(R.id.etSuperFat)
         SuperFatSwitch = view.findViewById(R.id.SuperFatSwitch)
 
@@ -233,12 +240,62 @@ class FragmentCreateNewRecipe : Fragment() {
 
             if (isChecked){
 
-                etSuperFat.visibility = View.VISIBLE
+                val soap_id = preferences.getString("recipe_id", null).toString()
+                val oils_exists = checkOils(soap_id.toString())
+                if (oils_exists){
+
+                    linearSuperFat.visibility = View.VISIBLE
+                    getSuperFatValues()
+
+
+                }else{
+
+                    Toast.makeText(activity, "You must add Oils to be used in soap making Process", Toast.LENGTH_LONG).show()
+                    linearEssentialOil.visibility = View.GONE
+
+                    if (bottomSheetBehaviour.state == BottomSheetBehavior.STATE_COLLAPSED)
+                    {
+                        bottomSheetBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
+
+                    }
+
+                    SuperFatSwitch.isChecked = !SuperFatSwitch.isChecked
+                }
+
 
             }else{
 
-                etSuperFat.visibility = View.GONE
+                linearSuperFat.visibility = View.GONE
             }
+
+        }
+
+        btnSaveSuperFat.setOnClickListener {
+
+            val txtSuperFatTotal = etSuperFat.text.toString()
+            if (!TextUtils.isEmpty(txtSuperFatTotal)){
+
+                val SuperFat = txtSuperFatTotal.toDouble()
+
+                if (SuperFat < 100){
+
+                    val soap_id = preferences.getString("recipe_id", null).toString()
+                    val oils_exists = checkOils(soap_id.toString())
+                    if (oils_exists){
+
+                        databaseHelper.updateSuperFatRatio(soap_id, SuperFat)
+                        Toast.makeText(activity, "Super fat percentage updated", Toast.LENGTH_LONG).show()
+
+                    }
+
+                }else
+                    Toast.makeText(activity, "Super fat percentage cannot be  more than 100%", Toast.LENGTH_LONG).show()
+
+
+            }else
+                etSuperFat.error = "Add a super fat percentage"
+
+
 
         }
 
@@ -410,6 +467,20 @@ class FragmentCreateNewRecipe : Fragment() {
 
             val TotalWeight =  databaseHelper.getTotalOils(soap_id)
             tvEssentialOil.text = TotalWeight.toString()
+
+        }
+
+    }
+
+    private fun getSuperFatValues(){
+
+        //Get The weight of Essential oils. By Default We will Use 2% of the total Oils
+        val soap_id = preferences.getString("recipe_id", null).toString()
+        val oils_exists = checkOils(soap_id)
+
+        if (oils_exists){
+
+            val TotalWeight =  databaseHelper.getTotalOils_SuperFat(soap_id)
 
         }
 

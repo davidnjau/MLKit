@@ -46,16 +46,36 @@
                         android:text="Add Super Fat percentage"
                         android:layout_height="wrap_content"/>
 
-                    <EditText
-                        android:maxLength="5"
-                        android:inputType="numberDecimal"
+
+                    <LinearLayout
                         android:visibility="gone"
-                        android:id="@+id/etSuperFat"
-                        android:padding="10dp"
-                        android:background="@drawable/edit_text_shape"
-                        android:hint="5 % super Fat percentage (default)."
+                        android:id="@+id/linearSuperFat"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:layout_weight="1"
+                            android:maxLength="5"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/etSuperFat"
+                            android:padding="10dp"
+                            android:background="@drawable/edit_text_shape"
+                            android:hint="5 % super Fat percentage (default)."
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Button
+                            android:textAllCaps="false"
+                            android:id="@+id/btnSaveSuperFat"
+                            android:layout_gravity="center"
+                            android:text="Save"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                    </LinearLayout>
+
 
 
                 </LinearLayout>
@@ -468,6 +488,7 @@
                                 android:layout_height="wrap_content"/>
 
                             <TextView
+                                android:maxLength="5"
                                 android:id="@+id/tvEssentialOil"
                                 android:textColor="@android:color/black"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
