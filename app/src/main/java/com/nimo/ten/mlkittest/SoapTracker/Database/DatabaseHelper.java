@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.EssentialsOilsData;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.OilsData;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.OilsLiquidData;
@@ -68,6 +69,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_NAOH_RATIO = "lye_ratio";
     public static final String KEY_LIQUID_RATIO = "liquid_ratio";
 
+    public static final String KEY_ESSENTIAL_OIL_WEIGHT = "essential_oil";
+    public static final String KEY_ESSENTIAL_OIL_RATIO = "essential_ratio";
+
     public static final String KEY_NAME = "user_name";
     public static final String KEY_EMAIL = "user_email";
     public static final String KEY_PHONE = "user_phone";
@@ -114,6 +118,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             KEY_NAOH_RATIO + " TEXT, " +
             KEY_LIQUID_RATIO + " TEXT, " +
+
+            KEY_ESSENTIAL_OIL_WEIGHT + " TEXT, " +
+            KEY_ESSENTIAL_OIL_RATIO + " TEXT, " +
 
             KEY_TOTAL_WEIGHT + " TEXT " + " );";
 
@@ -249,6 +256,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         contentValues.put(KEY_LIQUID_RATIO, "0.0");
         contentValues.put(KEY_NAOH_RATIO, "0.0");
+        contentValues.put(KEY_ESSENTIAL_OIL_WEIGHT, 0.0);
+        contentValues.put(KEY_ESSENTIAL_OIL_RATIO, 0.02);
 
         long id = db.insert(TABLE_RECIPE_TABLE, null, contentValues);
         return id;
@@ -1068,5 +1077,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public double getTotalOils(String SoapId){
+
+        OilWeight = 0.0;
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double liquidWeight = c.getDouble(c.getColumnIndex(KEY_LIQUID_WEIGHT));
+                    double lyeWeight = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+                    double totalWeight = c.getDouble(c.getColumnIndex(KEY_TOTAL_WEIGHT));
+
+                    double EssentialOil = c.getDouble(c.getColumnIndex(KEY_ESSENTIAL_OIL_RATIO));
+
+                    OilWeight = (liquidWeight + lyeWeight + totalWeight) * EssentialOil;
+
+                } while (c.moveToNext());
+
+            }
+
+            c.close();
+
+        }
+
+        updateEssentialWeight(SoapId, OilWeight);
+
+        return OilWeight;
+
+    }
+
+    public void updateEssentialWeight(String SoapId, double Weight){
+
+        ContentValues contentValues = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        contentValues.put(KEY_ESSENTIAL_OIL_WEIGHT, Weight);
+
+        db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(SoapId)});
+    }
+
+    public void updateEssentialRatio(String SoapId, double Weight){
+
+        ContentValues contentValues = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        contentValues.put(KEY_ESSENTIAL_OIL_RATIO, Weight);
+
+        db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(SoapId)});
+    }
 
 }

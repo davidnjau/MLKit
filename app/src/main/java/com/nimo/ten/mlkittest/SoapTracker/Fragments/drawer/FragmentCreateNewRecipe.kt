@@ -51,8 +51,11 @@ class FragmentCreateNewRecipe : Fragment() {
 
     private lateinit var etSuperFat: EditText
 
+    private lateinit var linearEssentialOil: LinearLayout
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var SuperFatSwitch: Switch
+    private lateinit var FragranceOils: Switch
 
     private lateinit var linear1:LinearLayout
     private lateinit var linear2:LinearLayout
@@ -78,6 +81,7 @@ class FragmentCreateNewRecipe : Fragment() {
     private lateinit var imageBtn: ImageButton
 
     private lateinit var etEssentialOil: EditText
+    private lateinit var tvEssentialOil: TextView
     private lateinit var db: SQLiteDatabase
 
     private var SoapId : String = "0"
@@ -91,6 +95,7 @@ class FragmentCreateNewRecipe : Fragment() {
         databaseHelper = DatabaseHelper(activity)
 
         db = databaseHelper.getReadableDatabase()
+        preferences = requireActivity().getSharedPreferences("Soap", Context.MODE_PRIVATE)
 
         bottomSheetText = view.findViewById(R.id.bottomSheetText)
         databaseHelper = DatabaseHelper(activity)
@@ -104,6 +109,7 @@ class FragmentCreateNewRecipe : Fragment() {
         btnSaveRatio = view.findViewById(R.id.btnSaveRatio)
         btnSaveConcentration = view.findViewById(R.id.btnSaveConcentration)
         btnSaveEssentialOils = view.findViewById(R.id.btnSaveEssentialOils)
+        tvEssentialOil = view.findViewById(R.id.tvEssentialOil)
 
         etEssentialOil = view.findViewById(R.id.etEssentialOil)
 
@@ -152,9 +158,33 @@ class FragmentCreateNewRecipe : Fragment() {
             }
         }
         btnSaveEssentialOils.setOnClickListener {
-            val txtEssentialTotal = etEssentialOil.text
+
+            val txtEssentialTotal = etEssentialOil.text.toString()
             if (!TextUtils.isEmpty(txtEssentialTotal)){
 
+                val LyeConc = txtEssentialTotal.toDouble()
+
+                if (LyeConc < 100){
+
+                    val soap_id = preferences.getString("recipe_id", null).toString()
+                    val oils_exists = checkOils(soap_id.toString())
+                    if (oils_exists){
+
+                        databaseHelper.updateEssentialRatio(soap_id, (LyeConc/100))
+
+                        getEssentialOilWeight()
+
+                        Toast.makeText(activity, "Essential oils updated successfully.", Toast.LENGTH_SHORT).show()
+
+
+                    }else
+                        Toast.makeText(activity, "Please add some oils before proceeding", Toast.LENGTH_SHORT).show()
+
+                }else{
+
+                    etEssentialOil.error = "Essential oils% cannot be more than 100 %"
+                    Toast.makeText(activity, "Essential oils% cannot be more than 100 %", Toast.LENGTH_SHORT).show()
+                }
 
 
             }else etEssentialOil.error = "Essential oils cannot be empty."
@@ -166,7 +196,6 @@ class FragmentCreateNewRecipe : Fragment() {
 
         }
 
-        preferences = requireActivity().getSharedPreferences("Soap", Context.MODE_PRIVATE)
         layoutManager = LinearLayoutManager(activity)
 
         recyclerView6 = view.findViewById(R.id.recyclerView6)
@@ -195,6 +224,7 @@ class FragmentCreateNewRecipe : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        linearEssentialOil = view.findViewById(R.id.linearEssentialOil)
 
         etSuperFat = view.findViewById(R.id.etSuperFat)
         SuperFatSwitch = view.findViewById(R.id.SuperFatSwitch)
@@ -208,6 +238,42 @@ class FragmentCreateNewRecipe : Fragment() {
             }else{
 
                 etSuperFat.visibility = View.GONE
+            }
+
+        }
+
+        FragranceOils = view.findViewById(R.id.FragranceOils)
+        FragranceOils.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked){
+
+                val soap_id = preferences.getString("recipe_id", null).toString()
+                val oils_exists = checkOils(soap_id.toString())
+                if (oils_exists){
+
+                    //Add Fragrance \ Essential oils
+
+                    linearEssentialOil.visibility = View.VISIBLE
+
+                    getEssentialOilWeight()
+
+                }else{
+
+                    Toast.makeText(activity, "You must add Oils to be used in soap making Process", Toast.LENGTH_LONG).show()
+                    linearEssentialOil.visibility = View.GONE
+
+                    if (bottomSheetBehaviour.state == BottomSheetBehavior.STATE_COLLAPSED)
+                    {
+                        bottomSheetBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
+
+                    }
+
+                    FragranceOils.isChecked = !FragranceOils.isChecked
+                }
+
+            }else{
+
+                linearEssentialOil.visibility = View.GONE
             }
 
         }
@@ -258,6 +324,9 @@ class FragmentCreateNewRecipe : Fragment() {
                     tvWaterWeight.text = txtLiquidWeight
                     tvLyeWeight.text = txtLyeWeight
 
+                    Toast.makeText(activity, "Ratios updated successfully.", Toast.LENGTH_SHORT).show()
+
+
                 }else
                     Toast.makeText(activity, "You first need to select some oils", Toast.LENGTH_SHORT).show()
 
@@ -304,11 +373,9 @@ class FragmentCreateNewRecipe : Fragment() {
                     }else
                         Toast.makeText(activity, "You first need to select some oils", Toast.LENGTH_SHORT).show()
 
-
-
-
                 }else{
 
+                    etLyeConcentration.error = "Lye Concentration cannot be more than 100 %"
                     Toast.makeText(activity, "Lye Concentration cannot be more than 100 %", Toast.LENGTH_SHORT).show()
                 }
 
@@ -331,6 +398,21 @@ class FragmentCreateNewRecipe : Fragment() {
         }
 
         return view
+    }
+
+    private fun getEssentialOilWeight(){
+
+        //Get The weight of Essential oils. By Default We will Use 2% of the total Oils
+        val soap_id = preferences.getString("recipe_id", null).toString()
+        val oils_exists = checkOils(soap_id)
+
+        if (oils_exists){
+
+            val TotalWeight =  databaseHelper.getTotalOils(soap_id)
+            tvEssentialOil.text = TotalWeight.toString()
+
+        }
+
     }
 
     private fun InputDialog() {
