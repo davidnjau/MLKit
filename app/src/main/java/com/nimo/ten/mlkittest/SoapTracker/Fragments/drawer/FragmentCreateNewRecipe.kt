@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +29,8 @@ import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.CheckboxPojo
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo
-import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,7 +51,7 @@ class FragmentCreateNewRecipe : Fragment() {
     private lateinit var Recipe_id: String
     lateinit var databaseHelper: DatabaseHelper
     private lateinit var oilsAdapter: SoapOilsAdapter
-    private var soapLyeLiquidsPojoArrayList = ArrayList<SoapLyeLiquidsPojo>()
+    private var soapLyeLiquidsPojoArrayList = ArrayList<CheckboxPojo>()
     val dateFormat = SimpleDateFormat("dd-MMM-yyyy")
     var c = Calendar.getInstance()
     private lateinit var oilsAdapter1: SoapMyOilsAdapter
@@ -223,11 +224,22 @@ class FragmentCreateNewRecipe : Fragment() {
 
             Recipe_id = preferences.getString("recipe_id", null).toString()
 
-            mySelectedList = oilsAdapter.list
-            for (i in mySelectedList.indices) {
+//            mySelectedList = oilsAdapter.list
+//            for (i in mySelectedList.indices) {
+//
+//                val txtOilName: String = mySelectedList.get(i)
+//                databaseHelper.AddMySoapOils(Recipe_id, txtOilName)
+//            }
 
-                val txtOilName: String = mySelectedList.get(i)
-                databaseHelper.AddMySoapOils(Recipe_id, txtOilName)
+            for (i in SoapOilsAdapter.soapTrackerPojoArrayList.indices) {
+                if (SoapOilsAdapter.soapTrackerPojoArrayList[i].selected) {
+
+                    val txtOilName: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].liquids
+                    val txtNaoh: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].naOh
+
+                    databaseHelper.AddMySoapOils(Recipe_id, txtOilName, txtNaoh)
+
+                }
             }
 
             Toast.makeText(activity, "Oils added to your list.", Toast.LENGTH_SHORT).show()

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.CheckboxPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.EssentialsOilsData;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.OilsData;
@@ -220,7 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void AddMySoapOils(String SoapId, String OilName){
+    public void AddMySoapOils(String SoapId, String OilName, String Naoh){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -234,23 +235,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_SOAP_ID, SoapId);
             contentValues.put(KEY_WEIGHT, "0.0");
             contentValues.put(KEY_NAOH_WEIGHT, "0.0");
+            contentValues.put(KEY_NAOH, Naoh);
 
-            String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
-            Cursor c = db.rawQuery(selectQuery, null);
-
-            if (c.moveToFirst()) {
-
-                do {
-
-                    String Naoh = c.getString(c.getColumnIndex(KEY_NAOH));
-
-                    contentValues.put(KEY_NAOH, Naoh);
-
-                } while (c.moveToNext());
-
-                c.close();
-
-            }
+//            String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
+//            Cursor c = db.rawQuery(selectQuery, null);
+//
+//            if (c.moveToFirst()) {
+//
+//                do {
+//
+//                    String Naoh = c.getString(c.getColumnIndex(KEY_NAOH));
+//
+//                    contentValues.put(KEY_NAOH, Naoh);
+//
+//                } while (c.moveToNext());
+//
+//                c.close();
+//
+//            }
 
             db.insert(TABLE_SOAP_MY_OILS, null, contentValues);
         }
@@ -316,9 +318,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<SoapLyeLiquidsPojo> getSoapOils() {
+    public ArrayList<CheckboxPojo> getSoapOils() {
 
-        ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList = new ArrayList<>();
+        ArrayList<CheckboxPojo> soapTrackerPojoArrayList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -327,7 +329,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             do {
 
-                SoapLyeLiquidsPojo soapTrackerPojo = new SoapLyeLiquidsPojo();
+                CheckboxPojo soapTrackerPojo = new CheckboxPojo();
                 soapTrackerPojo.setLiquids(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
                 soapTrackerPojo.setNaOh(c.getString(c.getColumnIndex(KEY_NAOH)));
                 soapTrackerPojoArrayList.add(soapTrackerPojo);

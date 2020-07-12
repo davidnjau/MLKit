@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
-import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.CheckboxPojo;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.CheckboxPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,15 @@ public class SoapOilsAdapter extends RecyclerView.Adapter<SoapOilsAdapter.ViewHo
 
 
     private Context context;
-    private ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList;
-    private SparseBooleanArray itemStateArray = new SparseBooleanArray();
-    private List<String> mySelectedList = new ArrayList<>();
+    public static ArrayList<CheckboxPojo> soapTrackerPojoArrayList;
+//    private SparseBooleanArray itemStateArray = new SparseBooleanArray();
+//    private List<String> mySelectedList = new ArrayList<>();
     
-    public SoapOilsAdapter(Context context, ArrayList<SoapLyeLiquidsPojo> soapTrackerPojoArrayList) {
+    public SoapOilsAdapter(Context context, ArrayList<CheckboxPojo> soapTrackerPojoArrayList) {
         this.context = context;
         this.soapTrackerPojoArrayList = soapTrackerPojoArrayList;
 
-        mySelectedList.clear();
+//        mySelectedList.clear();
 
     }
 
@@ -50,8 +51,26 @@ public class SoapOilsAdapter extends RecyclerView.Adapter<SoapOilsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final SoapOilsAdapter.ViewHolder holder, final int position) {
 
-        holder.bind(position);
+//        holder.bind(position);
 
+//        holder.checkBox.setText("Checkbox " + position);
+        holder.tvOilName.setText( soapTrackerPojoArrayList.get(position).getLiquids());
+        holder.checkBox.setChecked(soapTrackerPojoArrayList.get(position).getSelected());
+
+        holder.checkBox.setTag(position);
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Integer pos = (Integer) holder.checkBox.getTag();
+
+                if (soapTrackerPojoArrayList.get(pos).getSelected()) {
+                    soapTrackerPojoArrayList.get(pos).setSelected(false);
+                } else {
+                    soapTrackerPojoArrayList.get(pos).setSelected(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -59,58 +78,60 @@ public class SoapOilsAdapter extends RecyclerView.Adapter<SoapOilsAdapter.ViewHo
         return soapTrackerPojoArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvOilName;
-        CheckBox checkbox;
+        CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvOilName = itemView.findViewById(R.id.tvOilName);
-            checkbox = itemView.findViewById(R.id.checkbox);
+            checkBox = itemView.findViewById(R.id.checkbox);
 
-            itemView.setOnClickListener(this);
-
-        }
-
-        void bind(int position) {
-            // use the sparse boolean array to check
-            if (!itemStateArray.get(position, false)) {
-                checkbox.setChecked(false);}
-            else {
-                checkbox.setChecked(true);
-            }
-
-            tvOilName.setText(soapTrackerPojoArrayList.get(position).getLiquids());
-//            checkbox.setText(soapTrackerPojoArrayList.get(position).getLiquids());
+//            itemView.setOnClickListener(this);
 
         }
 
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            if (!itemStateArray.get(adapterPosition, false)) {
 
-                checkbox.setChecked(true);
-                itemStateArray.put(adapterPosition, true);
 
-                mySelectedList.add(tvOilName.getText().toString());
-            }
-            else  {
-                checkbox.setChecked(false);
-                itemStateArray.put(adapterPosition, false);
+//        void bind(int position) {
+//            // use the sparse boolean array to check
+//            if (!itemStateArray.get(position, false)) {
+//                checkbox.setChecked(false);}
+//            else {
+//                checkbox.setChecked(true);
+//            }
+//
+//            tvOilName.setText(soapTrackerPojoArrayList.get(position).getLiquids());
+////            checkbox.setText(soapTrackerPojoArrayList.get(position).getLiquids());
+//
+//        }
 
-                mySelectedList.remove(tvOilName.getText().toString());
-            }
-
-        }
+//        @Override
+//        public void onClick(View v) {
+//            int adapterPosition = getAdapterPosition();
+//            if (!itemStateArray.get(adapterPosition, false)) {
+//
+//                checkbox.setChecked(true);
+//                itemStateArray.put(adapterPosition, true);
+//
+//                mySelectedList.add(tvOilName.getText().toString());
+//            }
+//            else  {
+//                checkbox.setChecked(false);
+//                itemStateArray.put(adapterPosition, false);
+//
+//                mySelectedList.remove(tvOilName.getText().toString());
+//            }
+//
+//        }
     }
 
-    public List<String> getList(){
-
-        return mySelectedList;
-    }
+//    public List<String> getList(){
+//
+//        return mySelectedList;
+//    }
 
 }
 

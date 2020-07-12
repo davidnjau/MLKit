@@ -23,6 +23,7 @@ import com.nimo.ten.mlkittest.SoapTracker.Adapter.OilsAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapHealedRecyclerAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapOilsAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.CheckboxPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 
@@ -48,7 +49,7 @@ public class FragmentOilList extends Fragment {
     DatabaseHelper databaseHelper;
 
     private SoapOilsAdapter oilsAdapter;
-    private ArrayList<SoapLyeLiquidsPojo> soapLyeLiquidsPojoArrayList = new ArrayList<>();
+    private ArrayList<CheckboxPojo> soapLyeLiquidsPojoArrayList = new ArrayList<>();
 
     private LinearLayout myview;
 
@@ -70,26 +71,33 @@ public class FragmentOilList extends Fragment {
 
         btnConfirm = view.findViewById(R.id.btnConfirm);
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnConfirm.setOnClickListener(v -> {
 
-                mySelectedList = oilsAdapter.getList();
+//                mySelectedList = oilsAdapter.getList();
+//
+//                for (int i = 0; i<mySelectedList.size(); i++){
+//
+//                    String txtOilName = mySelectedList.get(i);
+//                    databaseHelper.AddMySoapOils(Soap_id, txtOilName);
+//
+//
+//                }
 
-                for (int i = 0; i<mySelectedList.size(); i++){
+            Log.e("-*-*-*", "-*-*-*");
 
-                    String txtOilName = mySelectedList.get(i);
-                    databaseHelper.AddMySoapOils(Soap_id, txtOilName);
+            for (int i = 0; i < SoapOilsAdapter.soapTrackerPojoArrayList.size(); i++){
+                if(SoapOilsAdapter.soapTrackerPojoArrayList.get(i).getSelected()) {
 
+                    Log.e("-*-*-* ", SoapOilsAdapter.soapTrackerPojoArrayList.get(i).getLiquids());
 
                 }
-
-                startActivity(new Intent(getActivity(), SoapRecipe.class));
-
-                Toast.makeText(getActivity(), "Oils added to your list.", Toast.LENGTH_SHORT).show();
-
-
             }
+
+            startActivity(new Intent(getActivity(), SoapRecipe.class));
+
+            Toast.makeText(getActivity(), "Oils added to your list.", Toast.LENGTH_SHORT).show();
+
+
         });
 
         return view;
