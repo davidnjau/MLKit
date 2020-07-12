@@ -71,45 +71,44 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
         final String txtOilName = soapTrackerPojoArrayList.get(position).getOil_name();
         final String txtOilId = soapTrackerPojoArrayList.get(position).getId();
         final String txtOilWeight = soapTrackerPojoArrayList.get(position).getOilWeight();
+        final double txtOilpercentage = soapTrackerPojoArrayList.get(position).getPercentage() * 100;
 
         holder.tvNumber.setText(String.valueOf(position +1));
         holder.tvOilName.setText(txtOilName);
         holder.etOilWeight.setText(txtOilWeight);
+        holder.etPercentage.setText(String.valueOf(txtOilpercentage));
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.delete.setOnClickListener(view -> {
 
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                alertDialog.setTitle("Are you sure?");
-                alertDialog.setMessage("This action will delete this Oil");
-                alertDialog.setPositiveButton("Yes Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setTitle("Are you sure?");
+            alertDialog.setMessage("This action will delete this Oil");
+            alertDialog.setPositiveButton("Yes Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                        databaseHelper.deleteMySoap(txtOilId, context);
-                        Toast.makeText(context, txtOilName+" Oil has been deleted.. " ,Toast.LENGTH_LONG).show();
+                    databaseHelper.deleteMySoap(txtOilId, context);
+                    Toast.makeText(context, txtOilName+" Oil has been deleted.. " ,Toast.LENGTH_LONG).show();
 
-                        soapTrackerPojoArrayList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, soapTrackerPojoArrayList.size());
+                    soapTrackerPojoArrayList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, soapTrackerPojoArrayList.size());
 
-                    }
-                });
-                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                }
+            });
+            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 
 
-                alertDialog.show();
+            alertDialog.show();
 
-            }
         });
 
-        holder.etOilWeight.addTextChangedListener(new TextWatcher() {
+        holder.etPercentage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -123,16 +122,13 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
             @Override
             public void afterTextChanged(Editable editable) {
 
-                databaseHelper.updateMyOilWeight(txtOilId, String.valueOf(editable));
 
                 if (!TextUtils.isEmpty(String.valueOf(editable))){
 
-                    calculator.getSapofinication(txtSoapId, txtOilId, String.valueOf(editable), context);
-
+//                    calculator.getSapofinication(txtSoapId, txtOilId, String.valueOf(editable), context);
+                    databaseHelper.updateMyOilPercentage(txtSoapId, txtOilId, String.valueOf(editable), context);
 
                 }
-
-
 
             }
         });
@@ -152,7 +148,8 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
         private TextView tvOilName, tvNumber;
         private ImageButton delete;
-        private EditText etOilWeight;
+        private EditText etPercentage;
+        private TextView etOilWeight;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -161,6 +158,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
             tvNumber = itemView.findViewById(R.id.tvNumber);
             delete = itemView.findViewById(R.id.delete);
             etOilWeight = itemView.findViewById(R.id.etOilWeight);
+            etPercentage = itemView.findViewById(R.id.etPercentage);
 
         }
     }

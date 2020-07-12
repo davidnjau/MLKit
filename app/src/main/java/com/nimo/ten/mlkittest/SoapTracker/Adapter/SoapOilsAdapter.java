@@ -54,7 +54,7 @@ public class SoapOilsAdapter extends RecyclerView.Adapter<SoapOilsAdapter.ViewHo
 //        holder.bind(position);
 
 //        holder.checkBox.setText("Checkbox " + position);
-        holder.tvOilName.setText( soapTrackerPojoArrayList.get(position).getLiquids());
+        holder.checkBox.setText( soapTrackerPojoArrayList.get(position).getLiquids());
         holder.checkBox.setChecked(soapTrackerPojoArrayList.get(position).getSelected());
 
         holder.checkBox.setTag(position);

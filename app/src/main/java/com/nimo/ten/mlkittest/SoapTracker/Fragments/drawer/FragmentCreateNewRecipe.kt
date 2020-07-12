@@ -61,6 +61,7 @@ class FragmentCreateNewRecipe : Fragment() {
     var soapTrackerPojoArrayList: List<IngredientsPojo>? = null
 
     private lateinit var etSuperFat: EditText
+    private lateinit var etOilAmount: EditText
 
     private lateinit var linearEssentialOil: LinearLayout
 
@@ -71,6 +72,7 @@ class FragmentCreateNewRecipe : Fragment() {
     private lateinit var linearSuperFat: LinearLayout
 
     private lateinit var btnSaveSuperFat: Button
+    private lateinit var btnTotalOilAmount: Button
 
     private lateinit var linear1:LinearLayout
     private lateinit var linear2:LinearLayout
@@ -101,6 +103,7 @@ class FragmentCreateNewRecipe : Fragment() {
 
     private var SoapId : String = "0"
     private var isGood = true
+    private var isOilGood = true
 
     private var calculator: Calculator = Calculator()
 
@@ -250,6 +253,7 @@ class FragmentCreateNewRecipe : Fragment() {
 
         }
 
+
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerViewFragnance = view.findViewById(R.id.recyclerViewFragnance)
 
@@ -259,6 +263,9 @@ class FragmentCreateNewRecipe : Fragment() {
         linearEssentialOil = view.findViewById(R.id.linearEssentialOil)
 
         btnSaveSuperFat = view.findViewById(R.id.btnSaveSuperFat)
+        btnTotalOilAmount = view.findViewById(R.id.btnTotalOilAmount)
+
+        etOilAmount = view.findViewById(R.id.etOilAmount)
 
         etSuperFat = view.findViewById(R.id.etSuperFat)
         SuperFatSwitch = view.findViewById(R.id.SuperFatSwitch)
@@ -295,6 +302,25 @@ class FragmentCreateNewRecipe : Fragment() {
                 linearSuperFat.visibility = View.GONE
             }
 
+        }
+
+        btnTotalOilAmount.setOnClickListener {
+
+            val txtOilAmount = etOilAmount.text.toString()
+            if (!TextUtils.isEmpty(txtOilAmount)){
+
+                val soap_id = preferences.getString("recipe_id", null).toString()
+
+                //Total oil amount
+                databaseHelper.updateOilAmount(soap_id, txtOilAmount.toDouble(), activity)
+                Toast.makeText(activity, "The oil amount was updated successfully", Toast.LENGTH_LONG).show()
+
+                CheckOilsList()
+
+            }else {
+                etOilAmount.error = "You must first enter the total amount of oils"
+                Toast.makeText(activity, "You must first enter the total amount of oils", Toast.LENGTH_LONG).show()
+            }
         }
 
         btnSaveSuperFat.setOnClickListener {

@@ -83,6 +83,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_PHONE = "user_phone";
     public static final String KEY_IG = "user_ig";
 
+    public static final String KEY_TOTAL_OIL_AMOUNT = "oil_amount";
+
     private double SoapWeight = 0.0;
     private double OilWeight = 0.0;
 
@@ -105,6 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_OIL_NAME + " TEXT, " +
             KEY_NAOH + " TEXT, " +
             KEY_WEIGHT + " TEXT, " +
+            KEY_PERCENTAGE + " TEXT, " +
             KEY_NAOH_WEIGHT + " TEXT " + " );";
 
     public static final String CREATE_TABLE_ESSENTIAL_OILS = "CREATE TABLE "
@@ -135,6 +138,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             KEY_ESSENTIAL_OIL_WEIGHT + " TEXT, " +
             KEY_ESSENTIAL_OIL_RATIO + " TEXT, " +
             KEY_SUPER_FAT + " TEXT, " +
+
+            KEY_TOTAL_OIL_AMOUNT + " TEXT, " +
 
             KEY_TOTAL_WEIGHT + " TEXT " + " );";
 
@@ -235,8 +240,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_SOAP_ID, SoapId);
             contentValues.put(KEY_WEIGHT, "0.0");
             contentValues.put(KEY_NAOH_WEIGHT, "0.0");
+            contentValues.put(KEY_PERCENTAGE, "0.0");
             contentValues.put(KEY_NAOH, Naoh);
-
+//
 //            String selectQuery = "SELECT * FROM " + TABLE_SOAP_OILS  +" WHERE " + KEY_OIL_NAME + " = '"+OilName+"'";
 //            Cursor c = db.rawQuery(selectQuery, null);
 //
@@ -278,6 +284,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         contentValues.put(KEY_SUPER_FAT, 5.0);
 
+        contentValues.put(KEY_TOTAL_OIL_AMOUNT, 0.0);
+
         long id = db.insert(TABLE_RECIPE_TABLE, null, contentValues);
         return id;
     }
@@ -302,6 +310,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_TOTAL_WEIGHT, TotalWeight);
         contentValues.put(KEY_LIQUID_WEIGHT, WaterWeight);
         contentValues.put(KEY_NAOH_WEIGHT, Naoh);
+
+        db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+    }
+
+    public void updateOilAmount(String id, double TotalWeight, Context context){
+
+        OilWeight = 0.0;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_TOTAL_OIL_AMOUNT, TotalWeight);
+
+        //Update the oils grams too using the provided percentages
+
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS  +" WHERE " + KEY_SOAP_ID + " = '"+id+"'";
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null && c.moveToFirst()) {
+
+            do {
+
+                String oilId = c.getString(c.getColumnIndex(KEY_ID));
+
+                double oilPercentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
+                OilWeight = oilPercentage * TotalWeight;
+
+                String NewOilWeight = String.valueOf(OilWeight);
+
+                updateMyOilWeight(oilId, NewOilWeight);
+                calculator.getSapofinication(id, oilId,NewOilWeight,context);
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
 
         db.update(TABLE_RECIPE_TABLE, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(id)});
 
@@ -398,6 +444,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     soapOilsPojo.setOil_name(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
                     soapOilsPojo.setNaoh_weight(c.getString(c.getColumnIndex(KEY_NAOH)));
                     soapOilsPojo.setOilWeight(c.getString(c.getColumnIndex(KEY_WEIGHT)));
+                    soapOilsPojo.setPercentage(c.getDouble(c.getColumnIndex(KEY_PERCENTAGE)));
                     soapTrackerPojoArrayList.add(soapOilsPojo);
 
 
@@ -961,6 +1008,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void updateMyOilPercentage(String recipeId, String id, String percentage1, Context context){
+
+        double percentage = Double.parseDouble(percentage1) / 100;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_PERCENTAGE, percentage);
+
+        db.update(TABLE_SOAP_MY_OILS, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE  +" WHERE " + KEY_ID + " = '"+recipeId+"'";
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null && c.moveToFirst()) {
+
+            do {
+
+                double TotalWeight = c.getDouble(c.getColumnIndex(KEY_TOTAL_OIL_AMOUNT));
+
+                OilWeight = percentage * TotalWeight;
+
+                String NewOilWeight = String.valueOf(OilWeight);
+
+                updateMyOilWeight(id, NewOilWeight);
+                calculator.getSapofinication(recipeId, id,NewOilWeight,context);
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+
+
+    }
+
     public void updateMySoapWeight(String id, double weight){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1160,8 +1244,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                  do {
 
-                     SoapId = c.getString(c.getColumnIndex(KEY_SOAP_ID));
-                     OilWeight = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
+                     String SoapId = c.getString(c.getColumnIndex(KEY_SOAP_ID));
+                     double OilWeight = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
 
                      oilsData.setOilWeight(OilWeight);
                      oilsData.setSoapId(SoapId);
@@ -1174,7 +1258,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
          }
 
-            return oilsData;
+         return oilsData;
 
     }
 

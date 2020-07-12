@@ -46,11 +46,12 @@
                 android:background="@drawable/table_content_cell_bg"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
+
 
                 <EditText
                     android:layout_weight="1"
-                    android:id="@+id/etOilWeight"
+                    android:id="@+id/etPercentage"
                     android:maxLength="7"
                     android:inputType="numberDecimal"
                     android:paddingEnd="10dp"
@@ -59,7 +60,42 @@
                     android:layout_marginStart="5dp"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:ignore="NestedWeights" />
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_gravity="center"
+                    android:text="%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="@drawable/table_content_cell_bg"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/etOilWeight"
+                    android:maxLength="7"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_gravity="center"
+                    android:text="200"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_height="match_parent"
                     tools:ignore="NestedWeights" />
 
                 <TextView
@@ -68,9 +104,10 @@
                     android:layout_gravity="center"
                     android:text="g"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
+
 
 
 

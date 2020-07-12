@@ -85,7 +85,7 @@
                     android:background="@drawable/table_content_cell_bg"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:gravity="center"
@@ -96,6 +96,36 @@
                         android:text="Oils"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:padding="10dp"
+                            android:inputType="numberDecimal"
+                            android:maxLength="7"
+                            android:layout_weight="1"
+                            android:id="@+id/etOilAmount"
+                            android:background="@drawable/edit_text_shape"
+                            android:hint="Enter the total Amount of oils"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Button
+                            android:gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:textAllCaps="false"
+                            android:text="Save"
+                            android:id="@+id/btnTotalOilAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:scrollbars="vertical"
@@ -281,7 +311,7 @@
                                     android:id="@+id/etWater"
                                     android:padding="10dp"
                                     android:background="@drawable/edit_text_shape"
-                                    android:hint="3"
+                                    android:hint="2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"/>
 

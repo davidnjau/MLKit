@@ -6,12 +6,14 @@ public class SoapOilsPojo {
     private String naoh_weight;
     private String id;
     private String oilWeight;
+    private double percentage;
 
-    public SoapOilsPojo(String oil_name, String naoh_weight, String id, String oilWeight) {
+    public SoapOilsPojo(String oil_name, String naoh_weight, String id, String oilWeight, double percentage) {
         this.oil_name = oil_name;
         this.naoh_weight = naoh_weight;
         this.id = id;
         this.oilWeight = oilWeight;
+        this.percentage = percentage;
     }
 
     public SoapOilsPojo() {
@@ -47,5 +49,13 @@ public class SoapOilsPojo {
 
     public void setOilWeight(String oilWeight) {
         this.oilWeight = oilWeight;
+    }
+
+    public double getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
     }
 }

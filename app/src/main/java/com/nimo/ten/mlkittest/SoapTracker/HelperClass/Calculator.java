@@ -142,6 +142,44 @@ public class Calculator {
         return RemPercentage;
 
     }
+    public Double getRemainingTotalOilsPercentage(String SoapId, Context context){
+
+        Clear();
+
+        databaseHelper = new DatabaseHelper(context);
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+
+            do {
+
+                int default_percentage = c.getInt(c.getColumnIndex(KEY_PERCENTAGE));
+
+                myPercentage.add(default_percentage);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        for (int i = 0; i < myPercentage.size(); i++){
+
+            SoapPerc = myPercentage.get(i) + SoapPerc;
+
+        }
+
+        RemPercentage = 100 - SoapPerc;
+
+
+
+        return RemPercentage;
+
+    }
 
     public Double getLiquidRemainingPercentage(String SoapId, Context context){
 
