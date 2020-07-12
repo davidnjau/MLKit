@@ -43,7 +43,7 @@ class SplashPage : AppCompatActivity() {
 
     private fun AddOils() {
 
-        myOilName.addAll(listOf("Acai Berry","Almond Butter","Almond Oil", "Aloe Vera Butte",
+        myOilName.addAll(listOf("Acai Berry","Almond Butter","Almond Oil", "Aloe Vera Butter",
                 "Aloe Vera Oil", "Andiroba Oil", "Apricot Kernel butter", "Apricot Kernel Oil",
                 "Argan oil", "Avocado Butter", "Avocado oil", "Babassu oil",
                 "Baobab oil", "Beeswax pellets", "Black Cummin Seed oil", "Black Raspberry seed oil",

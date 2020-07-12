@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_oils"
+        android:icon="@drawable/icon_icon_oils"
+        android:title="Add Oils" />
+
+    <item
+        android:id="@+id/navigation_water"
+        android:icon="@drawable/icon_icon_oils"
+        android:title="Add Water" />
+
+    <item
+        android:id="@+id/navigation_fragrance"
+        android:icon="@drawable/icon_icon_oils"
+        android:title="Add Fragrance" />
+
+</menu>

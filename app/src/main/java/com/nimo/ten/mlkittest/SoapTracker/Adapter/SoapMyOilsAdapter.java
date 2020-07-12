@@ -1,5 +1,6 @@
 package com.nimo.ten.mlkittest.SoapTracker.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
 import com.nimo.ten.mlkittest.SoapTracker.Fragments.FragmentOilMain;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo;
 
 import java.util.ArrayList;
@@ -108,6 +110,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
         });
 
+
         holder.etPercentage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,21 +120,54 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable s) {
 
+                if (!TextUtils.isEmpty(s.toString())){
 
-                if (!TextUtils.isEmpty(String.valueOf(editable))){
-
-//                    calculator.getSapofinication(txtSoapId, txtOilId, String.valueOf(editable), context);
-                    databaseHelper.updateMyOilPercentage(txtSoapId, txtOilId, String.valueOf(editable), context);
+                    databaseHelper.updateMyOilPercentage(txtSoapId, txtOilId, String.valueOf(s), context);
+//                    double perc = Double.parseDouble(s.toString());
+//                    if (100 - perc < 0){
+//
+//                        new ShowCustomToast((Activity) context, "Your percentage cannot exceed 100%");
+//
+//                    }else {
+//
+//                        if (!TextUtils.isEmpty(String.valueOf(s))){
+//
+//                            double RemainingPercentage = calculator.getRemainingTotalOilsPercentage(txtSoapId, context);
+//                            double GivenPercentage = Double.parseDouble(String.valueOf(s));
+//
+//                            if (RemainingPercentage >= 0) {
+//
+//                                if (GivenPercentage <= RemainingPercentage) {
+//
+////                                    calculator.getSapofinication(txtSoapId, txtOilId, String.valueOf(editable), context);
+//
+//                                }else {
+//
+//                                    new ShowCustomToast((Activity) context, "Your percentage cannot exceed 100%");
+//                                    holder.etPercentage.setText("");
+//                                    holder.etPercentage.setHint("The remaining percentage is " +RemainingPercentage+ "%");
+//                                }
+//
+//                            }
+//
+//
+//                        }
+//
+//                    }
 
                 }
 
+
+
             }
         });
+
 
 
 

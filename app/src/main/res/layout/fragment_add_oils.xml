@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:textColor="@color/colorAccent"
+            android:layout_margin="10dp"
+            android:background="@drawable/table_content_cell_bg"
+            android:id="@+id/btnChooseSoap"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:text="Click to Choose Oils "
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:background="@drawable/table_content_cell_bg"
+            android:layout_marginBottom="115dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearSwitch"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:background="@drawable/table_content_cell_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Switch
+                    android:id="@+id/SuperFatSwitch"
+                    android:layout_width="wrap_content"
+                    android:text="Add Super Fat percentage"
+                    android:layout_height="wrap_content"/>
+
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/linearSuperFat"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:maxLength="5"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/etSuperFat"
+                        android:padding="10dp"
+                        android:background="@drawable/edit_text_shape"
+                        android:hint="5 % super Fat percentage (default)."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:textAllCaps="false"
+                        android:id="@+id/btnSaveSuperFat"
+                        android:layout_gravity="center"
+                        android:text="Save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_below="@+id/linearSwitch"
+                android:layout_marginBottom="60dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/tvOils"
+                    android:textColor="@android:color/black"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:text="Oils"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:padding="10dp"
+                        android:inputType="numberDecimal"
+                        android:maxLength="7"
+                        android:layout_weight="1"
+                        android:id="@+id/etOilAmount"
+                        android:background="@drawable/edit_text_shape"
+                        android:hint="Enter the total Amount of oils"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:textAllCaps="false"
+                        android:text="Save"
+                        android:id="@+id/btnTotalOilAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:id="@+id/recyclerView"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_alignParentBottom="true"
+                android:textColor="@android:color/white"
+                android:layout_margin="20dp"
+                android:background="@drawable/table_header_cell_bg"
+                android:id="@+id/btnSaveOils"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:text="Save Oils and Proceed"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_peekHeight="105dp"
+        app:elevation="5dp"
+        app:behavior_hideable="true"
+        android:background="@drawable/table_content_cell_bg"
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:text="Drag to Choose oils"
+                    android:textColor="@android:color/black"
+                    android:id="@+id/bottomSheetText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_marginBottom="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/myview"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/ic_action_alert_black" />
+
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:gravity="center"
+                        android:text="There are no available oils."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginBottom="50dp"
+                    android:id="@+id/recyclerView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/rounded_button"
+                    android:id="@+id/btnConfirm"
+                    android:textAllCaps="false"
+                    android:text="Confirm Selection"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

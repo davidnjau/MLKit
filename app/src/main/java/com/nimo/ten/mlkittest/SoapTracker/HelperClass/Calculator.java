@@ -55,7 +55,7 @@ public class Calculator {
 
     private boolean isUpdated = false;
 
-    private List<Integer> myPercentage = new ArrayList<>();
+    private List<Double> myPercentage = new ArrayList<>();
     private List<Double> myNaohWeight = new ArrayList<>();
 
     private String txtDbNaohWeight;
@@ -79,7 +79,7 @@ public class Calculator {
 
             do {
 
-                int default_percentage = c.getInt(c.getColumnIndex(KEY_PERCENTAGE));
+                double default_percentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
 
                 myPercentage.add(default_percentage);
 
@@ -118,7 +118,7 @@ public class Calculator {
 
             do {
 
-                int default_percentage = c.getInt(c.getColumnIndex(KEY_PERCENTAGE));
+                double default_percentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
 
                 myPercentage.add(default_percentage);
 
@@ -156,7 +156,7 @@ public class Calculator {
 
             do {
 
-                int default_percentage = c.getInt(c.getColumnIndex(KEY_PERCENTAGE));
+                double default_percentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
 
                 myPercentage.add(default_percentage);
 
@@ -167,9 +167,10 @@ public class Calculator {
 
         }
 
+
         for (int i = 0; i < myPercentage.size(); i++){
 
-            SoapPerc = myPercentage.get(i) + SoapPerc;
+            SoapPerc = (myPercentage.get(i)*100) + SoapPerc;
 
         }
 
@@ -196,7 +197,7 @@ public class Calculator {
 
             do {
 
-                int default_percentage = c.getInt(c.getColumnIndex(KEY_PERCENTAGE));
+                double default_percentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
 
                 myPercentage.add(default_percentage);
 
