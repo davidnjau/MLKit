@@ -30,7 +30,7 @@ class SplashPage : AppCompatActivity() {
         val handler = Handler()
         handler.postDelayed({
 
-            val intent = Intent(this, SoapHeal_Healing::class.java)
+            val intent = Intent(this, MainActivityDrawer::class.java)
             startActivity(intent)
             finish()
 

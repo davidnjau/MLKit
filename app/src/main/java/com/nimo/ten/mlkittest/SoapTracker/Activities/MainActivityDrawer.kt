@@ -108,9 +108,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 )
                 setTitle("View Sample Recipes")
             }
-            R.id.nav_profile -> Toast.makeText(this, "Clicked item one", Toast.LENGTH_SHORT).show()
-            R.id.nav_about_us -> Toast.makeText(this, "Clicked item one", Toast.LENGTH_SHORT).show()
-            R.id.nav_exit_app -> Toast.makeText(this, "Clicked item one", Toast.LENGTH_SHORT).show()
+
 
         }
 
@@ -118,6 +116,16 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         return true
 
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        replaceFragmenty(
+                fragment = FragmentMyRecipe(),
+                allowStateLoss = true,
+                containerViewId = R.id.mainContent
+        )
     }
 
     override fun onBackPressed() {

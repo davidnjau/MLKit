@@ -6,8 +6,9 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
-import android.util.Log
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +21,14 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Activities.MainActivityDrawer
+import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapIngredientsRecyclerAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapMyOilsAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapOilsAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator
+import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo
+import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapLyeLiquidsPojo
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +38,10 @@ class FragmentCreateNewRecipe : Fragment() {
     lateinit var btnChooseSoap: Button
     lateinit var bottomSheetText: TextView
     lateinit var recyclerView6: RecyclerView
-    lateinit var layoutManager: RecyclerView.LayoutManager
+
+    lateinit var layoutManager1: RecyclerView.LayoutManager
+    lateinit var layoutManager2: RecyclerView.LayoutManager
+
     private lateinit var myview: LinearLayout
     private lateinit var mySelectedList: List<String>
 
@@ -48,6 +55,9 @@ class FragmentCreateNewRecipe : Fragment() {
     var c = Calendar.getInstance()
     private lateinit var oilsAdapter1: SoapMyOilsAdapter
     private var soapLyeLiquidsPojoArrayList1 = ArrayList<SoapOilsPojo>()
+
+    var soapDetailsRecyclerAdapter: SoapIngredientsRecyclerAdapter? = null
+    var soapTrackerPojoArrayList: List<IngredientsPojo>? = null
 
     private lateinit var etSuperFat: EditText
 
@@ -89,6 +99,7 @@ class FragmentCreateNewRecipe : Fragment() {
     private lateinit var db: SQLiteDatabase
 
     private var SoapId : String = "0"
+    private var isGood = true
 
     private var calculator: Calculator = Calculator()
 
@@ -104,7 +115,6 @@ class FragmentCreateNewRecipe : Fragment() {
         bottomSheetText = view.findViewById(R.id.bottomSheetText)
         databaseHelper = DatabaseHelper(activity)
 
-        recyclerViewFragnance = view.findViewById(R.id.recyclerViewFragnance)
 
         etWater = view.findViewById(R.id.etWater)
         etLiquid = view.findViewById(R.id.etLiquid)
@@ -201,7 +211,8 @@ class FragmentCreateNewRecipe : Fragment() {
 
         }
 
-        layoutManager = LinearLayoutManager(activity)
+        layoutManager1 = LinearLayoutManager(activity)
+        layoutManager2 = LinearLayoutManager(activity)
 
         recyclerView6 = view.findViewById(R.id.recyclerView6)
         myview = view.findViewById<LinearLayout>(R.id.myview)
@@ -228,7 +239,11 @@ class FragmentCreateNewRecipe : Fragment() {
         }
 
         recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerViewFragnance = view.findViewById(R.id.recyclerViewFragnance)
+
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerViewFragnance.layoutManager = LinearLayoutManager(activity)
+
         linearEssentialOil = view.findViewById(R.id.linearEssentialOil)
 
         btnSaveSuperFat = view.findViewById(R.id.btnSaveSuperFat)
@@ -450,7 +465,19 @@ class FragmentCreateNewRecipe : Fragment() {
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
 
-            InputDialog()
+            val soap_id = preferences.getString("recipe_id", null).toString()
+            val oils_exists = checkOils(soap_id)
+
+            if (oils_exists){
+
+                InputDialog(soap_id)
+
+            }else{
+
+                Toast.makeText(activity, "You first need to select some oils", Toast.LENGTH_SHORT).show()
+
+            }
+
 
         }
 
@@ -486,14 +513,51 @@ class FragmentCreateNewRecipe : Fragment() {
 
     }
 
-    private fun InputDialog() {
+    private fun InputDialog(soapId: String) {
+
         val li = LayoutInflater.from(activity)
         val promptsView = li.inflate(R.layout.alert_dialog_fragnance, null)
         val alertDialogBuilder = AlertDialog.Builder(requireActivity())
         alertDialogBuilder.setView(promptsView)
 
+        val EssentialOil = databaseHelper.getTotalEssentials(soapId)
+
         val etIngredients = promptsView.findViewById<EditText>(R.id.etIngredients)
         val etPercentage = promptsView.findViewById<EditText>(R.id.etPercentage)
+        val tvTitleWeight = promptsView.findViewById<TextView>(R.id.tvTitleWeight)
+
+        tvTitleWeight.text = EssentialOil.toString()
+
+        val RemainingPercentage = calculator.getRemainingEssentialPercentage(soapId, activity)
+        if (RemainingPercentage >= 0) etPercentage.hint = "The remaining percentage is $RemainingPercentage %"
+
+        etPercentage.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    val text = s.toString().toDouble()
+                    if (100 - text < 0) {
+                        isGood = false
+                        ShowCustomToast(activity, "Your percentage is not right.")
+                    } else {
+                        isGood = true
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    val text = s.toString().toDouble()
+                    if (100 - text < 0) {
+                        isGood = false
+                        etPercentage.setText("")
+                        etPercentage.error = "Your percentage cannot exceed 100%"
+                    } else {
+                        isGood = true
+                    }
+                }
+            }
+        })
 
         alertDialogBuilder
                 .setCancelable(false)
@@ -510,7 +574,53 @@ class FragmentCreateNewRecipe : Fragment() {
 
             if (!TextUtils.isEmpty(txtIngredients) && !TextUtils.isEmpty(txtPercentage)){
 
-                
+                val txtIngredients = etIngredients.text.toString()
+                val txtPercentage = etPercentage.text.toString()
+
+                if (isGood) {
+
+                    if (!TextUtils.isEmpty(txtIngredients) && !TextUtils.isEmpty(txtPercentage) ) {
+
+                        val RemainingPercentage = calculator.getRemainingEssentialPercentage(soapId, activity)
+                        val GivenPercentage = java.lang.Double.valueOf(txtPercentage)
+
+                        if (RemainingPercentage >= 0) {
+
+                            if (GivenPercentage <= RemainingPercentage) {
+
+                                val txtSoapWeight = calculator.getRemainingEssentialWeight(soapId, txtPercentage, activity).toString()
+
+                                databaseHelper.AddEssentialOils(txtIngredients, soapId, txtPercentage,
+                                        txtSoapWeight)
+
+                                ShowCustomToast(activity, "Successfully added an ingredient")
+                                alertDialog.dismiss()
+
+                                StartEssentialOilRecyclerView(soapId)
+
+                            } else {
+
+                                ShowCustomToast(activity, "Your Percentage is too high..")
+                                etPercentage.setText("")
+                                etPercentage.hint = "The remaining percentage is $RemainingPercentage %"
+
+                            }
+                        }
+
+                    } else {
+
+                        if (TextUtils.isEmpty(txtIngredients)) etIngredients.error = "Ingredients cannot be empty.."
+                        if (TextUtils.isEmpty(txtPercentage)) etPercentage.error = "Percentage cannot be empty.."
+                    }
+
+
+
+                } else {
+
+                    etPercentage.setText("")
+                    etPercentage.error = "Your Percentage is not correct!"
+                }
+
 
             }else{
 
@@ -615,7 +725,7 @@ class FragmentCreateNewRecipe : Fragment() {
 
     private fun StartRecyclerView() {
 
-        recyclerView6.layoutManager = layoutManager
+        recyclerView6.layoutManager = layoutManager1
         recyclerView6.setHasFixedSize(true)
         soapLyeLiquidsPojoArrayList = databaseHelper.soapOils
         oilsAdapter = SoapOilsAdapter(activity, soapLyeLiquidsPojoArrayList)
@@ -626,6 +736,23 @@ class FragmentCreateNewRecipe : Fragment() {
         } else {
             myview.visibility = View.GONE
             recyclerView6.visibility = View.VISIBLE
+        }
+
+    }
+    private fun StartEssentialOilRecyclerView(soapId: String) {
+
+        recyclerViewFragnance.layoutManager = layoutManager2
+        recyclerViewFragnance.setHasFixedSize(true)
+
+        soapTrackerPojoArrayList = databaseHelper.getSoapEssentialOils(soapId)
+        soapDetailsRecyclerAdapter = SoapIngredientsRecyclerAdapter(activity, soapTrackerPojoArrayList as ArrayList<IngredientsPojo?>?)
+        recyclerView6.adapter = soapDetailsRecyclerAdapter
+        recyclerViewFragnance.adapter = soapDetailsRecyclerAdapter
+
+        if (soapDetailsRecyclerAdapter!!.getItemCount() == 0) {
+            recyclerViewFragnance.visibility = View.GONE
+        } else {
+            recyclerViewFragnance.visibility = View.VISIBLE
         }
 
     }
