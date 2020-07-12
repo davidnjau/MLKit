@@ -127,6 +127,7 @@ class FragmentCreateNewRecipe : Fragment() {
 
         btnSaveRatio = view.findViewById(R.id.btnSaveRatio)
         btnSaveConcentration = view.findViewById(R.id.btnSaveConcentration)
+
         btnSaveEssentialOils = view.findViewById(R.id.btnSaveEssentialOils)
         tvEssentialOil = view.findViewById(R.id.tvEssentialOil)
 

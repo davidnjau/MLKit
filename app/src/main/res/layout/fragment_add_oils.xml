@@ -9,6 +9,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:padding="10dp"
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="italic"
+                android:gravity="end"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="Step 1 of 3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
         <Button
             android:textColor="@color/colorAccent"
             android:layout_margin="10dp"
@@ -138,7 +154,7 @@
                 android:id="@+id/btnSaveOils"
                 android:textAllCaps="false"
                 android:layout_width="match_parent"
-                android:text="Save Oils and Proceed"
+                android:text="Save Oils and Proceed to Water information"
                 android:layout_height="wrap_content"/>
 
 

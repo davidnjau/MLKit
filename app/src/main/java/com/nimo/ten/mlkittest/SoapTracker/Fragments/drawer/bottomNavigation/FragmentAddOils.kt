@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +46,8 @@ class FragmentAddOils : Fragment() {
     private lateinit var calculator:Calculator
     private lateinit var SuperFatSwitch: Switch
     private lateinit var linearSuperFat: LinearLayout
+    private lateinit var btnSaveSuperFat: Button
+    private lateinit var etSuperFat: EditText
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -68,9 +69,11 @@ class FragmentAddOils : Fragment() {
 
         preferences = requireActivity().getSharedPreferences("Soap", Context.MODE_PRIVATE)
         linearSuperFat = view.findViewById(R.id.linearSuperFat)
+        btnSaveSuperFat = view.findViewById(R.id.btnSaveSuperFat)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        etSuperFat = view.findViewById(R.id.etSuperFat)
 
         val bottomSheet: View = view.findViewById(R.id.bottomSheet)
 
@@ -152,41 +155,6 @@ class FragmentAddOils : Fragment() {
             }
         }
 
-        btnSaveOils.setOnClickListener {
-
-            val txtTotalOils = etOilAmount.text
-
-            if (!TextUtils.isEmpty(txtTotalOils)) {
-                //Calculate Everything
-                val RemainingPercentage: Double = calculator.getRemainingTotalOilsPercentage(Recipe_id, context)
-
-                if (RemainingPercentage != 0.0) {
-
-                    val RemPerc = RemainingPercentage * -1
-
-                    var result = when  {
-
-                        RemainingPercentage == 100.0 -> "Please save some oil percentages."
-                        RemainingPercentage < 100.0 && RemainingPercentage > 0.0 -> "Your percentages are less by $RemainingPercentage % \nPlease adjust your percentages."
-                        RemainingPercentage < 0.0 -> "You have exceeded the total percentage by $RemPerc % \nPlease adjust your percentages."
-                        else -> "Error! Please try again"
-                    }
-
-                    OpenDialog(result)
-
-                } else {
-
-                    Toast.makeText(activity, "Good", Toast.LENGTH_LONG).show()
-
-                }
-            }else {
-
-                etOilAmount.error = "The total amount of oils cannot be empty"
-            }
-
-
-        }
-
         SuperFatSwitch = view.findViewById(R.id.SuperFatSwitch)
 
         SuperFatSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -196,6 +164,8 @@ class FragmentAddOils : Fragment() {
                 val soap_id = preferences.getString("recipe_id", null).toString()
                 val oils_exists = checkOils(soap_id.toString())
                 if (oils_exists){
+
+                    databaseHelper.updateSuperFatRatio(soap_id, 5.0)
 
                     linearSuperFat.visibility = View.VISIBLE
                     getSuperFatValues()
@@ -217,8 +187,82 @@ class FragmentAddOils : Fragment() {
 
             }else{
 
+                databaseHelper.updateSuperFatRatio(Recipe_id, 0.0)
+
+
                 linearSuperFat.visibility = View.GONE
             }
+
+        }
+        btnSaveSuperFat.setOnClickListener {
+
+            val txtSuperFatTotal = etSuperFat.text.toString()
+            if (!TextUtils.isEmpty(txtSuperFatTotal)){
+
+                val SuperFat = txtSuperFatTotal.toDouble()
+
+                if (SuperFat < 100){
+
+                    val soap_id = preferences.getString("recipe_id", null).toString()
+                    val oils_exists = checkOils(soap_id.toString())
+                    if (oils_exists){
+
+                        databaseHelper.updateSuperFatRatio(soap_id, SuperFat)
+                        Toast.makeText(activity, "Super fat percentage updated", Toast.LENGTH_LONG).show()
+
+                    }
+
+                }else
+                    Toast.makeText(activity, "Super fat percentage cannot be  more than 100%", Toast.LENGTH_LONG).show()
+
+
+            }else
+                etSuperFat.error = "Add a super fat percentage"
+
+
+
+        }
+
+        btnSaveOils.setOnClickListener {
+
+            val txtTotalOils = etOilAmount.text
+
+            if (!TextUtils.isEmpty(txtTotalOils) || !txtTotalOils.equals("0.0")) {
+                //Calculate Everything
+                val RemainingPercentage: Double = calculator.getRemainingTotalOilsPercentage(Recipe_id, context)
+
+                if (RemainingPercentage != 0.0) {
+
+                    val RemPerc = RemainingPercentage * -1
+
+                    var result = when  {
+
+                        RemainingPercentage == 100.0 -> "Please save some oil percentages."
+                        RemainingPercentage < 100.0 && RemainingPercentage > 0.0 -> "Your percentages are less by $RemainingPercentage % \nPlease adjust your percentages."
+                        RemainingPercentage < 0.0 -> "You have exceeded the total percentage by $RemPerc % \nPlease adjust your percentages."
+                        else -> "Error! Please try again"
+                    }
+
+                    OpenDialog(result)
+
+                } else {
+
+                    //Save Everything
+                    val txtOilAmount = etOilAmount.text.toString()
+                    databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
+
+
+                    Toast.makeText(activity, "Oil Data successfully saved", Toast.LENGTH_LONG).show()
+
+                    var fragment = FragmentAddWater()
+                    loadFragment(fragment)
+                }
+
+            }else {
+
+                etOilAmount.error = "The total amount of oils cannot be empty"
+            }
+
 
         }
 
@@ -251,6 +295,22 @@ class FragmentAddOils : Fragment() {
         super.onStart()
 
         Recipe_id = preferences.getString("recipe_id", null).toString()
+
+        val OilAmount = databaseHelper.getOilsWeight(Recipe_id).liquidWeight
+        val superFat = databaseHelper.getOilsWeight(Recipe_id).superFat
+
+        etOilAmount.setText(OilAmount.toString())
+
+        if (superFat != "0.0"){
+
+            SuperFatSwitch.isChecked = true
+            etSuperFat.setText(superFat)
+
+        }else{
+
+            SuperFatSwitch.isChecked = false
+        }
+
 
         StartRecyclerView()
         CheckOilsList()
@@ -312,5 +372,12 @@ class FragmentAddOils : Fragment() {
 
     }
 
+    private fun loadFragment(fragment: Fragment) {
+        // load fragment
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
 }

@@ -282,7 +282,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_ESSENTIAL_OIL_WEIGHT, 0.0);
         contentValues.put(KEY_ESSENTIAL_OIL_RATIO, 0.02);
 
-        contentValues.put(KEY_SUPER_FAT, 5.0);
+        contentValues.put(KEY_SUPER_FAT, 0.0);
 
         contentValues.put(KEY_TOTAL_OIL_AMOUNT, 0.0);
 
@@ -1043,6 +1043,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    }
+    public RecipeDetailsPojo getOilsWeight(String recipeId){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        RecipeDetailsPojo recipeDetailsPojo = new RecipeDetailsPojo();
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE  +" WHERE " + KEY_ID + " = '"+recipeId+"'";
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null && c.moveToFirst()) {
+
+            do {
+
+                String OilWeight = c.getString(c.getColumnIndex(KEY_TOTAL_OIL_AMOUNT));
+                String superFat = c.getString(c.getColumnIndex(KEY_SUPER_FAT));
+
+                String TotalWeight = c.getString(c.getColumnIndex(KEY_TOTAL_WEIGHT));
+
+                String WaterWeight = c.getString(c.getColumnIndex(KEY_LIQUID_WEIGHT));
+                String LyeWeight = c.getString(c.getColumnIndex(KEY_NAOH_WEIGHT));
+
+                recipeDetailsPojo.setTotalWeight(TotalWeight);
+                recipeDetailsPojo.setSuperFat(superFat);
+                recipeDetailsPojo.setLiquidWeight(OilWeight);
+
+                recipeDetailsPojo.setLiquid(WaterWeight);
+                recipeDetailsPojo.setLyeWeight(LyeWeight);
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+        return recipeDetailsPojo;
     }
 
     public void updateMySoapWeight(String id, double weight){

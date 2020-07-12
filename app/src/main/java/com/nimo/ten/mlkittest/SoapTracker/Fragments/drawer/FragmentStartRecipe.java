@@ -13,11 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nimo.ten.mlkittest.R;
+import com.nimo.ten.mlkittest.SoapTracker.Fragments.drawer.bottomNavigation.FragmentAddFragrance;
 import com.nimo.ten.mlkittest.SoapTracker.Fragments.drawer.bottomNavigation.FragmentAddOils;
-import com.nimo.ten.mlkittest.SoapTracker.Fragments.drawer.bottomNavigation.FragmentFragrance;
-import com.nimo.ten.mlkittest.SoapTracker.Fragments.drawer.bottomNavigation.FragmentWater;
-
-import static com.nimo.ten.mlkittest.SoapTracker.HelperClass.UtilKt.replaceFragmenty;
+import com.nimo.ten.mlkittest.SoapTracker.Fragments.drawer.bottomNavigation.FragmentAddWater;
 
 
 public class FragmentStartRecipe extends Fragment {
@@ -61,11 +59,11 @@ public class FragmentStartRecipe extends Fragment {
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_water:
-                    fragment = new FragmentWater();
+                    fragment = new FragmentAddWater();
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_fragrance:
-                    fragment = new FragmentFragrance();
+                    fragment = new FragmentAddFragrance();
                     loadFragment(fragment);
                     return true;
 
