@@ -2,6 +2,7 @@ package com.nimo.ten.mlkittest.SoapTracker.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nimo.ten.mlkittest.R;
+import com.nimo.ten.mlkittest.SoapTracker.Activities.PreviewRecipeDetails;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.RecipeDetailsPojo;
@@ -47,6 +49,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAd
         RecipeRecyclerAdapter.ViewHolder holder = new RecipeRecyclerAdapter.ViewHolder(view);
 
         preferences = context.getSharedPreferences("Soap", Context.MODE_PRIVATE);
+
         databaseHelper = new DatabaseHelper(context);
 
         return holder;
@@ -67,37 +70,34 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAd
         String EssentialOil = IngredientsPojoArrayList.get(position).getEssentialOil();
         String TotalWeight = IngredientsPojoArrayList.get(position).getTotalWeight();
 
+        String recipeId = IngredientsPojoArrayList.get(position).getId();
+
         holder.tvRecipeName.setText(RecipeName);
-        holder.tvLiquidWeight.setText(LiquidWeight);
-        holder.tvLyeWeight.setText(LyeWeight);
-        holder.tvEssentialOilWeight.setText(EssentialOil);
-        holder.tvTotalWeight.setText(TotalWeight);
+        holder.tvDateIn.setText(DateIn);
 
+        holder.itemView.setOnClickListener(view -> {
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("recipe_id", recipeId);
+            editor.apply();
 
+            context.startActivity(new Intent(context, PreviewRecipeDetails.class));
 
-            }
         });
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
+        holder.itemView.setOnLongClickListener(v -> {
 
-                String txtId = IngredientsPojoArrayList.get(position).getId();
-                databaseHelper.deleteNotes(Integer.parseInt(txtId));
+            String txtId = IngredientsPojoArrayList.get(position).getId();
+            databaseHelper.deleteNotes(Integer.parseInt(txtId));
 
-                new ShowCustomToast((Activity)context, "Deleted " );
+            new ShowCustomToast((Activity)context, "Deleted " );
 
-                IngredientsPojoArrayList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, IngredientsPojoArrayList.size());
+            IngredientsPojoArrayList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, IngredientsPojoArrayList.size());
 
 
-                return true;
-            }
+            return true;
         });
 
     }
@@ -111,16 +111,13 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvRecipeName, tvLiquidWeight, tvLyeWeight, tvEssentialOilWeight, tvTotalWeight;
+        TextView tvRecipeName, tvDateIn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvRecipeName = itemView.findViewById(R.id.tvRecipeName);
-            tvLiquidWeight = itemView.findViewById(R.id.tvLiquidWeight);
-            tvLyeWeight = itemView.findViewById(R.id.tvLyeWeight);
-            tvEssentialOilWeight = itemView.findViewById(R.id.tvEssentialOilWeight);
-            tvTotalWeight = itemView.findViewById(R.id.tvTotalWeight);
+            tvDateIn = itemView.findViewById(R.id.tvDateIn);
 
         }
     }

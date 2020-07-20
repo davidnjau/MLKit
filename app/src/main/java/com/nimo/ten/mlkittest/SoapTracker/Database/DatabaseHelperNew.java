@@ -164,6 +164,7 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
         long id = db.insert(TABLE_RECIPE_TABLE, null, contentValues);
         return id;
     }
+
     public RecipeDetailsPojo getOilsWeight(String recipeId){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -216,6 +217,7 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
         }
         return recipeDetailsPojo;
     }
+
     public void AddMySoapOils(String SoapId, String OilName, String Naoh){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -895,7 +897,42 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
         return oilsData;
 
     }
+    public ArrayList<RecipeDetailsPojo> getMyRecipes() {
 
+        ArrayList<RecipeDetailsPojo> soapTrackerPojoArrayList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                RecipeDetailsPojo soapTrackerPojo = new RecipeDetailsPojo();
+
+                soapTrackerPojo.setId(c.getString(c.getColumnIndex(KEY_ID)));
+                soapTrackerPojo.setRecipeName(c.getString(c.getColumnIndex(KEY_RECIPE_NAME)));
+                soapTrackerPojo.setDate_in(c.getString(c.getColumnIndex(KEY_DATE_IN)));
+                soapTrackerPojo.setLiquidWeight(c.getString(c.getColumnIndex(KEY_LIQUID_WEIGHT)));
+                soapTrackerPojo.setLyeWeight(c.getString(c.getColumnIndex(KEY_NAOH_WEIGHT)));
+                soapTrackerPojo.setLyeRatio(c.getString(c.getColumnIndex(KEY_NAOH_RATIO)));
+                soapTrackerPojo.setLiquid(c.getString(c.getColumnIndex(KEY_LIQUID_RATIO)));
+                soapTrackerPojo.setEssentialOil(c.getString(c.getColumnIndex(KEY_ESSENTIAL_OIL_WEIGHT)));
+                soapTrackerPojo.setEssentialRatio(c.getString(c.getColumnIndex(KEY_ESSENTIAL_OIL_RATIO)));
+                soapTrackerPojo.setSuperFat(c.getString(c.getColumnIndex(KEY_SUPER_FAT)));
+                soapTrackerPojo.setTotalWeight(c.getString(c.getColumnIndex(KEY_TOTAL_WEIGHT)));
+
+                soapTrackerPojoArrayList.add(soapTrackerPojo);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        return soapTrackerPojoArrayList;
+    }
     //Delete
     public void deleteEssentialOils(String id) {
 

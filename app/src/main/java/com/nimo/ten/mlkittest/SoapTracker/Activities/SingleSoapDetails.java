@@ -131,16 +131,12 @@ public class SingleSoapDetails extends AppCompatActivity {
         tvDurationTaken = findViewById(R.id.tvDurationTaken);
         tvSoapCondition = findViewById(R.id.tvSoapCondition);
 
-        findViewById(R.id.btn_MoreDetails).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), SoapRecipe.class);
-                startActivity(intent);
+        findViewById(R.id.btn_MoreDetails).setOnClickListener(v -> {
 
 
+//            Intent intent = new Intent(getApplicationContext(), SoapRecipe.class);
+//            startActivity(intent);
 
-            }
         });
 
     }
@@ -386,11 +382,12 @@ public class SingleSoapDetails extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.ic_share) {
-
-            InputDialog();
-
-        }else if (id == R.id.ic_delete) {
+//        if (id == R.id.ic_share) {
+//
+////            InputDialog();
+//
+//        }else
+        if (id == R.id.ic_delete) {
 
             DeleteDialog();
 

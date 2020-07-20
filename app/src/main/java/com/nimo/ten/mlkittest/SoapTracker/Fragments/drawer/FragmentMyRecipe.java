@@ -17,6 +17,7 @@ import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.RecipeRecyclerAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapHealingRecyclerAdapter;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.RecipeDetailsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 
@@ -29,7 +30,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class FragmentMyRecipe extends Fragment {
 
     private String Soap_id;
-    private DatabaseHelper databaseHelper;
+    private DatabaseHelperNew databaseHelper;
 
     public FragmentMyRecipe(){
 
@@ -54,6 +55,7 @@ public class FragmentMyRecipe extends Fragment {
         myview = view.findViewById(R.id.myview);
         layoutManager = new LinearLayoutManager(getActivity());
 
+        getActivity().setTitle("Soap recipes");
 
         return view;
     }
@@ -74,7 +76,7 @@ public class FragmentMyRecipe extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        databaseHelper = new DatabaseHelper(getActivity());
+        databaseHelper = new DatabaseHelperNew(getActivity());
 
         recipeDetailsPojoList = databaseHelper.getMyRecipes();
         recipeRecyclerAdapter = new RecipeRecyclerAdapter(getActivity(), (ArrayList<RecipeDetailsPojo>) recipeDetailsPojoList);

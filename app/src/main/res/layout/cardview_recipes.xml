@@ -6,147 +6,40 @@
     app:cardElevation="5dp"
     android:layout_height="wrap_content">
 
-    <TableLayout
-        android:orientation="vertical"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <TableRow
-            android:background="@drawable/table_header_cell_bg"
-            android:orientation="horizontal"
+        <ImageView
+            android:background="@drawable/nimo_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:text="Recipe Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:textStyle="bold"
                 android:id="@+id/tvRecipeName"
                 android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:text=""
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </TableRow>
-
-
-        <TableRow
-            android:background="@drawable/table_content_cell_bg_1"
-            
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text="Liquid Weight"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="Recipe Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/tvLiquidWeight"
+                android:id="@+id/tvDateIn"
                 android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text=""
+                android:text="20.3.6"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
-            android:background="@drawable/table_content_cell_bg"
-            
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text="Lye Weight"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/tvLyeWeight"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text=""
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </TableRow>
-
-        <TableRow
-            android:background="@drawable/table_content_cell_bg_1"
-            
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text="Essential oil Weight"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/tvEssentialOilWeight"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text=""
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </TableRow>
-
-        <TableRow
-            android:background="@drawable/table_content_cell_bg"
-            
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text="Total Weight"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:textStyle="bold"
-                android:id="@+id/tvTotalWeight"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text=""
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </TableRow>
-
-
-    </TableLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -124,6 +124,34 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 )
                 setTitle("View Sample Recipes")
             }
+            R.id.nav_about_us -> {
+
+                replaceFragmenty(
+                        fragment = FragmentAboutUs(),
+                        allowStateLoss = true,
+                        containerViewId = R.id.mainContent
+                )
+                setTitle("Contact us")
+            }
+            R.id.nav_raw_ingredients -> {
+
+                replaceFragmenty(
+                        fragment = FragmentBuyRawMaterials(),
+                        allowStateLoss = true,
+                        containerViewId = R.id.mainContent
+                )
+                setTitle("View Sample Recipes")
+            }
+
+            R.id.nav_profile -> {
+
+                startActivity(Intent(applicationContext, Profile::class.java))
+            }
+
+            R.id.nav_exit_app ->{
+
+                ExitDialog()
+            }
 
 
         }
@@ -134,11 +162,26 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     }
 
+    private fun ExitDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setMessage("Are you sure You want to exit the app")
+        alertDialogBuilder.setPositiveButton("yes"
+        ) { arg0, arg1 ->
+            val intent = Intent(Intent.ACTION_MAIN)
+            intent.addCategory(Intent.CATEGORY_HOME)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+        alertDialogBuilder.setNegativeButton("No") { dialog, which -> }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
+
     override fun onStart() {
         super.onStart()
 
         replaceFragmenty(
-                fragment = FragmentMyRecipe(),
+                fragment = FragmentSampleRecipe(),
                 allowStateLoss = true,
                 containerViewId = R.id.mainContent
         )
