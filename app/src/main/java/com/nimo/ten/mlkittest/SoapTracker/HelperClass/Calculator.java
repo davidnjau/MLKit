@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.LyeCalculatorPojo;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.OilsLiquidData;
@@ -41,6 +42,7 @@ public class Calculator {
     public static final String KEY_ESSENTIAL_OIL_NAME = "essential_name";
 
     DatabaseHelper databaseHelper;
+    DatabaseHelperNew databaseHelper1;
 
     Double TotalPercerntage = 0.0;
     private Double i = 0.0;
@@ -146,9 +148,9 @@ public class Calculator {
 
         Clear();
 
-        databaseHelper = new DatabaseHelper(context);
+        databaseHelper1 = new DatabaseHelperNew(context);
         String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS+" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db = databaseHelper1.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
         if (c.moveToFirst()) {
@@ -157,7 +159,6 @@ public class Calculator {
             do {
 
                 double default_percentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
-
                 myPercentage.add(default_percentage);
 
 
@@ -167,16 +168,10 @@ public class Calculator {
 
         }
 
-
         for (int i = 0; i < myPercentage.size(); i++){
-
             SoapPerc = (myPercentage.get(i)*100) + SoapPerc;
-
         }
-
         RemPercentage = 100 - SoapPerc;
-
-
 
         return RemPercentage;
 

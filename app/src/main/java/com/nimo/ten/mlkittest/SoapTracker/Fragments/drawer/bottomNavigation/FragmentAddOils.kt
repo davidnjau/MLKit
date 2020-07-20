@@ -20,6 +20,7 @@ import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapMyOilsAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapOilsAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.SoapOilsPojo
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.CheckboxPojo
@@ -35,19 +36,19 @@ class FragmentAddOils : Fragment() {
     private lateinit var oilsAdapter: SoapOilsAdapter
     private var soapLyeLiquidsPojoArrayList = ArrayList<CheckboxPojo>()
     lateinit var databaseHelper: DatabaseHelper
+    lateinit var databaseHelper1: DatabaseHelperNew
+
     private lateinit var btnConfirm: Button
     private lateinit var preferences: SharedPreferences
     private lateinit var Recipe_id: String
     private lateinit var recyclerView: RecyclerView
     private lateinit var oilsAdapter1: SoapMyOilsAdapter
     private var soapLyeLiquidsPojoArrayList1 = ArrayList<SoapOilsPojo>()
-    private lateinit var btnTotalOilAmount: Button
     private lateinit var btnSaveOils: Button
     private lateinit var etOilAmount: EditText
     private lateinit var calculator:Calculator
     private lateinit var SuperFatSwitch: Switch
     private lateinit var linearSuperFat: LinearLayout
-    private lateinit var btnSaveSuperFat: Button
     private lateinit var btnCalculate: Button
     private lateinit var etSuperFat: EditText
 
@@ -64,15 +65,14 @@ class FragmentAddOils : Fragment() {
         recyclerView6 = view.findViewById(R.id.recyclerView6)
         myview = view.findViewById<LinearLayout>(R.id.myview)
         databaseHelper = DatabaseHelper(activity)
+        databaseHelper1 = DatabaseHelperNew(activity)
         btnConfirm = view.findViewById(R.id.btnConfirm)
-        btnTotalOilAmount = view.findViewById(R.id.btnTotalOilAmount)
         btnSaveOils = view.findViewById(R.id.btnSaveOils)
         btnCalculate = view.findViewById(R.id.btnCalculate)
         etOilAmount = view.findViewById(R.id.etOilAmount)
 
         preferences = requireActivity().getSharedPreferences("Soap", Context.MODE_PRIVATE)
         linearSuperFat = view.findViewById(R.id.linearSuperFat)
-        btnSaveSuperFat = view.findViewById(R.id.btnSaveSuperFat)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -127,7 +127,9 @@ class FragmentAddOils : Fragment() {
 
                 if (txtOilAmount.toDouble() != 0.0){
 
-                    databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
+                    databaseHelper1.updateOilAmount(Recipe_id, txtOilAmount.toDouble())
+//                    databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
+
                     Toast.makeText(activity, "The oil amount was updated successfully", Toast.LENGTH_LONG).show()
 
                     for (i in SoapOilsAdapter.soapTrackerPojoArrayList.indices) {
@@ -136,7 +138,8 @@ class FragmentAddOils : Fragment() {
                             val txtOilName: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].liquids
                             val txtNaoh: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].naOh
 
-                            databaseHelper.AddMySoapOils(Recipe_id, txtOilName, txtNaoh)
+                            databaseHelper1.AddMySoapOils(Recipe_id, txtOilName, txtNaoh)
+//                            databaseHelper.AddMySoapOils(Recipe_id, txtOilName, txtNaoh)
 
                         }
                     }
@@ -163,22 +166,6 @@ class FragmentAddOils : Fragment() {
 
         }
 
-        btnTotalOilAmount.setOnClickListener {
-
-            val txtOilAmount = etOilAmount.text.toString()
-            if (!TextUtils.isEmpty(txtOilAmount)){
-
-                //Total oil amount
-                databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
-                Toast.makeText(activity, "The oil amount was updated successfully", Toast.LENGTH_LONG).show()
-
-                CheckOilsList()
-
-            }else {
-                etOilAmount.error = "You must first enter the total amount of oils"
-                Toast.makeText(activity, "You must first enter the total amount of oils", Toast.LENGTH_LONG).show()
-            }
-        }
 
         SuperFatSwitch = view.findViewById(R.id.SuperFatSwitch)
 
@@ -190,7 +177,8 @@ class FragmentAddOils : Fragment() {
                 val oils_exists = checkOils(soap_id.toString())
                 if (oils_exists){
 
-                    databaseHelper.updateSuperFatRatio(soap_id, 5.0)
+//                    databaseHelper.updateSuperFatRatio(soap_id, 5.0)
+                    databaseHelper1.updateSuperFatRatio(soap_id, 5.0)
 
                     linearSuperFat.visibility = View.VISIBLE
                     getSuperFatValues()
@@ -212,41 +200,14 @@ class FragmentAddOils : Fragment() {
 
             }else{
 
-                databaseHelper.updateSuperFatRatio(Recipe_id, 0.0)
+//                databaseHelper.updateSuperFatRatio(Recipe_id, 0.0)
+                databaseHelper1.updateSuperFatRatio(Recipe_id, 0.0)
 
                 linearSuperFat.visibility = View.GONE
             }
 
         }
 
-        btnSaveSuperFat.setOnClickListener {
-
-            val txtSuperFatTotal = etSuperFat.text.toString()
-            if (!TextUtils.isEmpty(txtSuperFatTotal)){
-
-                val SuperFat = txtSuperFatTotal.toDouble()
-
-                if (SuperFat < 100){
-
-                    val soap_id = preferences.getString("recipe_id", null).toString()
-                    val oils_exists = checkOils(soap_id.toString())
-                    if (oils_exists){
-
-                        databaseHelper.updateSuperFatRatio(soap_id, SuperFat)
-                        Toast.makeText(activity, "Super fat percentage updated", Toast.LENGTH_LONG).show()
-
-                    }
-
-                }else
-                    Toast.makeText(activity, "Super fat percentage cannot be  more than 100%", Toast.LENGTH_LONG).show()
-
-
-            }else
-                etSuperFat.error = "Add a super fat percentage"
-
-
-
-        }
 
         btnCalculate.setOnClickListener {
 
@@ -264,7 +225,8 @@ class FragmentAddOils : Fragment() {
                         val oils_exists = checkOils(soap_id.toString())
                         if (oils_exists){
 
-                            databaseHelper.updateSuperFatRatio(soap_id, SuperFat)
+//                            databaseHelper.updateSuperFatRatio(soap_id, SuperFat)
+                            databaseHelper1.updateSuperFatRatio(soap_id, SuperFat)
                             Toast.makeText(activity, "Super fat percentage updated", Toast.LENGTH_LONG).show()
 
                         }
@@ -308,7 +270,8 @@ class FragmentAddOils : Fragment() {
 
                     //Save Everything
                     val txtOilAmount = etOilAmount.text.toString()
-                    databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
+//                    databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
+                    databaseHelper1.updateOilAmount(Recipe_id, txtOilAmount.toDouble())
 
 
                     Toast.makeText(activity, "Oil Data successfully saved", Toast.LENGTH_LONG).show()
@@ -355,8 +318,8 @@ class FragmentAddOils : Fragment() {
 
         Recipe_id = preferences.getString("recipe_id", null).toString()
 
-        val OilAmount = databaseHelper.getOilsWeight(Recipe_id).oilWeight
-        val superFat = databaseHelper.getOilsWeight(Recipe_id).superFat
+        val OilAmount = databaseHelper1.getOilsWeight(Recipe_id).oilWeight
+        val superFat = databaseHelper1.getOilsWeight(Recipe_id).superFat
 
         etOilAmount.setText(OilAmount.toString())
 
@@ -379,7 +342,8 @@ class FragmentAddOils : Fragment() {
 
         recyclerView6.layoutManager = layoutManager1
         recyclerView6.setHasFixedSize(true)
-        soapLyeLiquidsPojoArrayList = databaseHelper.soapOils
+        soapLyeLiquidsPojoArrayList = databaseHelper1.soapOils
+//        soapLyeLiquidsPojoArrayList = databaseHelper.soapOils
         oilsAdapter = SoapOilsAdapter(activity, soapLyeLiquidsPojoArrayList)
         recyclerView6.adapter = oilsAdapter
         if (oilsAdapter.getItemCount() == 0) {
@@ -394,9 +358,9 @@ class FragmentAddOils : Fragment() {
 
     private fun CheckOilsList() {
 
-
         recyclerView.setHasFixedSize(true)
-        soapLyeLiquidsPojoArrayList1 = databaseHelper.getMySoapOils(Recipe_id)
+        soapLyeLiquidsPojoArrayList1 = databaseHelper1.getMySoapOils(Recipe_id)
+//        soapLyeLiquidsPojoArrayList1 = databaseHelper.getMySoapOils(Recipe_id)
         oilsAdapter1 = SoapMyOilsAdapter(activity, soapLyeLiquidsPojoArrayList1)
         recyclerView.adapter = oilsAdapter1
 
@@ -405,8 +369,8 @@ class FragmentAddOils : Fragment() {
 
     private fun checkOils(id: String): Boolean{
 
-        val selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_SOAP_MY_OILS+ " WHERE " + DatabaseHelper.KEY_SOAP_ID + " = '" + id + "'"
-        val db: SQLiteDatabase = databaseHelper.readableDatabase
+        val selectQuery = "SELECT * FROM " + DatabaseHelperNew.TABLE_SOAP_MY_OILS+ " WHERE " + DatabaseHelperNew.KEY_SOAP_ID + " = '" + id + "'"
+        val db: SQLiteDatabase = databaseHelper1.readableDatabase
 
         val cursor1: Cursor = db.rawQuery(selectQuery, null)
 
@@ -425,7 +389,8 @@ class FragmentAddOils : Fragment() {
 
         if (oils_exists){
 
-            databaseHelper.getTotalOils_SuperFat(soap_id)
+//            databaseHelper.getTotalOils_SuperFat(soap_id)
+            databaseHelper1.getTotalOils_SuperFat(soap_id)
 
         }
 

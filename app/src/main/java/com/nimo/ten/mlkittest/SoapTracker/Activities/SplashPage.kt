@@ -8,11 +8,13 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
 
 class SplashPage : AppCompatActivity() {
 
     private lateinit var db: SQLiteDatabase
     private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var databaseHelper1: DatabaseHelperNew
     private val myOilName: MutableList<String> = ArrayList()
     private val myNaoh: MutableList<Double> = ArrayList()
 
@@ -24,6 +26,7 @@ class SplashPage : AppCompatActivity() {
         setContentView(R.layout.activity_splash_page)
 
         databaseHelper = DatabaseHelper(this)
+        databaseHelper1 = DatabaseHelperNew(this)
 
         db = databaseHelper.getReadableDatabase()
 
@@ -102,6 +105,7 @@ class SplashPage : AppCompatActivity() {
 
             }else{
 
+                databaseHelper1.AddSoapOils(txtOilName, txtNaoh)
                 databaseHelper.AddSoapOils(txtOilName, txtNaoh)
 
             }

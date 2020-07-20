@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
 import com.nimo.ten.mlkittest.SoapTracker.Fragments.drawer.*
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.replaceFragmenty
 import java.text.SimpleDateFormat
@@ -43,6 +44,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     val dateFormat = SimpleDateFormat("dd-MMM-yyyy")
     var c = Calendar.getInstance()
     lateinit var databaseHelper: DatabaseHelper
+    lateinit var databaseHelper1: DatabaseHelperNew
     private lateinit var preferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,8 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         setSupportActionBar(toolbar)
 
         databaseHelper = DatabaseHelper(this)
+        databaseHelper1 = DatabaseHelperNew(this)
+
         preferences = applicationContext.getSharedPreferences("Soap", Context.MODE_PRIVATE)
 
         drawer = findViewById(R.id.drawer_layout)
@@ -195,7 +199,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
                 }else{
 
-                    val id = databaseHelper.AddRecipe(resultDate, txtRecipe)
+                    val id = databaseHelper1.AddRecipe(resultDate, txtRecipe)
                     Toast.makeText(this, "$txtRecipe added successfully..", Toast.LENGTH_SHORT).show()
 
                     val editor = preferences.edit()

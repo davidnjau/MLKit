@@ -27,14 +27,11 @@ public class SoapOilsAdapter extends RecyclerView.Adapter<SoapOilsAdapter.ViewHo
 
     private Context context;
     public static ArrayList<CheckboxPojo> soapTrackerPojoArrayList;
-//    private SparseBooleanArray itemStateArray = new SparseBooleanArray();
-//    private List<String> mySelectedList = new ArrayList<>();
+
     
     public SoapOilsAdapter(Context context, ArrayList<CheckboxPojo> soapTrackerPojoArrayList) {
         this.context = context;
         this.soapTrackerPojoArrayList = soapTrackerPojoArrayList;
-
-//        mySelectedList.clear();
 
     }
 
@@ -51,9 +48,6 @@ public class SoapOilsAdapter extends RecyclerView.Adapter<SoapOilsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final SoapOilsAdapter.ViewHolder holder, final int position) {
 
-//        holder.bind(position);
-
-//        holder.checkBox.setText("Checkbox " + position);
         holder.checkBox.setText( soapTrackerPojoArrayList.get(position).getLiquids());
         holder.checkBox.setChecked(soapTrackerPojoArrayList.get(position).getSelected());
 
@@ -93,45 +87,7 @@ public class SoapOilsAdapter extends RecyclerView.Adapter<SoapOilsAdapter.ViewHo
 
         }
 
-
-
-//        void bind(int position) {
-//            // use the sparse boolean array to check
-//            if (!itemStateArray.get(position, false)) {
-//                checkbox.setChecked(false);}
-//            else {
-//                checkbox.setChecked(true);
-//            }
-//
-//            tvOilName.setText(soapTrackerPojoArrayList.get(position).getLiquids());
-////            checkbox.setText(soapTrackerPojoArrayList.get(position).getLiquids());
-//
-//        }
-
-//        @Override
-//        public void onClick(View v) {
-//            int adapterPosition = getAdapterPosition();
-//            if (!itemStateArray.get(adapterPosition, false)) {
-//
-//                checkbox.setChecked(true);
-//                itemStateArray.put(adapterPosition, true);
-//
-//                mySelectedList.add(tvOilName.getText().toString());
-//            }
-//            else  {
-//                checkbox.setChecked(false);
-//                itemStateArray.put(adapterPosition, false);
-//
-//                mySelectedList.remove(tvOilName.getText().toString());
-//            }
-//
-//        }
     }
-
-//    public List<String> getList(){
-//
-//        return mySelectedList;
-//    }
 
 }
 

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew;
 import com.nimo.ten.mlkittest.SoapTracker.Fragments.FragmentOilMain;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast;
@@ -35,7 +36,7 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
     private Context context;
     private ArrayList<SoapOilsPojo> soapTrackerPojoArrayList;
 
-    private DatabaseHelper databaseHelper;
+    private DatabaseHelperNew databaseHelper1;
     private Calculator calculator;
 
     private FragmentOilMain fragmentOilMain;
@@ -59,8 +60,8 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
         preferences = context.getSharedPreferences("Soap", Context.MODE_PRIVATE);
         txtSoapId = preferences.getString("recipe_id", null);
 
+        databaseHelper1 = new DatabaseHelperNew(context);
 
-        databaseHelper = new DatabaseHelper(context);
         calculator = new Calculator();
         fragmentOilMain = new FragmentOilMain();
 
@@ -89,12 +90,14 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    databaseHelper.deleteMySoap(txtOilId, context);
+//                    databaseHelper.deleteMySoap(txtOilId, context);
+////                    databaseHelper1.deleteMySoap(txtOilId, context);
+//
                     Toast.makeText(context, txtOilName+" Oil has been deleted.. " ,Toast.LENGTH_LONG).show();
-
-                    soapTrackerPojoArrayList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, soapTrackerPojoArrayList.size());
+//
+//                    soapTrackerPojoArrayList.remove(position);
+//                    notifyItemRemoved(position);
+//                    notifyItemRangeChanged(position, soapTrackerPojoArrayList.size());
 
                 }
             });
@@ -128,7 +131,8 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
 
                 if (!TextUtils.isEmpty(s.toString())){
 
-                    databaseHelper.updateMyOilPercentage(txtSoapId, txtOilId, String.valueOf(s), context);
+//                    databaseHelper.updateMyOilPercentage(txtSoapId, txtOilId, String.valueOf(s), context);
+                    databaseHelper1.updateMyOilPercentage(txtSoapId, txtOilId, String.valueOf(s), context);
 
                 }
 

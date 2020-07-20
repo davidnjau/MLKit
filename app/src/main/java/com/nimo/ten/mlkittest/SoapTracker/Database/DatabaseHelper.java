@@ -273,6 +273,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long id = db.insert(TABLE_RECIPE_TABLE, null, contentValues);
         return id;
     }
+
     public void AddEssentialOils(String essential_oil, String soap_id, String percentage, String weight){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -439,7 +440,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
             return soapTrackerPojoArrayList;
-        }
+    }
 
 
     public long AddSoapTracker(String id, String soap_name, String date_in, String date_out, byte[] image, String txtFilePath){

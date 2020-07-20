@@ -102,14 +102,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"/>
 
-                                    <Button
-                                        android:visibility="gone"
-                                        android:textAllCaps="false"
-                                        android:id="@+id/btnSaveSuperFat"
-                                        android:layout_gravity="center"
-                                        android:text="Save"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"/>
 
 
                                 </LinearLayout>
@@ -255,16 +247,6 @@
                         android:background="@drawable/edit_text_shape"
                         android:hint="Enter the total Amount of oils"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                    <Button
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:textAllCaps="false"
-                        android:text="Save"
-                        android:id="@+id/btnTotalOilAmount"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
