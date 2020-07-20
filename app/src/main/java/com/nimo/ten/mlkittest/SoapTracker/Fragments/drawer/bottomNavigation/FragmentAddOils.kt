@@ -268,12 +268,6 @@ class FragmentAddOils : Fragment() {
 
                 } else {
 
-                    //Save Everything
-                    val txtOilAmount = etOilAmount.text.toString()
-//                    databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
-                    databaseHelper1.updateOilAmount(Recipe_id, txtOilAmount.toDouble())
-
-
                     Toast.makeText(activity, "Oil Data successfully saved", Toast.LENGTH_LONG).show()
 
                     var fragment = FragmentAddWater()

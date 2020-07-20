@@ -22,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapIngredientsRecyclerAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo
@@ -35,7 +36,7 @@ class FragmentAddFragrance : Fragment() {
     private lateinit var tvWaterWeight: TextView
     private lateinit var tvLyeWeight: TextView
 
-    lateinit var databaseHelper: DatabaseHelper
+    lateinit var databaseHelper1: DatabaseHelperNew
     private lateinit var preferences: SharedPreferences
     private lateinit var soap_id: String
     private lateinit var FragranceOils: Switch
@@ -48,6 +49,7 @@ class FragmentAddFragrance : Fragment() {
     var soapTrackerPojoArrayList: List<IngredientsPojo>? = null
     var soapDetailsRecyclerAdapter: SoapIngredientsRecyclerAdapter? = null
     private lateinit var btnSaveEssentialOils: Button
+    private lateinit var btnSave: Button
     private lateinit var etEssentialOil: EditText
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,13 +64,14 @@ class FragmentAddFragrance : Fragment() {
         tvLyeWeight = view.findViewById(R.id.tvLyeWeight)
         etEssentialOil = view.findViewById(R.id.etEssentialOil)
 
-        databaseHelper = DatabaseHelper(activity)
+        databaseHelper1 = DatabaseHelperNew(activity)
         preferences = requireActivity().getSharedPreferences("Soap", Context.MODE_PRIVATE)
         linearEssentialOil = view.findViewById(R.id.linearEssentialOil)
         tvEssentialOil = view.findViewById(R.id.tvEssentialOil)
         recyclerViewFragnance = view.findViewById(R.id.recyclerViewFragnance)
         layoutManager2 = LinearLayoutManager(activity)
         btnSaveEssentialOils = view.findViewById(R.id.btnSaveEssentialOils)
+        btnSave = view.findViewById(R.id.btnSave)
 
         btnSaveEssentialOils.setOnClickListener {
 
@@ -83,12 +86,11 @@ class FragmentAddFragrance : Fragment() {
                     val oils_exists = checkOils(soap_id.toString())
                     if (oils_exists){
 
-                        databaseHelper.updateEssentialRatio(soap_id, (LyeConc/100))
+                        databaseHelper1.updateEssentialRatio(soap_id, (LyeConc/100))
 
                         getEssentialOilWeight()
 
                         Toast.makeText(activity, "Essential oils updated successfully.", Toast.LENGTH_SHORT).show()
-
 
                     }else
                         Toast.makeText(activity, "Please add some oils before proceeding", Toast.LENGTH_SHORT).show()
@@ -119,7 +121,7 @@ class FragmentAddFragrance : Fragment() {
                 if (oils_exists){
 
                     //Add Fragrance \ Essential oils
-                    databaseHelper.updateEssentialRatio(soap_id, 0.02)
+                    databaseHelper1.updateEssentialRatio(soap_id, 0.02)
 
                     linearEssentialOil.visibility = View.VISIBLE
 
@@ -137,8 +139,10 @@ class FragmentAddFragrance : Fragment() {
             }else{
 
                 etEssentialOil.setText("")
-                databaseHelper.updateEssentialRatio(soap_id, 0.0)
+                databaseHelper1.updateEssentialRatio(soap_id, 0.0)
                 getEssentialOilWeight()
+
+                databaseHelper1.deleteEssentialOils(soap_id)
 
                 linearEssentialOil.visibility = View.GONE
             }
@@ -167,6 +171,15 @@ class FragmentAddFragrance : Fragment() {
 
         }
 
+        btnSave.setOnClickListener {
+
+            //Display all information for preview
+            Toast.makeText(activity, "Save work", Toast.LENGTH_SHORT).show()
+
+
+
+        }
+
         return view
     }
 
@@ -177,7 +190,7 @@ class FragmentAddFragrance : Fragment() {
         val alertDialogBuilder = AlertDialog.Builder(requireActivity())
         alertDialogBuilder.setView(promptsView)
 
-        val EssentialOil = databaseHelper.getTotalEssentials(soapId)
+        val EssentialOil = databaseHelper1.getTotalEssentials(soapId)
 
         val etIngredients = promptsView.findViewById<EditText>(R.id.etIngredients)
         val etPercentage = promptsView.findViewById<EditText>(R.id.etPercentage)
@@ -185,7 +198,7 @@ class FragmentAddFragrance : Fragment() {
 
         tvTitleWeight.text = EssentialOil.toString()
 
-        val RemainingPercentage = calculator.getRemainingEssentialPercentage(soapId, activity)
+        val RemainingPercentage = calculator.getRemainingEssentialPercentage1(soapId, activity)
         if (RemainingPercentage >= 0) etPercentage.hint = "The remaining percentage is $RemainingPercentage %"
 
         etPercentage.addTextChangedListener(object : TextWatcher {
@@ -238,16 +251,17 @@ class FragmentAddFragrance : Fragment() {
 
                     if (!TextUtils.isEmpty(txtIngredients) && !TextUtils.isEmpty(txtPercentage) ) {
 
-                        val RemainingPercentage = calculator.getRemainingEssentialPercentage(soapId, activity)
+                        val RemainingPercentage = calculator.getRemainingEssentialPercentage1(soapId, activity)
                         val GivenPercentage = java.lang.Double.valueOf(txtPercentage)
 
                         if (RemainingPercentage >= 0) {
 
                             if (GivenPercentage <= RemainingPercentage) {
 
-                                val txtSoapWeight = calculator.getRemainingEssentialWeight(soapId, txtPercentage, activity).toString()
+                                val txtSoapWeight = calculator.getRemainingEssentialWeight1(soapId,
+                                        txtPercentage, activity).toString()
 
-                                databaseHelper.AddEssentialOils(txtIngredients, soapId, txtPercentage,
+                                databaseHelper1.AddEssentialOils(txtIngredients, soapId, txtPercentage,
                                         txtSoapWeight)
 
                                 ShowCustomToast(activity, "Successfully added an Essential oil")
@@ -297,7 +311,7 @@ class FragmentAddFragrance : Fragment() {
 
         if (oils_exists){
 
-            val TotalWeight =  databaseHelper.getTotalOils(soap_id)
+            val TotalWeight =  databaseHelper1.getTotalOils(soap_id)
             tvEssentialOil.text = TotalWeight.toString()
 
         }
@@ -315,12 +329,12 @@ class FragmentAddFragrance : Fragment() {
 
         soap_id = preferences.getString("recipe_id", null).toString()
 
-        val OilAmount = databaseHelper.getOilsWeight(soap_id).oilWeight
-        val superFat = databaseHelper.getOilsWeight(soap_id).superFat
-        val TotaWeight = databaseHelper.getOilsWeight(soap_id).totalWeight
+        val OilAmount = databaseHelper1.getOilsWeight(soap_id).oilWeight
+        val superFat = databaseHelper1.getOilsWeight(soap_id).superFat
+        val TotaWeight = databaseHelper1.getOilsWeight(soap_id).totalWeight
 
-        val LiquidWeight = databaseHelper.getOilsWeight(soap_id).liquidWeight
-        val LyeWeight = databaseHelper.getOilsWeight(soap_id).lyeWeight
+        val LiquidWeight = databaseHelper1.getOilsWeight(soap_id).liquidWeight
+        val LyeWeight = databaseHelper1.getOilsWeight(soap_id).lyeWeight
 
         totalWeight.text = TotaWeight
         tvTotalOilWeight.text = OilAmount
@@ -333,8 +347,8 @@ class FragmentAddFragrance : Fragment() {
 
     private fun checkOils(id: String): Boolean{
 
-        val selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_SOAP_MY_OILS+ " WHERE " + DatabaseHelper.KEY_SOAP_ID + " = '" + id + "'"
-        val db: SQLiteDatabase = databaseHelper.readableDatabase
+        val selectQuery = "SELECT * FROM " + DatabaseHelperNew.TABLE_SOAP_MY_OILS+ " WHERE " + DatabaseHelperNew.KEY_SOAP_ID + " = '" + id + "'"
+        val db: SQLiteDatabase = databaseHelper1.readableDatabase
 
         val cursor1: Cursor = db.rawQuery(selectQuery, null)
 
@@ -351,7 +365,7 @@ class FragmentAddFragrance : Fragment() {
         recyclerViewFragnance.layoutManager = layoutManager2
         recyclerViewFragnance.setHasFixedSize(true)
 
-        soapTrackerPojoArrayList = databaseHelper.getSoapEssentialOils(soapId)
+        soapTrackerPojoArrayList = databaseHelper1.getSoapEssentialOils(soapId)
         soapDetailsRecyclerAdapter = SoapIngredientsRecyclerAdapter(activity, soapTrackerPojoArrayList as ArrayList<IngredientsPojo?>?)
 
         recyclerViewFragnance.adapter = soapDetailsRecyclerAdapter

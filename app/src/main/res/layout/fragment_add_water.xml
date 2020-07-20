@@ -214,13 +214,13 @@
 
             <RadioButton
                 android:id="@+id/radioRatio"
-                android:text="Water : Lye Ratio"
+                android:text="Water : NaoH Ratio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <RadioButton
                 android:id="@+id/radioLye"
-                android:text="Lye Concentration"
+                android:text="NaoH Concentration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -274,7 +274,7 @@
                     <TextView
                         android:textColor="@android:color/black"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:text="Lye"
+                        android:text="NaoH"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -308,7 +308,7 @@
                         android:textAllCaps="false"
                         android:id="@+id/btnSaveRatio"
                         android:layout_gravity="center"
-                        android:text="Save"
+                        android:text="Calculate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -334,7 +334,7 @@
                     <TextView
                         android:textColor="@android:color/black"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:text="Lye Concentration in %"
+                        android:text="NaoH Concentration in %"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -345,7 +345,7 @@
                         android:id="@+id/etLyeConcentration"
                         android:padding="10dp"
                         android:background="@drawable/edit_text_shape"
-                        android:hint="Recommended Lye concentration: (33 %)"
+                        android:hint="Recommended NaoH concentration: (33 %)"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -369,7 +369,7 @@
                         android:textAllCaps="false"
                         android:id="@+id/btnSaveConcentration"
                         android:layout_gravity="center"
-                        android:text="Save"
+                        android:text="Calculate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -429,7 +429,7 @@
                     <TextView
                         android:textColor="@android:color/black"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:text="Lye Amount"
+                        android:text="NaoH Amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 

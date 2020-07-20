@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator
 
 class FragmentAddWater : Fragment() {
@@ -24,6 +25,7 @@ class FragmentAddWater : Fragment() {
     private lateinit var tvLyeWeight: TextView
 
     lateinit var databaseHelper: DatabaseHelper
+    lateinit var databaseHelper1: DatabaseHelperNew
     private lateinit var preferences: SharedPreferences
     private lateinit var soap_id: String
 
@@ -52,6 +54,8 @@ class FragmentAddWater : Fragment() {
         tvLyeWeight = view.findViewById(R.id.tvLyeWeight)
 
         databaseHelper = DatabaseHelper(activity)
+        databaseHelper1 = DatabaseHelperNew(activity)
+
         preferences = requireActivity().getSharedPreferences("Soap", Context.MODE_PRIVATE)
 
         btnSaveRatio = view.findViewById(R.id.btnSaveRatio)
@@ -98,17 +102,17 @@ class FragmentAddWater : Fragment() {
 
                 if (oils_exists){
 
-                    databaseHelper.updateRatiosPercentages(soap_id, txtLye, txtWater)
+                    databaseHelper1.updateRatiosPercentages(soap_id, txtLye, txtWater)
 
-                    calculator.getTotalOilWeight(soap_id, activity)
-
-                    val txtLiquidWeight = databaseHelper.getWaterLyeAmount(soap_id).liquid_weight.toString()
-                    val txtLyeWeight = databaseHelper.getWaterLyeAmount(soap_id).lye_weight.toString()
-
-                    tvWaterWeight.text = txtLiquidWeight
-                    tvLyeWeight.text = txtLyeWeight
+//                    val txtLiquidWeight = databaseHelper.getWaterLyeAmount(soap_id).liquid_weight.toString()
+//                    val txtLyeWeight = databaseHelper.getWaterLyeAmount(soap_id).lye_weight.toString()
+//
+//                    tvWaterWeight.text = txtLiquidWeight
+//                    tvLyeWeight.text = txtLyeWeight
 
                     Toast.makeText(activity, "Ratios updated successfully.", Toast.LENGTH_SHORT).show()
+
+                    GetValues()
 
 
                 }else
@@ -143,15 +147,17 @@ class FragmentAddWater : Fragment() {
 
                     if (oils_exists){
 
-                        databaseHelper.updateRatiosPercentages(soap_id, txtLyeConc, txtWater)
+                        databaseHelper1.updateRatiosPercentages(soap_id, txtLyeConc, txtWater)
 
-                        calculator.getTotalOilWeight(soap_id, activity)
+//                        calculator.getTotalOilWeight(soap_id, activity)
+//                        val txtLiquidWeight = databaseHelper.getWaterLyeAmount(soap_id).liquid_weight.toString()
+//                        val txtLyeWeight = databaseHelper.getWaterLyeAmount(soap_id).lye_weight.toString()
+//
+//                        tvWaterWeight.text = txtLiquidWeight
+//                        tvLyeWeight.text = txtLyeWeight
 
-                        val txtLiquidWeight = databaseHelper.getWaterLyeAmount(soap_id).liquid_weight.toString()
-                        val txtLyeWeight = databaseHelper.getWaterLyeAmount(soap_id).lye_weight.toString()
+                        GetValues()
 
-                        tvWaterWeight.text = txtLiquidWeight
-                        tvLyeWeight.text = txtLyeWeight
 
                     }else
                         Toast.makeText(activity, "You first need to select some oils", Toast.LENGTH_SHORT).show()
@@ -189,26 +195,29 @@ class FragmentAddWater : Fragment() {
 
         soap_id = preferences.getString("recipe_id", null).toString()
 
-        val OilAmount = databaseHelper.getOilsWeight(soap_id).oilWeight
-        val superFat = databaseHelper.getOilsWeight(soap_id).superFat
-        val TotaWeight = databaseHelper.getOilsWeight(soap_id).totalWeight
+        val OilAmount = databaseHelper1.getOilsWeight(soap_id).oilWeight
+        val superFat = databaseHelper1.getOilsWeight(soap_id).superFat
+        val TotaWeight = databaseHelper1.getOilsWeight(soap_id).totalWeight
 
         totalWeight.text = TotaWeight
         tvTotalOilWeight.text = OilAmount
         tvSuperFat.text = superFat
 
-        val LiquidWeight = databaseHelper.getOilsWeight(soap_id).liquidWeight
-        val LyeWeight = databaseHelper.getOilsWeight(soap_id).lyeWeight
+    }
+
+    private fun GetValues() {
+
+        val LiquidWeight = databaseHelper1.getOilsWeight(soap_id).liquidWeight
+        val LyeWeight = databaseHelper1.getOilsWeight(soap_id).lyeWeight
 
         tvWaterWeight.text = LiquidWeight
         tvLyeWeight.text = LyeWeight
-
     }
 
     private fun checkOils(id: String): Boolean{
 
-        val selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_SOAP_MY_OILS+ " WHERE " + DatabaseHelper.KEY_SOAP_ID + " = '" + id + "'"
-        val db: SQLiteDatabase = databaseHelper.readableDatabase
+        val selectQuery = "SELECT * FROM " + DatabaseHelperNew.TABLE_SOAP_MY_OILS+ " WHERE " + DatabaseHelperNew.KEY_SOAP_ID + " = '" + id + "'"
+        val db: SQLiteDatabase = databaseHelper1.readableDatabase
 
         val cursor1: Cursor = db.rawQuery(selectQuery, null)
 

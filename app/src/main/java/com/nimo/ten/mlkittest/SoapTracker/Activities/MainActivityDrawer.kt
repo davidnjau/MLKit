@@ -43,7 +43,6 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     val dateFormat = SimpleDateFormat("dd-MMM-yyyy")
     var c = Calendar.getInstance()
-    lateinit var databaseHelper: DatabaseHelper
     lateinit var databaseHelper1: DatabaseHelperNew
     private lateinit var preferences : SharedPreferences
 
@@ -54,7 +53,6 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        databaseHelper = DatabaseHelper(this)
         databaseHelper1 = DatabaseHelperNew(this)
 
         preferences = applicationContext.getSharedPreferences("Soap", Context.MODE_PRIVATE)
@@ -185,7 +183,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 val newDate = Date(c.timeInMillis)
                 val resultDate = dateFormat.format(newDate)
 
-                val db: SQLiteDatabase = databaseHelper.writableDatabase
+                val db: SQLiteDatabase = databaseHelper1.writableDatabase
 
                 val query = "Select * From " + DatabaseHelper.TABLE_RECIPE_TABLE + " WHERE " +
                         DatabaseHelper.KEY_RECIPE_NAME + " = '" + txtRecipe + "'"

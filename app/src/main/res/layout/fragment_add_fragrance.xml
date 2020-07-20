@@ -32,11 +32,11 @@
     <RelativeLayout
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="140dp"
         android:background="@drawable/table_content_cell_bg"
         android:layout_below="@+id/linear"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
@@ -55,6 +55,7 @@
                     android:layout_height="wrap_content">
 
                     <TableRow
+                        android:visibility="gone"
                         android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
@@ -117,7 +118,7 @@
                             android:textColor="@android:color/black"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             android:text="0"
-                            android:maxLength="5"
+                            android:maxLength="6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
@@ -214,7 +215,7 @@
                         <TextView
                             android:textColor="@android:color/black"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:text="Lye Amount"
+                            android:text="NaOH Amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
@@ -301,14 +302,14 @@
                             android:id="@+id/etEssentialOil"
                             android:padding="10dp"
                             android:background="@drawable/edit_text_shape"
-                            android:hint="Add Essential oils. Default = 2%"
+                            android:hint="Recommended Essential oils = 2%"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
                         <Button
                             android:textAllCaps="false"
                             android:id="@+id/btnSaveEssentialOils"
-                            android:text="Save"
+                            android:text="Calculate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
@@ -406,20 +407,20 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_alignParentBottom="true"
-            android:textColor="@android:color/white"
-            android:background="@drawable/table_header_cell_bg"
-            android:id="@+id/btnSave"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:text="Save and Finish."
-            android:layout_height="wrap_content"/>
-
     </RelativeLayout>
 
+    <Button
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="80dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@android:color/white"
+        android:background="@drawable/table_header_cell_bg"
+        android:id="@+id/btnSave"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:text="Save and Finish."
+        android:layout_height="wrap_content"/>
 
 
 

@@ -91,13 +91,13 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
                 public void onClick(DialogInterface dialog, int which) {
 
 //                    databaseHelper.deleteMySoap(txtOilId, context);
-////                    databaseHelper1.deleteMySoap(txtOilId, context);
-//
+                    databaseHelper1.deleteMyOil(txtOilId, context);
+
                     Toast.makeText(context, txtOilName+" Oil has been deleted.. " ,Toast.LENGTH_LONG).show();
-//
-//                    soapTrackerPojoArrayList.remove(position);
-//                    notifyItemRemoved(position);
-//                    notifyItemRangeChanged(position, soapTrackerPojoArrayList.size());
+
+                    soapTrackerPojoArrayList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, soapTrackerPojoArrayList.size());
 
                 }
             });

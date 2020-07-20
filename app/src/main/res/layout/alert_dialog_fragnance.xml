@@ -22,63 +22,83 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:background="@color/colorPrimaryDark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-
-                        <ImageView
-                            android:layout_marginStart="10dp"
-                            android:background="@mipmap/ic_pic_logo"
-                            android:layout_gravity="center"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"/>
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:id="@+id/tvTitle"
-                            android:padding="15dp"
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Add a fragrance"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@android:color/white" />
-
                         <LinearLayout
-                            android:layout_weight="1"
                             android:orientation="horizontal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:padding="15dp"
+                            <ImageView
+                                android:layout_marginStart="10dp"
+                                android:background="@mipmap/ic_pic_logo"
                                 android:layout_gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Total Weight ="
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@android:color/white" />
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"/>
 
-                            <TextView
-                                android:id="@+id/tvTitleWeight"
-                                android:padding="15dp"
-                                android:layout_gravity="center"
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:orientation="vertical"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@android:color/white" />
+                                android:layout_height="match_parent">
 
-                            <TextView
-                                android:padding="15dp"
-                                android:layout_gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="g"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@android:color/white" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:id="@+id/tvTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Add a fragrance"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@android:color/white" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Total Weight ="
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@android:color/white" />
+
+                                    <TextView
+                                        android:layout_marginEnd="5dp"
+                                        android:id="@+id/tvTitleWeight"
+                                        android:layout_gravity="center"
+                                        android:maxLength="5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@android:color/white" />
+
+                                    <TextView
+                                        android:layout_gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="g"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@android:color/white" />
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+
+
 
                         </LinearLayout>
 

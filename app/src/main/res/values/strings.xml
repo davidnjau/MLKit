@@ -44,7 +44,7 @@
     <string name="buy_raw">Buy Raw Ingredients</string>
     <string name="add_oils">Add the oils you will use </string>
     <string name="add_fragrance">Add the fragrance / Essential oils to be used </string>
-    <string name="add_water">Choose Lye Concentration</string>
+    <string name="add_water">Choose NaoH : H20 Concentration</string>
 
 
 </resources>

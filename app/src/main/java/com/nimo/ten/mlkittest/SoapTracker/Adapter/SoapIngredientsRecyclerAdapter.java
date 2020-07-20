@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
+import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.Calculator;
 import com.nimo.ten.mlkittest.SoapTracker.HelperClass.ShowCustomToast;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo;
@@ -36,7 +38,7 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
     private Context context;
     private ArrayList<IngredientsPojo> IngredientsPojoArrayList;
 
-    private DatabaseHelper databaseHelper;
+    private DatabaseHelperNew databaseHelper1;
     private boolean isGood = true;
 
 
@@ -55,7 +57,7 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
         SoapIngredientsRecyclerAdapter.ViewHolder holder = new SoapIngredientsRecyclerAdapter.ViewHolder(view);
 
         preferences = context.getSharedPreferences("Soap", Context.MODE_PRIVATE);
-        databaseHelper = new DatabaseHelper(context);
+        databaseHelper1 = new DatabaseHelperNew(context);
 
         return holder;
     }
@@ -129,8 +131,7 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
                     String txtId = IngredientsPojoArrayList.get(rowPos - 1).getId();
 
                     int position1 = rowPos - 1;
-
-                    InputDialog(txtIngredients, txtPercentage, txtWeight, txtSoapId, txtId, rowPos);
+                    InputDialog(txtIngredients, txtPercentage, txtWeight, txtSoapId, txtId, position1);
                 }
 
             }
@@ -139,7 +140,8 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
 
     }
 
-    private void InputDialog(final String txtIngredients, final String txtPercentage, final String txtWeight, final String txtSoapId, final String txtId, final int pos) {
+    private void InputDialog(final String txtIngredients, final String txtPercentage,
+                             final String txtWeight, final String txtSoapId, final String txtId, final int pos) {
 
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.alert_dialog, null);
@@ -213,34 +215,25 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
             }
         });
 
-
         alertDialogBuilder
                 .setCancelable(true)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                .setPositiveButton("Save", (dialog, id) -> {
 
-                    }
                 })
-                .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNeutralButton("Delete", (dialog, which) -> {
 
-                        DatabaseHelper databaseHelper = new DatabaseHelper(context);
-                        databaseHelper.deleteIngredients(txtId);
+                    databaseHelper1.deleteOneEssentialOil(txtId);
 
-//                        IngredientsPojoArrayList.remove(pos);
-//                        notifyItemRemoved(pos);
-//                        notifyItemRangeChanged(pos, IngredientsPojoArrayList.size());
-//
-//                        new ShowCustomToast((Activity) context, txtIngredients + " deleted.");
+                    IngredientsPojoArrayList.remove(pos);
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, IngredientsPojoArrayList.size());
 
-                    }
+                    new ShowCustomToast((Activity) context, txtIngredients + " deleted.");
+
                 })
                 .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                        (dialog, id) -> {
 //                                dialog.cancel();
-                            }
                         });
 
 
@@ -250,15 +243,6 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                DatabaseHelper databaseHelper = new DatabaseHelper(context);
-                databaseHelper.deleteIngredients(txtSoapId);
-
-                IngredientsPojoArrayList.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, IngredientsPojoArrayList.size());
-
-                new ShowCustomToast((Activity) context, txtIngredients + " deleted.");
 
                 alertDialog.dismiss();
 
@@ -277,10 +261,11 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
                     if (!TextUtils.isEmpty(txtIngredients1) && !TextUtils.isEmpty(txtPercentage1) ) {
 
                         Calculator calculator = new Calculator();
-                        double RemainingPercentage = calculator.getRemainingPercentage(txtSoapId, context);
+                        double RemainingPercentage = calculator.getRemainingPercentage1(txtSoapId, context);
                         Double GivenPercentage = Double.valueOf(txtPercentage1);
 
-                        String txtWeight1 = String.valueOf(calculator.getRemainingWeight(txtSoapId, txtPercentage1, context ));
+                        String txtWeight1 = String.valueOf(calculator.getRemainingWeight1(txtSoapId,
+                                txtPercentage1, context ));
 
                         if (RemainingPercentage >= 0){
 
@@ -330,19 +315,20 @@ public class SoapIngredientsRecyclerAdapter extends RecyclerView.Adapter<SoapIng
 
             }
 
-            private void UpdateData(String txtId, String txtIngredients1, String txtPercentage1, String txtWeight1, int pos) {
-
-                databaseHelper.updateSoapIngredients(txtId, txtIngredients1, txtPercentage1, txtWeight1);
-
-                new ShowCustomToast((Activity) context, "Successfully updated the ingredient");
-
-                alertDialog.dismiss();
-
-                IngredientsPojo ingredientsPojo = IngredientsPojoArrayList.get(pos);
-                ingredientsPojo.setIngredient_name(txtIngredients1);
-                ingredientsPojo.setPercentage(txtPercentage1);
-                ingredientsPojo.setGrams(txtWeight1);
-                notifyItemChanged(pos);
+            private void UpdateData(String txtId, String txtIngredients1, String txtPercentage1, String txtWeight1,
+                                    int pos) {
+//
+//                databaseHelper.updateSoapIngredients(txtId, txtIngredients1, txtPercentage1, txtWeight1);
+//
+//                new ShowCustomToast((Activity) context, "Successfully updated the ingredient");
+//
+//                alertDialog.dismiss();
+//
+//                IngredientsPojo ingredientsPojo = IngredientsPojoArrayList.get(pos);
+//                ingredientsPojo.setIngredient_name(txtIngredients1);
+//                ingredientsPojo.setPercentage(txtPercentage1);
+//                ingredientsPojo.setGrams(txtWeight1);
+//                notifyItemChanged(pos);
 
             }
         });

@@ -105,6 +105,41 @@ public class Calculator {
         return RemPercentage;
 
     }
+    public Double getRemainingPercentage1(String SoapId, Context context){
+
+        Clear();
+
+        databaseHelper1 = new DatabaseHelperNew(context);
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_INGREDIENTS+" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper1.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+
+            do {
+
+                double default_percentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
+
+                myPercentage.add(default_percentage);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        for (int i = 0; i < myPercentage.size(); i++){
+
+            SoapPerc = myPercentage.get(i) + SoapPerc;
+
+        }
+
+        RemPercentage = 100 - SoapPerc;
+        return RemPercentage;
+
+    }
 
     public Double getRemainingEssentialPercentage(String SoapId, Context context){
 
@@ -140,6 +175,38 @@ public class Calculator {
         RemPercentage = 100 - SoapPerc;
 
 
+
+        return RemPercentage;
+
+    }
+    public Double getRemainingEssentialPercentage1(String SoapId, Context context){
+
+        Clear();
+
+        databaseHelper1 = new DatabaseHelperNew(context);
+        String selectQuery = "SELECT * FROM " + TABLE_ESSENTIAL_OILS+" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper1.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+
+            do {
+
+                double default_percentage = c.getDouble(c.getColumnIndex(KEY_PERCENTAGE));
+                myPercentage.add(default_percentage);
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        for (int i = 0; i < myPercentage.size(); i++){
+            SoapPerc = myPercentage.get(i) + SoapPerc;
+        }
+
+        RemPercentage = 100 - SoapPerc;
 
         return RemPercentage;
 
@@ -248,6 +315,30 @@ public class Calculator {
         return TotalWeight;
 
     }
+    public Double getTotalWeight1(String SoapId, Context context){
+
+        databaseHelper1 = new DatabaseHelperNew(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                TotalWeight = c.getInt(c.getColumnIndex(KEY_TOTAL_WEIGHT));
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        return TotalWeight;
+
+    }
 
     public Double getTotalRecipeWeight(String SoapId, Context context){
 
@@ -263,14 +354,34 @@ public class Calculator {
 
                 TotalWeight = c.getDouble(c.getColumnIndex(KEY_ESSENTIAL_OIL_WEIGHT));
 
-
             } while (c.moveToNext());
 
             c.close();
 
         }
 
-        Log.e("-*-*-* ", String.valueOf(TotalWeight));
+        return TotalWeight;
+
+    }
+    public Double getTotalRecipeWeight1(String SoapId, Context context){
+
+        databaseHelper1 = new DatabaseHelperNew(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper1.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                TotalWeight = c.getDouble(c.getColumnIndex(KEY_ESSENTIAL_OIL_WEIGHT));
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
 
         return TotalWeight;
 
@@ -384,10 +495,31 @@ public class Calculator {
         return SoapWeight;
 
     }
+    public Double getRemainingWeight1(String SoapId, String givenPercentage, Context context){
+
+        Double txtTotalWeight = getTotalWeight1(SoapId, context);
+
+        Double txtPercentage = Double.valueOf(givenPercentage);
+
+        SoapWeight = txtTotalWeight * ( txtPercentage / 100 );
+
+        return SoapWeight;
+
+    }
     public Double getRemainingEssentialWeight(String SoapId, String givenPercentage, Context context){
 
         Double txtTotalWeight = getTotalRecipeWeight(SoapId, context);
 
+        Double txtPercentage = Double.valueOf(givenPercentage);
+
+        SoapWeight = txtTotalWeight * ( txtPercentage / 100 );
+
+        return SoapWeight;
+
+    }
+    public Double getRemainingEssentialWeight1(String SoapId, String givenPercentage, Context context){
+
+        Double txtTotalWeight = getTotalRecipeWeight1(SoapId, context);
         Double txtPercentage = Double.valueOf(givenPercentage);
 
         SoapWeight = txtTotalWeight * ( txtPercentage / 100 );
@@ -419,6 +551,37 @@ public class Calculator {
         databaseHelper = new DatabaseHelper(context);
 
         String selectQuery = "SELECT * FROM " + TABLE_SOAP_DETALS+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                txtDbNaohWeight = c.getString(c.getColumnIndex(KEY_NAOH_WEIGHT));
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+
+        double remWeight = 100 - txtPercentage;
+
+        return new LyeCalculatorPojo(txtDbNaohWeight, txtNaOhWeight, remWeight);
+
+    }
+    public LyeCalculatorPojo getRemainingLiquidWeight1(String SoapId, String givenPercentage, Context context){
+
+        Double txtPercentage = Double.valueOf(givenPercentage);
+        double txtNaOhWeight = txtPercentage *  getTotalWeight(SoapId, context);
+
+        //Get the Lye Percentage
+        databaseHelper = new DatabaseHelper(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
@@ -657,6 +820,36 @@ public class Calculator {
                 do {
 
                     double DbNaohName = c.getDouble(c.getColumnIndex(KEY_TOTAL_WEIGHT));
+                    newSoapWeight = DbNaohName - OilWeight;
+
+                } while (c.moveToNext());
+
+
+            }
+
+            c.close();
+
+        }
+
+        return newSoapWeight;
+
+
+    }
+    public double getRemainingOilWeight1(String SoapId, double OilWeight, Context context){
+
+        databaseHelper1 = new DatabaseHelperNew(context);
+
+        String selectQuery = "SELECT * FROM " + TABLE_RECIPE_TABLE+" WHERE " + KEY_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = databaseHelper1.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null) {
+
+            if (c.moveToFirst()) {
+
+                do {
+
+                    double DbNaohName = c.getDouble(c.getColumnIndex(KEY_NAOH_WEIGHT));
                     newSoapWeight = DbNaohName - OilWeight;
 
                 } while (c.moveToNext());
