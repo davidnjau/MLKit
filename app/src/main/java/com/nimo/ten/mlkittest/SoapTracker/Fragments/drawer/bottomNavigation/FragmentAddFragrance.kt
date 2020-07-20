@@ -1,6 +1,7 @@
 package com.nimo.ten.mlkittest.SoapTracker.Fragments.drawer.bottomNavigation
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nimo.ten.mlkittest.R
+import com.nimo.ten.mlkittest.SoapTracker.Activities.PreviewRecipeDetails
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapIngredientsRecyclerAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
@@ -174,8 +176,7 @@ class FragmentAddFragrance : Fragment() {
         btnSave.setOnClickListener {
 
             //Display all information for preview
-            Toast.makeText(activity, "Save work", Toast.LENGTH_SHORT).show()
-
+            startActivity(Intent(activity, PreviewRecipeDetails::class.java))
 
 
         }

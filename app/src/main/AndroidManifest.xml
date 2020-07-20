@@ -16,24 +16,24 @@
         android:roundIcon="@mipmap/ic_pic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".SoapTracker.Activities.MainActivityDrawer"
-            android:label="@string/title_activity_main_drawer"
-            android:theme="@style/AppTheme.NoActionBar">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-        <activity
-            android:name=".SoapTracker.Activities.SplashPage"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".SoapTracker.Activities.PreviewRecipeDetails"
+            android:parentActivityName=".SoapTracker.Activities.MainActivityDrawer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SoapTracker.Activities.MainActivityDrawer"
+            android:label="@string/title_activity_main_drawer"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".SoapTracker.Activities.SplashPage"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
         </activity>
         <activity android:name=".SoapTracker.Activities.SoapRecipe" />
         <activity android:name=".SoapTracker.Activities.Settings" />
@@ -42,8 +42,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SoapTracker.Activities.AccountManagement"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SoapTracker.Activities.Register"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -60,7 +59,7 @@
         <activity
             android:name=".SoapTracker.Activities.Soap_ingredients_notes"
             android:parentActivityName=".SoapTracker.Activities.SoapRecipe" />
-        <activity android:name=".SoapTracker.Activities.SoapHeal_Healing"></activity>
+        <activity android:name=".SoapTracker.Activities.SoapHeal_Healing" />
         <activity
             android:name=".SoapTracker.Activities.UploadSoapDetails"
             android:label="Upload an image"

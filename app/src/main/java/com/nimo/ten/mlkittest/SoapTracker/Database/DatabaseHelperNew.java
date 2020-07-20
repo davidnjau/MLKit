@@ -176,6 +176,9 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
 
             do {
 
+                String recipeName = c.getString(c.getColumnIndex(KEY_RECIPE_NAME));
+                String dateCreated = c.getString(c.getColumnIndex(KEY_DATE_IN));
+
                 String OilWeight = c.getString(c.getColumnIndex(KEY_TOTAL_OIL_AMOUNT));
                 String superFat = c.getString(c.getColumnIndex(KEY_SUPER_FAT));
 
@@ -187,6 +190,12 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
                 String LiquidRatio = c.getString(c.getColumnIndex(KEY_LIQUID_RATIO));
                 String NaoHRatio = c.getString(c.getColumnIndex(KEY_NAOH_RATIO));
 
+                String essentialWeight = c.getString(c.getColumnIndex(KEY_ESSENTIAL_OIL_WEIGHT));
+                String essentialPercentage = c.getString(c.getColumnIndex(KEY_ESSENTIAL_OIL_RATIO));
+
+                recipeDetailsPojo.setRecipeName(recipeName);
+                recipeDetailsPojo.setDate_in(dateCreated);
+
                 recipeDetailsPojo.setOilWeight(OilWeight);
                 recipeDetailsPojo.setSuperFat(superFat);
                 recipeDetailsPojo.setTotalWeight(TotalWeight);
@@ -196,6 +205,9 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
 
                 recipeDetailsPojo.setLiquid(LiquidRatio);
                 recipeDetailsPojo.setLyeRatio(NaoHRatio);
+
+                recipeDetailsPojo.setEssentialRatio(essentialPercentage);
+                recipeDetailsPojo.setEssentialOil(essentialWeight);
 
             } while (c.moveToNext());
 
@@ -755,6 +767,33 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
                 soapOilsPojo.setNaoh_weight(c.getString(c.getColumnIndex(KEY_NAOH)));
                 soapOilsPojo.setOilWeight(c.getString(c.getColumnIndex(KEY_WEIGHT)));
                 soapOilsPojo.setPercentage(c.getDouble(c.getColumnIndex(KEY_PERCENTAGE)));
+                soapTrackerPojoArrayList.add(soapOilsPojo);
+
+
+            } while (c.moveToNext());
+
+            c.close();
+
+        }
+
+        return soapTrackerPojoArrayList;
+    }
+    public ArrayList<IngredientsPojo> getMyOils(String SoapId) {
+
+        ArrayList<IngredientsPojo> soapTrackerPojoArrayList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_SOAP_MY_OILS +" WHERE " + KEY_SOAP_ID + " = '"+SoapId+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) {
+
+            do {
+
+                IngredientsPojo soapOilsPojo = new IngredientsPojo();
+                soapOilsPojo.setId(c.getString(c.getColumnIndex(KEY_ID)));
+                soapOilsPojo.setIngredient_name(c.getString(c.getColumnIndex(KEY_OIL_NAME)));
+                soapOilsPojo.setGrams(c.getString(c.getColumnIndex(KEY_WEIGHT)));
+                soapOilsPojo.setPercentage(c.getString(c.getColumnIndex(KEY_PERCENTAGE)));
                 soapTrackerPojoArrayList.add(soapOilsPojo);
 
 

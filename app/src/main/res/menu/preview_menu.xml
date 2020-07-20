@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Share recipe"
+        android:id="@+id/ic_share"
+        android:icon="@drawable/ic_action_share_white"
+        app:showAsAction="always" />
+
+    <item
+        android:title="Generate pdf"
+        android:id="@+id/ic_generate_pdf"
+        android:icon="@drawable/icon_icon_pdf"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:title="Sign Out"
+        android:id="@+id/icon_Sign_Out"
+        android:icon="@drawable/ic_action_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:title="Exit App"
+        android:id="@+id/icon_exit_app"
+        android:icon="@drawable/icon_exit_app"
+        app:showAsAction="never" />
+
+</menu>
