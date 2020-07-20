@@ -9,12 +9,13 @@ public class RecipeDetailsPojo {
     private String LyeWeight;
     private String LyeRatio;
     private String Liquid;
+    private String OilWeight;
     private String EssentialOil;
     private String EssentialRatio;
     private String SuperFat;
     private String TotalWeight;
 
-    public RecipeDetailsPojo(String id, String recipeName, String date_in, String liquidWeight, String lyeWeight, String lyeRatio, String liquid, String essentialOil, String essentialRatio, String superFat, String totalWeight) {
+    public RecipeDetailsPojo(String id, String recipeName, String date_in, String liquidWeight, String lyeWeight, String lyeRatio, String liquid, String oilWeight, String essentialOil, String essentialRatio, String superFat, String totalWeight) {
         this.id = id;
         RecipeName = recipeName;
         Date_in = date_in;
@@ -22,6 +23,7 @@ public class RecipeDetailsPojo {
         LyeWeight = lyeWeight;
         LyeRatio = lyeRatio;
         Liquid = liquid;
+        OilWeight = oilWeight;
         EssentialOil = essentialOil;
         EssentialRatio = essentialRatio;
         SuperFat = superFat;
@@ -85,6 +87,14 @@ public class RecipeDetailsPojo {
 
     public void setLiquid(String liquid) {
         Liquid = liquid;
+    }
+
+    public String getOilWeight() {
+        return OilWeight;
+    }
+
+    public void setOilWeight(String oilWeight) {
+        OilWeight = oilWeight;
     }
 
     public String getEssentialOil() {

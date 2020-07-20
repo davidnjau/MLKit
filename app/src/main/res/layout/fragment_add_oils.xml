@@ -16,6 +16,14 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:gravity="start"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/add_oils"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
                 android:textStyle="italic"
                 android:gravity="end"
                 android:textColor="@color/colorPrimaryDark"
@@ -35,127 +43,135 @@
             android:text="Click to Choose Oils "
             android:layout_height="wrap_content"/>
 
+
         <RelativeLayout
             android:background="@drawable/table_content_cell_bg"
             android:layout_marginBottom="115dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/linearSwitch"
-                android:orientation="vertical"
-                android:layout_margin="10dp"
-                android:background="@drawable/table_content_cell_bg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Switch
-                    android:id="@+id/SuperFatSwitch"
-                    android:layout_width="wrap_content"
-                    android:text="Add Super Fat percentage"
-                    android:layout_height="wrap_content"/>
-
-
-                <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/linearSuperFat"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:layout_weight="1"
-                        android:maxLength="5"
-                        android:inputType="numberDecimal"
-                        android:id="@+id/etSuperFat"
-                        android:padding="10dp"
-                        android:background="@drawable/edit_text_shape"
-                        android:hint="5 % super Fat percentage (default)."
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <Button
-                        android:textAllCaps="false"
-                        android:id="@+id/btnSaveSuperFat"
-                        android:layout_gravity="center"
-                        android:text="Save"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_below="@+id/linearSwitch"
-                android:layout_marginBottom="60dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:orientation="vertical"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:gravity="center"
-                    android:id="@+id/tvOils"
-                    android:textColor="@android:color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:text="Oils"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
                 <LinearLayout
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
-                    <EditText
-                        android:padding="10dp"
-                        android:inputType="numberDecimal"
-                        android:maxLength="7"
-                        android:layout_weight="1"
-                        android:id="@+id/etOilAmount"
-                        android:background="@drawable/edit_text_shape"
-                        android:hint="Enter the total Amount of oils"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:id="@+id/linearSwitch"
+                        android:orientation="vertical"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/table_content_cell_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <Button
-                        android:gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:textAllCaps="false"
-                        android:text="Save"
-                        android:id="@+id/btnTotalOilAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        <Switch
+                            android:id="@+id/SuperFatSwitch"
+                            android:layout_width="wrap_content"
+                            android:text="Add Super Fat percentage"
+                            android:layout_height="wrap_content"/>
+
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/linearSuperFat"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:layout_weight="1"
+                                android:maxLength="5"
+                                android:inputType="numberDecimal"
+                                android:id="@+id/etSuperFat"
+                                android:padding="10dp"
+                                android:background="@drawable/edit_text_shape"
+                                android:hint="Recommended superfat % = 5% "
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <Button
+                                android:visibility="gone"
+                                android:textAllCaps="false"
+                                android:id="@+id/btnSaveSuperFat"
+                                android:layout_gravity="center"
+                                android:text="Save"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_below="@+id/linearSwitch"
+                        android:layout_marginBottom="60dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:gravity="center"
+                            android:id="@+id/tvOils"
+                            android:textColor="@android:color/black"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:text="Oils"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:scrollbars="vertical"
+                            android:layout_width="match_parent"
+                            android:id="@+id/recyclerView"
+                            android:layout_marginTop="5dp"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:scrollbars="vertical"
+            </ScrollView>
+
+
+            <LinearLayout
+                android:layout_margin="20dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/round_button"
+                    android:id="@+id/btnCalculate"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
-                    android:id="@+id/recyclerView"
-                    android:layout_marginTop="5dp"
+                    android:text="Calculate"
                     android:layout_height="wrap_content"/>
+
+                <Button
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/table_header_cell_bg"
+                    android:id="@+id/btnSaveOils"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:text="Save Oils "
+                    android:layout_height="wrap_content"/>
+
 
             </LinearLayout>
 
-            <Button
-                android:layout_alignParentBottom="true"
-                android:textColor="@android:color/white"
-                android:layout_margin="20dp"
-                android:background="@drawable/table_header_cell_bg"
-                android:id="@+id/btnSaveOils"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:text="Save Oils and Proceed to Water information"
-                android:layout_height="wrap_content"/>
 
 
         </RelativeLayout>
@@ -183,7 +199,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_gravity="center"
@@ -199,6 +215,45 @@
                     android:background="@color/colorPrimaryDark"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:text="Total oil weight (grams)"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:padding="10dp"
+                        android:inputType="numberDecimal"
+                        android:maxLength="7"
+                        android:layout_weight="1"
+                        android:id="@+id/etOilAmount"
+                        android:background="@drawable/edit_text_shape"
+                        android:hint="Enter the total Amount of oils"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:textAllCaps="false"
+                        android:text="Save"
+                        android:id="@+id/btnTotalOilAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
 
             </LinearLayout>

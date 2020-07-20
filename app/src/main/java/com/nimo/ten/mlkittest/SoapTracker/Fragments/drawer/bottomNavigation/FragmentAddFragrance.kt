@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,11 +93,17 @@ class FragmentAddFragrance : Fragment() {
                     }else
                         Toast.makeText(activity, "Please add some oils before proceeding", Toast.LENGTH_SHORT).show()
 
+                    StartEssentialOilRecyclerView(soap_id)
+                    getValues()
+
+
                 }else{
 
                     etEssentialOil.error = "Essential oils% cannot be more than 100 %"
                     Toast.makeText(activity, "Essential oils% cannot be more than 100 %", Toast.LENGTH_SHORT).show()
                 }
+
+
 
 
             }else etEssentialOil.error = "Essential oils cannot be empty."
@@ -112,6 +119,7 @@ class FragmentAddFragrance : Fragment() {
                 if (oils_exists){
 
                     //Add Fragrance \ Essential oils
+                    databaseHelper.updateEssentialRatio(soap_id, 0.02)
 
                     linearEssentialOil.visibility = View.VISIBLE
 
@@ -128,8 +136,15 @@ class FragmentAddFragrance : Fragment() {
 
             }else{
 
+                etEssentialOil.setText("")
+                databaseHelper.updateEssentialRatio(soap_id, 0.0)
+                getEssentialOilWeight()
+
                 linearEssentialOil.visibility = View.GONE
             }
+
+            StartEssentialOilRecyclerView(soap_id)
+            getValues()
 
         }
 
@@ -235,7 +250,7 @@ class FragmentAddFragrance : Fragment() {
                                 databaseHelper.AddEssentialOils(txtIngredients, soapId, txtPercentage,
                                         txtSoapWeight)
 
-                                ShowCustomToast(activity, "Successfully added an ingredient")
+                                ShowCustomToast(activity, "Successfully added an Essential oil")
                                 alertDialog.dismiss()
 
                                 StartEssentialOilRecyclerView(soapId)
@@ -274,8 +289,6 @@ class FragmentAddFragrance : Fragment() {
         }
     }
 
-
-
     private fun getEssentialOilWeight(){
 
         //Get The weight of Essential oils. By Default We will Use 2% of the total Oils
@@ -294,13 +307,19 @@ class FragmentAddFragrance : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        getValues()
+
+    }
+
+    private fun getValues() {
+
         soap_id = preferences.getString("recipe_id", null).toString()
 
-        val OilAmount = databaseHelper.getOilsWeight(soap_id).liquidWeight
+        val OilAmount = databaseHelper.getOilsWeight(soap_id).oilWeight
         val superFat = databaseHelper.getOilsWeight(soap_id).superFat
         val TotaWeight = databaseHelper.getOilsWeight(soap_id).totalWeight
 
-        val LiquidWeight = databaseHelper.getOilsWeight(soap_id).liquid
+        val LiquidWeight = databaseHelper.getOilsWeight(soap_id).liquidWeight
         val LyeWeight = databaseHelper.getOilsWeight(soap_id).lyeWeight
 
         totalWeight.text = TotaWeight

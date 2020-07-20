@@ -42,6 +42,9 @@
     <string name="about_us">About us</string>
     <string name="sample_recipes">Sample Recipes</string>
     <string name="buy_raw">Buy Raw Ingredients</string>
+    <string name="add_oils">Add the oils you will use </string>
+    <string name="add_fragrance">Add the fragrance / Essential oils to be used </string>
+    <string name="add_water">Add Water and Lye ratio / Percentages</string>
 
 
 </resources>

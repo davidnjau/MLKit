@@ -179,7 +179,6 @@ class FragmentAddWater : Fragment() {
             var fragment = FragmentAddFragrance()
             loadFragment(fragment)
 
-
         }
 
         return view
@@ -190,13 +189,19 @@ class FragmentAddWater : Fragment() {
 
         soap_id = preferences.getString("recipe_id", null).toString()
 
-        val OilAmount = databaseHelper.getOilsWeight(soap_id).liquidWeight
+        val OilAmount = databaseHelper.getOilsWeight(soap_id).oilWeight
         val superFat = databaseHelper.getOilsWeight(soap_id).superFat
         val TotaWeight = databaseHelper.getOilsWeight(soap_id).totalWeight
 
         totalWeight.text = TotaWeight
         tvTotalOilWeight.text = OilAmount
         tvSuperFat.text = superFat
+
+        val LiquidWeight = databaseHelper.getOilsWeight(soap_id).liquidWeight
+        val LyeWeight = databaseHelper.getOilsWeight(soap_id).lyeWeight
+
+        tvWaterWeight.text = LiquidWeight
+        tvLyeWeight.text = LyeWeight
 
     }
 

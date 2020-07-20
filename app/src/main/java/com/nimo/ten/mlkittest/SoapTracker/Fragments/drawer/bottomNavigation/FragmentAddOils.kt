@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,7 @@ class FragmentAddOils : Fragment() {
     private lateinit var SuperFatSwitch: Switch
     private lateinit var linearSuperFat: LinearLayout
     private lateinit var btnSaveSuperFat: Button
+    private lateinit var btnCalculate: Button
     private lateinit var etSuperFat: EditText
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,6 +67,7 @@ class FragmentAddOils : Fragment() {
         btnConfirm = view.findViewById(R.id.btnConfirm)
         btnTotalOilAmount = view.findViewById(R.id.btnTotalOilAmount)
         btnSaveOils = view.findViewById(R.id.btnSaveOils)
+        btnCalculate = view.findViewById(R.id.btnCalculate)
         etOilAmount = view.findViewById(R.id.etOilAmount)
 
         preferences = requireActivity().getSharedPreferences("Soap", Context.MODE_PRIVATE)
@@ -119,19 +122,41 @@ class FragmentAddOils : Fragment() {
 
             Recipe_id = preferences.getString("recipe_id", null).toString()
 
-            for (i in SoapOilsAdapter.soapTrackerPojoArrayList.indices) {
-                if (SoapOilsAdapter.soapTrackerPojoArrayList[i].selected) {
+            val txtOilAmount = etOilAmount.text.toString()
+            if (!TextUtils.isEmpty(txtOilAmount)){
 
-                    val txtOilName: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].liquids
-                    val txtNaoh: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].naOh
+                if (txtOilAmount.toDouble() != 0.0){
 
-                    databaseHelper.AddMySoapOils(Recipe_id, txtOilName, txtNaoh)
+                    databaseHelper.updateOilAmount(Recipe_id, txtOilAmount.toDouble(), activity)
+                    Toast.makeText(activity, "The oil amount was updated successfully", Toast.LENGTH_LONG).show()
+
+                    for (i in SoapOilsAdapter.soapTrackerPojoArrayList.indices) {
+                        if (SoapOilsAdapter.soapTrackerPojoArrayList[i].selected) {
+
+                            val txtOilName: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].liquids
+                            val txtNaoh: String = SoapOilsAdapter.soapTrackerPojoArrayList[i].naOh
+
+                            databaseHelper.AddMySoapOils(Recipe_id, txtOilName, txtNaoh)
+
+                        }
+                    }
+
+                    Toast.makeText(activity, "Oils added to your list.", Toast.LENGTH_SHORT).show()
+                    bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+
+                }else{
+
+                    Toast.makeText(activity, "The Total oils weight cannot be 0.", Toast.LENGTH_SHORT).show()
+                    etOilAmount.error = "The Total oils weight cannot be 0."
 
                 }
-            }
 
-            Toast.makeText(activity, "Oils added to your list.", Toast.LENGTH_SHORT).show()
-            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+
+            }else{
+
+                Toast.makeText(activity, "The Total oils weight cannot be 0.", Toast.LENGTH_SHORT).show()
+                etOilAmount.error = "The Total oils weight cannot be 0."
+            }
 
             CheckOilsList()
 
@@ -189,11 +214,11 @@ class FragmentAddOils : Fragment() {
 
                 databaseHelper.updateSuperFatRatio(Recipe_id, 0.0)
 
-
                 linearSuperFat.visibility = View.GONE
             }
 
         }
+
         btnSaveSuperFat.setOnClickListener {
 
             val txtSuperFatTotal = etSuperFat.text.toString()
@@ -218,6 +243,47 @@ class FragmentAddOils : Fragment() {
 
             }else
                 etSuperFat.error = "Add a super fat percentage"
+
+
+
+        }
+
+        btnCalculate.setOnClickListener {
+
+            //SuperFat Values
+            if (SuperFatSwitch.isChecked){
+
+                val txtSuperFatTotal = etSuperFat.text.toString()
+                if (!TextUtils.isEmpty(txtSuperFatTotal)){
+
+                    val SuperFat = txtSuperFatTotal.toDouble()
+
+                    if (SuperFat < 100){
+
+                        val soap_id = preferences.getString("recipe_id", null).toString()
+                        val oils_exists = checkOils(soap_id.toString())
+                        if (oils_exists){
+
+                            databaseHelper.updateSuperFatRatio(soap_id, SuperFat)
+                            Toast.makeText(activity, "Super fat percentage updated", Toast.LENGTH_LONG).show()
+
+                        }
+
+                    }else
+                        Toast.makeText(activity, "Super fat percentage cannot be  more than 100%", Toast.LENGTH_LONG).show()
+
+
+                }
+
+                getSuperFatValues()
+
+            }
+
+            CheckOilsList()
+
+
+
+
 
 
 
@@ -296,7 +362,7 @@ class FragmentAddOils : Fragment() {
 
         Recipe_id = preferences.getString("recipe_id", null).toString()
 
-        val OilAmount = databaseHelper.getOilsWeight(Recipe_id).liquidWeight
+        val OilAmount = databaseHelper.getOilsWeight(Recipe_id).oilWeight
         val superFat = databaseHelper.getOilsWeight(Recipe_id).superFat
 
         etOilAmount.setText(OilAmount.toString())

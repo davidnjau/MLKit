@@ -129,37 +129,6 @@ public class SoapMyOilsAdapter extends RecyclerView.Adapter<SoapMyOilsAdapter.Vi
                 if (!TextUtils.isEmpty(s.toString())){
 
                     databaseHelper.updateMyOilPercentage(txtSoapId, txtOilId, String.valueOf(s), context);
-//                    double perc = Double.parseDouble(s.toString());
-//                    if (100 - perc < 0){
-//
-//                        new ShowCustomToast((Activity) context, "Your percentage cannot exceed 100%");
-//
-//                    }else {
-//
-//                        if (!TextUtils.isEmpty(String.valueOf(s))){
-//
-//                            double RemainingPercentage = calculator.getRemainingTotalOilsPercentage(txtSoapId, context);
-//                            double GivenPercentage = Double.parseDouble(String.valueOf(s));
-//
-//                            if (RemainingPercentage >= 0) {
-//
-//                                if (GivenPercentage <= RemainingPercentage) {
-//
-////                                    calculator.getSapofinication(txtSoapId, txtOilId, String.valueOf(editable), context);
-//
-//                                }else {
-//
-//                                    new ShowCustomToast((Activity) context, "Your percentage cannot exceed 100%");
-//                                    holder.etPercentage.setText("");
-//                                    holder.etPercentage.setHint("The remaining percentage is " +RemainingPercentage+ "%");
-//                                }
-//
-//                            }
-//
-//
-//                        }
-//
-//                    }
 
                 }
 
