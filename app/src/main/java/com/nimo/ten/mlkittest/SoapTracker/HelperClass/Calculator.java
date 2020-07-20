@@ -683,10 +683,11 @@ public class Calculator {
         OilsLiquidData oilsLiquidData = new OilsLiquidData();
 
         double LiquidWeight = OilWeight * LiquidRatio;
-        double LyeWeight = OilWeight * LyeRatio;
+
+//        double LyeWeight = OilWeight * LyeRatio;
 
         oilsLiquidData.setLiquid_weight(LiquidWeight);
-        oilsLiquidData.setLye_weight(LyeWeight);
+        oilsLiquidData.setLye_weight(OilWeight);
 
         return oilsLiquidData;
 

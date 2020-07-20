@@ -1096,6 +1096,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put(KEY_TOTAL_WEIGHT, weight);
+        cv.put(KEY_NAOH_WEIGHT, weight);
 
         updateMySoapLiquidLyeWeight(id, weight);
 

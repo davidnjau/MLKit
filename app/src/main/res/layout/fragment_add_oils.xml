@@ -33,113 +33,125 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
-        <Button
-            android:textColor="@color/colorAccent"
-            android:layout_margin="10dp"
-            android:background="@drawable/table_content_cell_bg"
-            android:id="@+id/btnChooseSoap"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:text="Click to Choose Oils "
-            android:layout_height="wrap_content"/>
-
 
         <RelativeLayout
-            android:background="@drawable/table_content_cell_bg"
             android:layout_marginBottom="115dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ScrollView
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <Button
+                    android:textColor="@color/colorAccent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/table_content_cell_bg"
+                    android:id="@+id/btnChooseSoap"
+                    android:textAllCaps="false"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:text="Click to Choose Oils "
+                    android:layout_height="wrap_content"/>
 
-                    <LinearLayout
-                        android:id="@+id/linearSwitch"
-                        android:orientation="vertical"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/table_content_cell_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:background="@drawable/table_content_cell_bg"
+                    android:layout_marginBottom="115dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                        <Switch
-                            android:id="@+id/SuperFatSwitch"
-                            android:layout_width="wrap_content"
-                            android:text="Add Super Fat percentage"
-                            android:layout_height="wrap_content"/>
-
-
-                        <LinearLayout
-                            android:visibility="gone"
-                            android:id="@+id/linearSuperFat"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <EditText
-                                android:layout_weight="1"
-                                android:maxLength="5"
-                                android:inputType="numberDecimal"
-                                android:id="@+id/etSuperFat"
-                                android:padding="10dp"
-                                android:background="@drawable/edit_text_shape"
-                                android:hint="Recommended superfat % = 5% "
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-
-                            <Button
-                                android:visibility="gone"
-                                android:textAllCaps="false"
-                                android:id="@+id/btnSaveSuperFat"
-                                android:layout_gravity="center"
-                                android:text="Save"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-
-
-                        </LinearLayout>
-
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_below="@+id/linearSwitch"
-                        android:layout_marginBottom="60dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical"
+                    <ScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <TextView
-                            android:gravity="center"
-                            android:id="@+id/tvOils"
-                            android:textColor="@android:color/black"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:text="Oils"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/linearSwitch"
+                                android:orientation="vertical"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/table_content_cell_bg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <Switch
+                                    android:id="@+id/SuperFatSwitch"
+                                    android:layout_width="wrap_content"
+                                    android:text="Add Super Fat percentage"
+                                    android:layout_height="wrap_content"/>
 
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:scrollbars="vertical"
-                            android:layout_width="match_parent"
-                            android:id="@+id/recyclerView"
-                            android:layout_marginTop="5dp"
-                            android:layout_height="wrap_content"/>
+                                <LinearLayout
+                                    android:visibility="gone"
+                                    android:id="@+id/linearSuperFat"
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
-                    </LinearLayout>
+                                    <EditText
+                                        android:layout_weight="1"
+                                        android:maxLength="5"
+                                        android:inputType="numberDecimal"
+                                        android:id="@+id/etSuperFat"
+                                        android:padding="10dp"
+                                        android:background="@drawable/edit_text_shape"
+                                        android:hint="Recommended superfat % = 5% "
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
 
-                </LinearLayout>
+                                    <Button
+                                        android:visibility="gone"
+                                        android:textAllCaps="false"
+                                        android:id="@+id/btnSaveSuperFat"
+                                        android:layout_gravity="center"
+                                        android:text="Save"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
 
-            </ScrollView>
 
+                                </LinearLayout>
+
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_below="@+id/linearSwitch"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginStart="10dp"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:gravity="center"
+                                    android:id="@+id/tvOils"
+                                    android:textColor="@android:color/black"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                    android:text="Oils"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:scrollbars="vertical"
+                                    android:layout_width="match_parent"
+                                    android:id="@+id/recyclerView"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </ScrollView>
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_margin="20dp"
@@ -172,9 +184,11 @@
 
             </LinearLayout>
 
-
-
         </RelativeLayout>
+
+
+
+
 
 
     </LinearLayout>

@@ -272,7 +272,6 @@ class FragmentAddOils : Fragment() {
                     }else
                         Toast.makeText(activity, "Super fat percentage cannot be  more than 100%", Toast.LENGTH_LONG).show()
 
-
                 }
 
                 getSuperFatValues()
@@ -280,12 +279,6 @@ class FragmentAddOils : Fragment() {
             }
 
             CheckOilsList()
-
-
-
-
-
-
 
         }
 
