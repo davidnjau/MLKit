@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_pic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SoapTracker.Activities.FirebasePreviewRecipe"></activity>
+        <activity android:name=".SoapTracker.Activities.FirebasePreviewRecipe"
+            android:parentActivityName=".SoapTracker.Activities.MainActivityDrawer"></activity>
         <activity
             android:name=".SoapTracker.Activities.PreviewRecipeDetails"
             android:parentActivityName=".SoapTracker.Activities.MainActivityDrawer"></activity>
