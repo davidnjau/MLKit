@@ -14,8 +14,9 @@ public class RecipeDetailsPojo {
     private String EssentialRatio;
     private String SuperFat;
     private String TotalWeight;
+    private String firebaseKey;
 
-    public RecipeDetailsPojo(String id, String recipeName, String date_in, String liquidWeight, String lyeWeight, String lyeRatio, String liquid, String oilWeight, String essentialOil, String essentialRatio, String superFat, String totalWeight) {
+    public RecipeDetailsPojo(String id, String recipeName, String date_in, String liquidWeight, String lyeWeight, String lyeRatio, String liquid, String oilWeight, String essentialOil, String essentialRatio, String superFat, String totalWeight, String firebaseKey) {
         this.id = id;
         RecipeName = recipeName;
         Date_in = date_in;
@@ -28,6 +29,7 @@ public class RecipeDetailsPojo {
         EssentialRatio = essentialRatio;
         SuperFat = superFat;
         TotalWeight = totalWeight;
+        this.firebaseKey = firebaseKey;
     }
 
     public RecipeDetailsPojo() {
@@ -127,6 +129,14 @@ public class RecipeDetailsPojo {
 
     public void setTotalWeight(String totalWeight) {
         TotalWeight = totalWeight;
+    }
+
+    public String getFirebaseKey() {
+        return firebaseKey;
+    }
+
+    public void setFirebaseKey(String firebaseKey) {
+        this.firebaseKey = firebaseKey;
     }
 }
 

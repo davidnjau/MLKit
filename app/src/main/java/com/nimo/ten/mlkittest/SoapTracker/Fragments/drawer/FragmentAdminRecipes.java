@@ -13,14 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nimo.ten.mlkittest.R;
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.RecipeRecyclerAdapter;
-import com.nimo.ten.mlkittest.SoapTracker.Adapter.SoapHealingRecyclerAdapter;
-import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper;
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew;
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.RecipeDetailsPojo;
-import com.nimo.ten.mlkittest.SoapTracker.Pojo.SoapTrackerPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +24,12 @@ import java.util.List;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class FragmentMyRecipe extends Fragment {
+public class FragmentAdminRecipes extends Fragment {
 
     private String Soap_id;
     private DatabaseHelperNew databaseHelper;
 
-    public FragmentMyRecipe(){
+    public FragmentAdminRecipes(){
 
     }
 
@@ -49,17 +45,14 @@ public class FragmentMyRecipe extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_my_recipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_recipe, container, false);
         preferences = getActivity().getSharedPreferences("Soap", MODE_PRIVATE);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         myview = view.findViewById(R.id.myview);
         layoutManager = new LinearLayoutManager(getActivity());
 
-
-
-
-        getActivity().setTitle("Soap recipes");
+        getActivity().setTitle("Admin Soap recipes");
 
         return view;
     }

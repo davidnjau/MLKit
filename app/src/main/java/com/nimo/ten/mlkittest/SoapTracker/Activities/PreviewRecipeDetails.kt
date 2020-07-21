@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -12,11 +13,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Adapter.PreviewRecyclerAdapter
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
 import com.nimo.ten.mlkittest.SoapTracker.Pojo.IngredientsPojo
-import java.util.*
+
 
 class PreviewRecipeDetails : AppCompatActivity() {
 
@@ -46,6 +52,14 @@ class PreviewRecipeDetails : AppCompatActivity() {
     lateinit var layoutManager: RecyclerView.LayoutManager
 
     private var soapLyeLiquidsPojoArrayList1 = ArrayList<IngredientsPojo>()
+    private lateinit var fab: FloatingActionButton
+
+    private var oilsUsed = ArrayList<IngredientsPojo>()
+    private var essentialOilsUsed = ArrayList<IngredientsPojo>()
+
+    var database = FirebaseDatabase.getInstance()
+    var myRef = database.getReference("Recipes")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +85,73 @@ class PreviewRecipeDetails : AppCompatActivity() {
         databaseHelper1 = DatabaseHelperNew(this)
         sharedPreferences = applicationContext.getSharedPreferences("Soap", Context.MODE_PRIVATE)
 
+        fab = findViewById(R.id.fab)
+        fab.setOnClickListener {
+
+            val recipeKey = myRef.push().key.toString()
+            val recipeDetails = myRef.child(recipeKey).child("weight_information")
+
+            val oilDetails = myRef.child(recipeKey).child("oils_used")
+            val essentialDetails = myRef.child(recipeKey).child("essential_oils_used")
+
+            //Upload To Firebase Database
+            val recipeName = databaseHelper1.getOilsWeight(RecipeId).recipeName
+            val LiquidWeight = databaseHelper1.getOilsWeight(RecipeId).liquidWeight
+            val LyeWeight = databaseHelper1.getOilsWeight(RecipeId).lyeWeight
+            val essentilaWeight = databaseHelper1.getOilsWeight(RecipeId).essentialOil
+            val essentialPercentage = databaseHelper1.getOilsWeight(RecipeId).essentialRatio.toDouble() * 100
+            val superFat = databaseHelper1.getOilsWeight(RecipeId).superFat
+            val OilAmount = databaseHelper1.getOilsWeight(RecipeId).oilWeight
+
+            val firebaseKey = databaseHelper1.getOilsWeight(RecipeId).firebaseKey
+
+            Log.e("*-*-* ", firebaseKey)
+
+            oilsUsed = databaseHelper1.getMyOils(RecipeId)
+            essentialOilsUsed = databaseHelper1.getSoapEssentialOils(RecipeId)
+
+            if (firebaseKey == "none"){
+
+                recipeDetails.child("recipe_name").setValue(recipeName)
+                recipeDetails.child("liquid_weight").setValue(LiquidWeight)
+                recipeDetails.child("naoh_weight").setValue(LyeWeight)
+                recipeDetails.child("essential_weight").setValue(essentilaWeight)
+                recipeDetails.child("essential_percentage").setValue(essentialPercentage.toString())
+                recipeDetails.child("super_fat_percentage").setValue(superFat)
+                recipeDetails.child("oil_amount").setValue(OilAmount)
+                recipeDetails.child("recipe_key").setValue(recipeKey)
+
+                for (i in oilsUsed){
+
+                    val newOils = oilDetails.push()
+
+                    val oilName = i.ingredient_name
+                    val oilWeight = i.grams
+
+                    newOils.child("oil_name").setValue(oilName)
+                    newOils.child("oil_weight").setValue(oilWeight)
+
+                }
+                for (i in essentialOilsUsed){
+
+                    val newOils = essentialDetails.push()
+
+                    val oilName = i.ingredient_name
+                    val oilWeight = i.grams
+
+                    newOils.child("oil_name").setValue(oilName)
+                    newOils.child("oil_weight").setValue(oilWeight)
+                }
+
+                databaseHelper1.updateRecipeKey(RecipeId, recipeKey)
+
+            }else{
+
+                Toast.makeText(applicationContext, "The recipe is already in the database", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
         btnSave.setOnClickListener {
 
             startActivity(Intent(applicationContext, SoapHeal_Healing::class.java))
@@ -99,8 +180,6 @@ class PreviewRecipeDetails : AppCompatActivity() {
 
         val essentilaWeight = databaseHelper1.getOilsWeight(RecipeId).essentialOil
         val essentialPercentage = databaseHelper1.getOilsWeight(RecipeId).essentialRatio.toDouble() * 100
-
-
 
         val recipeName = databaseHelper1.getOilsWeight(RecipeId).recipeName
         val dateCreated = databaseHelper1.getOilsWeight(RecipeId).date_in

@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.nimo.ten.mlkittest.R
 import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelper
@@ -13,7 +14,6 @@ import com.nimo.ten.mlkittest.SoapTracker.Database.DatabaseHelperNew
 class SplashPage : AppCompatActivity() {
 
     private lateinit var db: SQLiteDatabase
-    private lateinit var databaseHelper: DatabaseHelper
     private lateinit var databaseHelper1: DatabaseHelperNew
     private val myOilName: MutableList<String> = ArrayList()
     private val myNaoh: MutableList<Double> = ArrayList()
@@ -25,10 +25,9 @@ class SplashPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_page)
 
-        databaseHelper = DatabaseHelper(this)
         databaseHelper1 = DatabaseHelperNew(this)
 
-        db = databaseHelper.getReadableDatabase()
+        db = databaseHelper1.readableDatabase
 
         val handler = Handler()
         handler.postDelayed({
@@ -92,6 +91,8 @@ class SplashPage : AppCompatActivity() {
 
     private fun AddToSqlite() {
 
+
+
         for (i in myOilName.indices){
 
             val txtOilName = myOilName[i]
@@ -106,7 +107,7 @@ class SplashPage : AppCompatActivity() {
             }else{
 
                 databaseHelper1.AddSoapOils(txtOilName, txtNaoh)
-                databaseHelper.AddSoapOils(txtOilName, txtNaoh)
+//                databaseHelper.AddSoapOils(txtOilName, txtNaoh)
 
             }
 

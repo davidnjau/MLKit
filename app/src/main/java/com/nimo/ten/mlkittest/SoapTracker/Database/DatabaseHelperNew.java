@@ -43,6 +43,8 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
     public static final String KEY_SUPER_FAT = "supper_fat";
     public static final String KEY_TOTAL_OIL_AMOUNT = "oil_amount";
 
+    public static final String KEY_FIREBASE_KEY = "firebase_key";
+
     public static final String KEY_SOAP_ID = "soap_id";
     public static final String KEY_OIL_NAME = "oil_name";
     public static final String KEY_NAOH = "naoh_weight";
@@ -78,8 +80,9 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
             KEY_SUPER_FAT + " TEXT, " +
 
             KEY_TOTAL_OIL_AMOUNT + " TEXT, " +
+            KEY_TOTAL_WEIGHT + " TEXT, " +
 
-            KEY_TOTAL_WEIGHT + " TEXT " + " );";
+            KEY_FIREBASE_KEY + " TEXT " + " );";
 
     public static final String CREATE_TABLE_SOAP_MY_OILS = "CREATE TABLE "
             + TABLE_SOAP_MY_OILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -160,11 +163,11 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
         contentValues.put(KEY_SUPER_FAT, 0.0);
 
         contentValues.put(KEY_TOTAL_OIL_AMOUNT, 0.0);
+        contentValues.put(KEY_FIREBASE_KEY, "none");
 
         long id = db.insert(TABLE_RECIPE_TABLE, null, contentValues);
         return id;
     }
-
     public RecipeDetailsPojo getOilsWeight(String recipeId){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -194,6 +197,8 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
                 String essentialWeight = c.getString(c.getColumnIndex(KEY_ESSENTIAL_OIL_WEIGHT));
                 String essentialPercentage = c.getString(c.getColumnIndex(KEY_ESSENTIAL_OIL_RATIO));
 
+                String firebaseKey = c.getString(c.getColumnIndex(KEY_FIREBASE_KEY));
+
                 recipeDetailsPojo.setRecipeName(recipeName);
                 recipeDetailsPojo.setDate_in(dateCreated);
 
@@ -210,6 +215,8 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
                 recipeDetailsPojo.setEssentialRatio(essentialPercentage);
                 recipeDetailsPojo.setEssentialOil(essentialWeight);
 
+                recipeDetailsPojo.setFirebaseKey(firebaseKey);
+
             } while (c.moveToNext());
 
             c.close();
@@ -217,7 +224,6 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
         }
         return recipeDetailsPojo;
     }
-
     public void AddMySoapOils(String SoapId, String OilName, String Naoh){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -284,6 +290,17 @@ public class DatabaseHelperNew extends SQLiteOpenHelper {
         cv.put(KEY_WEIGHT, weight);
 
         db.update(TABLE_SOAP_MY_OILS, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
+
+
+    }
+    public void updateRecipeKey(String id, String key){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_FIREBASE_KEY, key);
+
+        db.update(TABLE_RECIPE_TABLE, cv, KEY_ID + " = ?", new String[]{String.valueOf(id)});
 
 
     }
