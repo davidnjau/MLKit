@@ -33,7 +33,7 @@
             <TextView
                 android:id="@+id/tvDateIn"
                 android:layout_weight="1"
-                android:text="20.3.6"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

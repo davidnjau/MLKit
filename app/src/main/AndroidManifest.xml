@@ -16,20 +16,17 @@
         android:roundIcon="@mipmap/ic_pic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SoapTracker.Activities.PreviewRecipeDetails"
-            android:parentActivityName=".SoapTracker.Activities.MainActivityDrawer">
-
-        </activity>
+        <activity android:name=".SoapTracker.Activities.FirebasePreviewRecipe"></activity>
+        <activity
+            android:name=".SoapTracker.Activities.PreviewRecipeDetails"
+            android:parentActivityName=".SoapTracker.Activities.MainActivityDrawer"></activity>
         <activity
             android:name=".SoapTracker.Activities.MainActivityDrawer"
             android:label="@string/title_activity_main_drawer"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".SoapTracker.Activities.SplashPage"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
